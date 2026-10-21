@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "updated": "2026-10-21",
+  "contacts": [
+    {
+      "id": "national-emergency",
+      "name": "National Emergency Number",
+      "phone": "112",
+      "emergency": "general",
+      "status": "to-be-confirmed",
+      "confirmedBy": "",
+      "confirmedOn": "",
+      "note": "Nigeria's national emergency number (from the Central Document). Safety Content team to confirm."
+    },
+    {
+      "id": "campus-security",
+      "name": "OAU Campus Security",
+      "phone": null,
+      "emergency": "security",
+      "status": "to-be-confirmed",
+      "confirmedBy": "",
+      "confirmedOn": "",
+      "note": "Number to be confirmed by calling. Never copy it from the internet."
+    },
+    {
+      "id": "health-centre",
+      "name": "OAU Health Centre",
+      "phone": null,
+      "emergency": "medical",
+      "status": "to-be-confirmed",
+      "confirmedBy": "",
+      "confirmedOn": "",
+      "note": "Number to be confirmed by calling. Never copy it from the internet."
+    },
+    {
+      "id": "fire-service",
+      "name": "Fire Service",
+      "phone": null,
+      "emergency": "fire",
+      "status": "to-be-confirmed",
+      "confirmedBy": "",
+      "confirmedOn": "",
+      "note": "Number to be confirmed by calling. Never copy it from the internet."
+    }
+  ]
+}

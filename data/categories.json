@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "categories": [
+    { "id": "lecture-theatre", "name": "Lecture Theatres", "emoji": "🎓", "icon": "" },
+    { "id": "faculty", "name": "Faculties & Departments", "emoji": "🏛️", "icon": "" },
+    { "id": "hostel", "name": "Hostels / Halls", "emoji": "🛏️", "icon": "" },
+    { "id": "library", "name": "Libraries", "emoji": "📚", "icon": "" },
+    { "id": "admin", "name": "Administration", "emoji": "🏢", "icon": "" },
+    { "id": "health", "name": "Health", "emoji": "🏥", "icon": "" },
+    { "id": "security", "name": "Security Posts", "emoji": "🛡️", "icon": "" },
+    { "id": "gate", "name": "Gates", "emoji": "🚧", "icon": "" },
+    { "id": "transport", "name": "Bus & Keke Parks", "emoji": "🚌", "icon": "" },
+    { "id": "bank", "name": "Banks & ATMs", "emoji": "🏧", "icon": "" },
+    { "id": "food", "name": "Cafeterias", "emoji": "🍽️", "icon": "" },
+    { "id": "printing", "name": "Printing & Photocopy", "emoji": "🖨️", "icon": "" },
+    { "id": "sports", "name": "Sports", "emoji": "⚽", "icon": "" }
+  ]
+}

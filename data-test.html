@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OAU Campus Guide - Data Test</title>
+  <!-- Back End test page: proves the data loads and search works.
+       The real screens are built by the Front End group. -->
+  <style>
+    :root { --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #5d6675; --line: #dfe3ea; --accent: #0b5cad; --warn-bg: #fff4d6; --warn: #7a5200; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #14171c; --card: #1d2229; --text: #e8ebf0; --muted: #9aa3b2; --line: #2e3540; --accent: #6aa8ff; --warn-bg: #3a2f12; --warn: #ffd27a; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 17px/1.45 system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    main { max-width: 640px; margin: 0 auto; padding: 16px; }
+    h1 { font-size: 1.35rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 16px; font-size: .95rem; }
+    .banner { background: var(--warn-bg); color: var(--warn); padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; font-size: .95rem; }
+    input[type=search] { width: 100%; font-size: 1.1rem; padding: 14px; border: 2px solid var(--line); border-radius: 10px; background: var(--card); color: var(--text); }
+    input[type=search]:focus { outline: none; border-color: var(--accent); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .chips button { font: inherit; font-size: .9rem; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+    .chips button[aria-pressed=true] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .status { color: var(--muted); font-size: .9rem; margin: 8px 0; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 10px 0; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 4px; }
+    .meta { color: var(--muted); font-size: .88rem; }
+    .tag { display: inline-block; font-size: .78rem; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); margin-right: 4px; }
+    details { margin-top: 6px; }
+    ol { margin: 6px 0 0; padding-left: 20px; }
+    h3 { font-size: 1rem; margin: 24px 0 6px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>OAU Campus Guide - data test</h1>
+  <p class="sub">Back End test page. Type a place name or nickname (try "lt 2", "awo", "librery").</p>
+  <div id="sample-banner" class="banner" hidden>Sample data in use. These entries are placeholders, not verified places.</div>
+
+  <input id="q" type="search" placeholder="Search a place or nickname…" autocomplete="off" aria-label="Search places">
+  <div id="chips" class="chips" role="group" aria-label="Filter by category"></div>
+  <div id="status" class="status" aria-live="polite">Loading data…</div>
+  <div id="results"></div>
+
+  <h3>Emergency contacts (from contacts.json)</h3>
+  <div id="contacts"></div>
+</main>
+
+<script type="module">
+  import * as data from './js/data.js';
+
+  const $ = (id) => document.getElementById(id);
+  let activeCategory = null;
+
+  // Small helper so we never put data straight into innerHTML.
+  function el(tag, props = {}, ...children) {
+    const node = Object.assign(document.createElement(tag), props);
+    node.append(...children.filter((c) => c != null));
+    return node;
+  }
+
+  function placeCard(place, matchedOn) {
+    const cat = data.getCategory(place.category);
+    const steps = el('ol', {}, ...(place.directionsFromMainGate ?? []).map((s) => el('li', { textContent: s })));
+    return el('div', { className: 'card' },
+      el('h2', { textContent: `${cat?.emoji ?? ''} ${place.name}` }),
+      el('div', { className: 'meta' },
+        el('span', { className: 'tag', textContent: cat?.name ?? place.category }),
+        el('span', { className: 'tag', textContent: place.verified ? 'verified' : 'not verified' }),
+        matchedOn ? el('span', { textContent: ` matched on ${matchedOn}` }) : null),
+      place.nicknames?.length ? el('div', { className: 'meta', textContent: `Also called: ${place.nicknames.join(', ')}` }) : null,
+      el('div', { textContent: place.description }),
+      el('div', { className: 'meta', textContent: `Landmark: ${place.landmark}` }),
+      el('details', {}, el('summary', { textContent: 'Directions from the Main Gate' }), steps)
+    );
+  }
+
+  function render() {
+    const text = $('q').value;
+    let items;
+    if (text.trim()) {
+      items = data.searchPlaces(text, { category: activeCategory ?? undefined });
+    } else if (activeCategory) {
+      items = data.getPlacesInCategory(activeCategory).map((place) => ({ place }));
+    } else {
+      items = [];
+    }
+    $('status').textContent = text.trim() || activeCategory
+      ? `${items.length} place(s) found`
+      : `${data.getPlaces().length} places loaded. Search or pick a category.`;
+    $('results').replaceChildren(...items.map((r) => placeCard(r.place, r.matchedOn)));
+  }
+
+  function renderChips() {
+    const buttons = data.getCategories().map((c) => {
+      const b = el('button', { type: 'button', textContent: `${c.emoji} ${c.name}` });
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => {
+        activeCategory = activeCategory === c.id ? null : c.id;
+        for (const other of $('chips').children) other.setAttribute('aria-pressed', 'false');
+        if (activeCategory) b.setAttribute('aria-pressed', 'true');
+        render();
+      });
+      return b;
+    });
+    $('chips').replaceChildren(...buttons);
+  }
+
+  function renderContacts() {
+    $('contacts').replaceChildren(...data.getContacts().map((c) => {
+      const confirmed = c.status === 'confirmed' && c.phone;
+      const action = confirmed
+        ? el('a', { href: `tel:${c.phone.replace(/\s/g, '')}`, textContent: `Call ${c.phone}` })
+        : el('span', { className: 'meta', textContent: c.phone ? `${c.phone} (to be confirmed)` : 'Number to be confirmed' });
+      return el('div', { className: 'card' }, el('h2', { textContent: c.name }), action);
+    }));
+  }
+
+  try {
+    await data.loadData();
+    $('sample-banner').hidden = !data.isSampleData();
+    renderChips();
+    renderContacts();
+    render();
+    $('q').addEventListener('input', render);
+  } catch (err) {
+    $('status').textContent = `Error: ${err.message}`;
+  }
+</script>
+</body>
+</html>

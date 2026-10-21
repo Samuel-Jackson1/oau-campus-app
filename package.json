@@ -1,0 +1,13 @@
+{
+  "name": "oau-campus-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OAU Campus Navigation & Emergency Assistance System (SWEP 200) - Tier 1 web app",
+  "type": "module",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "validate": "node tools/validate.mjs",
+    "import-csv": "node tools/csv-to-json.mjs"
+  }
+}

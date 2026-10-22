@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAU Navigator - design comparison</title>
+<script>
+// Skip the current app's language screen inside the preview (English), so both phones start on Home.
+try { if (!localStorage.getItem('lang')) localStorage.setItem('lang', 'en'); } catch (e) {}
+</script>
+<style>
+:root{--ink:#181d19;--muted:#5d6a61;--paper:#f7faf5;--frame:#1c211d;--line:#d6ddd7;--green:#0b5d3b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e0e3de;--muted:#a6b2aa;--paper:#101411;--frame:#000;--line:#2f3a33;--green:#8dd6ab}}
+:root[data-theme="dark"]{--ink:#e0e3de;--muted:#a6b2aa;--paper:#101411;--frame:#000;--line:#2f3a33;--green:#8dd6ab}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 .25rem}
+p.lead{color:var(--muted);margin:0 0 1.5rem}
+.pair{display:flex;flex-wrap:wrap;gap:32px;justify-content:center}
+figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.75rem}
+figcaption{text-align:center}
+figcaption b{display:block;font-size:1.05rem}
+figcaption a{color:var(--green);font-size:.9rem}
+.phone{width:390px;max-width:100%;height:780px;border:12px solid var(--frame);border-radius:44px;overflow:hidden;background:#fff;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.notes{margin-top:2rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--muted);font-size:.95rem}
+@media (max-width:500px){.phone{height:640px;border-width:8px;border-radius:32px}}
+</style></head>
+<body>
+<main>
+  <h1>OAU Navigator: current look vs Beer CSS look</h1>
+  <p class="lead">Both use the same sample data and Timi's category icons. Tap around inside each phone. On a phone, open each one full screen with the links.</p>
+  <div class="pair">
+    <figure>
+      <div class="phone"><iframe src="../index.html" title="Current app"></iframe></div>
+      <figcaption><b>Current app (v7 starter)</b><a href="../index.html">Open full screen</a></figcaption>
+    </figure>
+    <figure>
+      <div class="phone"><iframe src="beer-home.html" title="Beer CSS mock-up"></iframe></div>
+      <figcaption><b>Beer CSS mock-up (Material 3, OAU green)</b><a href="beer-home.html">Open full screen</a></figcaption>
+    </figure>
+  </div>
+  <p class="notes">The mock-up is a design preview: Home, Find (search and categories), Stay safe and Emergency. Directions, the map and the three languages are only in the current app so far. The moon/sun button in the mock-up switches light and dark.</p>
+</main>
+</body></html>

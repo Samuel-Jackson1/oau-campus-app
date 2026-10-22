@@ -1,7 +1,7 @@
 // sw.js: the offline helper ("service worker").
 // RULE: every time you change ANY file, change the number below (v1 -> v2 -> v3).
 // That tells phones to throw away the old saved copy and fetch the new one.
-const CACHE = "oau-navigator-v9";
+const CACHE = "oau-navigator-v10";
 
 const CORE = [
   "./", "index.html", "style.css", "route.js", "app.js", "manifest.webmanifest",

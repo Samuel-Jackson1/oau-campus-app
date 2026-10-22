@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#004429">
+<title>OAU Navigator - Beer CSS mock-up</title>
+<!-- DESIGN MOCK-UP ONLY. Shows the Beer CSS (Material 3) look with the app's real sample data.
+     Beer CSS is loaded from the CDN here; a real build would keep the two files in vendor/ so the app works offline. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beercss@5.0.3/dist/cdn/beer.min.css">
+<link rel="stylesheet" href="../vendor/fonts.css">
+<style>
+/* OAU green Material 3 theme, generated with Google's material-color-utilities from #0b5d3b.
+   "body.light" is needed because Beer CSS puts its own default theme there. */
+body,body.light{--font:"Noto Sans",system-ui,sans-serif;--primary:#004429;--on-primary:#ffffff;--primary-container:#0b5d3b;--on-primary-container:#8ad4a8;--secondary:#496453;--on-secondary:#ffffff;--secondary-container:#c9e7d1;--on-secondary-container:#2f4a39;--tertiary:#30346e;--on-tertiary:#ffffff;--tertiary-container:#474b87;--on-tertiary-container:#bbbeff;--error:#ba1a1a;--on-error:#ffffff;--error-container:#ffdad6;--on-error-container:#93000a;--background:#f7faf5;--on-background:#181d19;--surface:#f7faf5;--on-surface:#181d19;--surface-variant:#dbe5db;--on-surface-variant:#404942;--outline:#707a72;--outline-variant:#bfc9c0;--inverse-surface:#2d312e;--inverse-on-surface:#eff2ec;--inverse-primary:#8dd6ab;--surface-container-lowest:#ffffff;--surface-container-low:#f1f4ef;--surface-container:#ecefe9;--surface-container-high:#e6e9e4;--surface-container-highest:#e0e3de}
+body.dark{--primary:#8dd6ab;--on-primary:#003921;--primary-container:#0b5d3b;--on-primary-container:#8ad4a8;--secondary:#b0ceb9;--on-secondary:#1c3627;--secondary-container:#344f3f;--on-secondary-container:#c9e7d1;--tertiary:#bfc2ff;--on-tertiary:#262a64;--tertiary-container:#474b87;--on-tertiary-container:#bbbeff;--error:#ffb4ab;--on-error:#690005;--error-container:#93000a;--on-error-container:#ffdad6;--background:#101411;--on-background:#e0e3de;--surface:#101411;--on-surface:#e0e3de;--surface-variant:#404942;--on-surface-variant:#bfc9c0;--outline:#89938b;--outline-variant:#404942;--inverse-surface:#e0e3de;--inverse-on-surface:#2d312e;--inverse-primary:#206b48;--surface-container-lowest:#0b0f0c;--surface-container-low:#181d19;--surface-container:#1c211d;--surface-container-high:#272b28;--surface-container-highest:#323632}
+/* Brand colours stay the same in light and dark: OAU green and a strong emergency red */
+body{font-family:var(--font);--brand:#0b5d3b;--brand-deep:#004429;--sos:#b3261e}
+.screen[hidden]{display:none!important}
+.lucide{fill:none!important}
+i>svg{width:100%;height:100%}
+.mockbar{background:var(--tertiary-container);color:var(--on-tertiary-container);font-size:.8rem;text-align:center;padding:.35rem 1rem;border-radius:1rem;margin:.5rem 0 1rem}
+header.fixed{background:var(--brand);color:#fff}
+header .chip,header .chip *,header button{color:#fff!important}header .chip{border-color:color-mix(in srgb,#fff 55%,transparent)!important}
+.hero{background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 100%);color:#fff;border-radius:1.75rem;padding:1.5rem 1.25rem 1.25rem}
+.hero h4{margin:0 0 .25rem;font-weight:700;line-height:1.2}
+.hero p{margin:0 0 1rem;opacity:.9}
+.hero .chip{background:color-mix(in srgb,#fff 18%,transparent);color:#fff;border:0}
+.action{box-sizing:border-box;text-decoration:none;display:flex;align-items:center;gap:1rem;border-radius:1.5rem;padding:1rem 1.1rem;margin:.75rem 0;cursor:pointer;width:100%;text-align:left;font:inherit;border:0}
+.action .badge-ico{flex:none;width:56px;height:56px;border-radius:1rem;display:grid;place-items:center}
+.action .badge-ico i{width:30px;height:30px}
+.action>span:nth-child(2){flex:1;min-width:0}.action b{display:block;font-size:1.1rem}.action small{opacity:.8}
+.a-find{background:var(--brand);color:#fff}.a-find .badge-ico{background:color-mix(in srgb,#fff 16%,transparent)}
+.a-safe{background:var(--secondary-container);color:var(--on-secondary-container)}.a-safe .badge-ico{background:color-mix(in srgb,var(--secondary) 18%,transparent)}
+.a-sos{background:var(--sos);color:#fff}.a-sos .badge-ico{background:color-mix(in srgb,#fff 18%,transparent)}
+.chev{margin-left:auto;opacity:.8}
+.avatar{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--secondary-container);color:var(--on-secondary-container)}
+.avatar i,.avatar svg{width:26px;height:26px}
+.cat{box-sizing:border-box;height:100%;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1rem .4rem;border-radius:1.25rem;background:var(--surface-container-low);border:1px solid var(--outline-variant);cursor:pointer;text-align:center;width:100%;font:inherit;color:inherit}
+.cat .avatar{width:56px;height:56px}.cat .avatar svg{width:30px;height:30px}
+.cat b{font-size:.85rem;line-height:1.2}.cat small{color:var(--on-surface-variant);font-size:.75rem}
+.chips{display:flex;gap:.5rem;overflow-x:auto;padding:.25rem 0 .75rem;scrollbar-width:none}
+.chips .chip{flex:none}
+.chips .chip.fill{background:var(--secondary-container);color:var(--on-secondary-container);border-color:transparent}
+ul.list li{border-radius:1rem;background:var(--surface-container-low);margin:.5rem 0;padding:.75rem}
+ul.list li .max div{color:var(--on-surface-variant)}
+.sos-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.5rem 0 1rem}
+.sos-tabs button{height:auto;flex-direction:column;padding:.9rem .25rem;border-radius:1.25rem;gap:.35rem}
+.sos-tabs button i{width:30px;height:30px}
+.call{box-sizing:border-box;display:flex;justify-content:center;width:100%;height:64px;border-radius:2rem;font-size:1.15rem;margin:.4rem 0}
+.tbc{display:flex;align-items:center;gap:.75rem;padding:1rem;border-radius:1.25rem;border:1px dashed var(--outline);color:var(--on-surface-variant);margin:.4rem 0}
+.note{border-radius:1.25rem;background:var(--surface-container-high);padding:1rem;margin-top:1rem;font-size:.95rem}
+.section-title{margin:1.5rem 0 .5rem;font-size:1.05rem;font-weight:700}
+nav.bottom a.active i{background:var(--secondary-container);color:var(--on-secondary-container)}
+main.responsive{padding-bottom:6rem}
+</style></head>
+<body>
+<header class="fixed">
+  <nav>
+    <h6 class="max" style="font-weight:700;margin:0;font-size:1.2rem;white-space:nowrap">OAU Navigator</h6>
+    <button class="circle transparent" id="mode" aria-label="Switch light or dark"><i id="modeico"></i></button>
+    <button class="chip border round" aria-label="Language"><i data-l="globe"></i><span>English</span></button>
+  </nav>
+</header>
+
+<main class="responsive">
+  <!-- Beer CSS lays out body as a grid of header/main/nav, so this notice lives inside main -->
+  <div class="mockbar">Design mock-up (Beer CSS look) &middot; sample data &middot; not the live app</div>
+  <!-- HOME -->
+  <section id="home" class="screen">
+    <div class="hero">
+      <h4>Find your way around OAU</h4>
+      <p>Search any place on campus, even without data.</p>
+      <span class="chip round"><i data-l="circle-check"></i><span>Ready to use offline</span></span>
+    </div>
+    <div class="field large prefix round fill" style="margin-top:1rem">
+      <i data-s="search"></i>
+      <input id="homeq" placeholder="Search a place or nickname" aria-label="Search">
+    </div>
+    <a class="action a-find" data-go="find" href="#" role="button"><span class="badge-ico"><i data-l="map-pin"></i></span><span><b>Find a place</b><small>Browse or search, then walk there step by step</small></span><i class="chev" data-s="chevron"></i></a>
+    <a class="action a-safe" data-go="safe" href="#" role="button"><span class="badge-ico"><i data-l="book-open"></i></span><span><b>Stay safe: what to do</b><small>Fire, sickness or injury, danger, theft</small></span><i class="chev" data-s="chevron"></i></a>
+    <a class="action a-sos" data-go="sos" href="#" role="button"><span class="badge-ico"><i data-l="siren"></i></span><span><b>Emergency</b><small>Call for help in one tap</small></span><i class="chev" data-s="chevron"></i></a>
+    <p class="section-title">Browse by category</p>
+    <div class="grid" id="catgrid"></div>
+  </section>
+
+  <!-- FIND -->
+  <section id="find" class="screen" hidden>
+    <div class="field large prefix round fill" style="margin-top:.5rem">
+      <i data-s="search"></i>
+      <input id="q" placeholder="Search a place or nickname" aria-label="Search">
+    </div>
+    <div class="chips" id="chips"></div>
+    <ul class="list" id="results"></ul>
+  </section>
+
+  <!-- STAY SAFE -->
+  <section id="safe" class="screen" hidden>
+    <h5 style="margin:.5rem 0 0">Stay safe</h5>
+    <p style="color:var(--on-surface-variant);margin:.25rem 0 .5rem">Short steps for when something goes wrong.</p>
+    <ul class="list" id="lessons"></ul>
+    <div class="note">Draft. Not yet checked by the responsible office.</div>
+  </section>
+
+  <!-- EMERGENCY -->
+  <section id="sos" class="screen" hidden>
+    <h5 style="margin:.5rem 0 0">Emergency</h5>
+    <div class="sos-tabs" id="sostabs"></div>
+    <div id="sosbody"></div>
+    <button class="border round responsive large" style="margin-top:.75rem"><i data-l="locate-fixed"></i><span>Where am I?</span></button>
+    <div class="note">This screen does not alert anyone. It helps you call and shows what to do.</div>
+  </section>
+</main>
+
+<nav class="bottom">
+  <a data-go="home" class="active"><i data-s="home"></i><span>Home</span></a>
+  <a data-go="find"><i data-l="map-pin"></i><span>Find</span></a>
+  <a data-go="safe"><i data-l="book-open"></i><span>Safety</span></a>
+  <a data-go="sos"><i data-l="siren"></i><span>Emergency</span></a>
+</nav>
+
+<script src="../vendor/icons.js"></script>
+<script src="../category-icons.js"></script>
+<script>
+// Small extra line icons this mock-up needs (same style as the app's icons).
+const EXTRA = {
+  search: '<svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></g></svg>',
+  chevron: '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  home: '<svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></g></svg>',
+  moon: '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+  sun: '<svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>'
+};
+const CATS = ["Lecture Theatres","Faculties","Hostels","Libraries","Administration","Essential Services","Gates","Food & Shops","Sports"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tr = o => typeof o === 'string' ? o : (o && o.en) || '';
+const fillIcons = (root = document) => {
+  root.querySelectorAll('[data-l]').forEach(e => { e.innerHTML = I(e.dataset.l); });
+  root.querySelectorAll('[data-s]').forEach(e => { e.innerHTML = EXTRA[e.dataset.s]; });
+};
+let places = [], cat = '';
+
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== id; });
+  document.querySelectorAll('nav.bottom a').forEach(a => a.classList.toggle('active', a.dataset.go === id));
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('[data-go]').forEach(b => { b.onclick = e => { e.preventDefault(); go(b.dataset.go); }; });
+
+function results() {
+  const q = $('q').value.trim().toLowerCase();
+  const list = places.filter(p => (!cat || p.category === cat) && (!q || [p.name, ...(p.aliases || [])].some(x => x.toLowerCase().includes(q))))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  $('results').innerHTML = list.map(p => '<li><span class="avatar">' + M(p.category) + '</span><div class="max"><h6 class="small" style="margin:0">' + esc(p.name) +
+    '</h6><div>' + esc(tr(p.landmark)) + '</div></div><i data-s="chevron"></i></li>').join('') || '<li><div class="max">No places found. Try a nickname.</div></li>';
+  fillIcons($('results'));
+  $('chips').querySelectorAll('.chip').forEach(c => c.classList.toggle('fill', c.dataset.c === cat));
+}
+
+async function load() {
+  const [pl, em, ls] = await Promise.all(['places', 'emergency', 'lessons'].map(n => fetch('../data/' + n + '.json').then(r => r.json())));
+  places = pl.filter(p => !p.hidden && p.verified);
+  const used = CATS.filter(c => places.some(p => p.category === c));
+  const count = c => { const n = places.filter(p => p.category === c).length; return n + (n === 1 ? ' place' : ' places'); };
+  $('catgrid').innerHTML = used.map(c => '<div class="s4"><a class="cat" href="#" role="button" data-c="' + esc(c) + '"><span class="avatar">' + M(c) + '</span><b>' + esc(c) +
+    '</b><small>' + count(c) + '</small></a></div>').join('');
+  $('catgrid').querySelectorAll('.cat').forEach(b => { b.onclick = e => { e.preventDefault(); cat = b.dataset.c; go('find'); results(); }; });
+  $('chips').innerHTML = '<button class="chip round" data-c="">All</button>' + used.map(c => '<button class="chip round" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
+  $('chips').querySelectorAll('.chip').forEach(b => { b.onclick = () => { cat = b.dataset.c; results(); }; });
+  $('q').oninput = results;
+  $('homeq').onfocus = () => { go('find'); $('q').focus(); };
+  results();
+  $('lessons').innerHTML = ls.map(l => '<li><span class="avatar"><i data-l="' + esc(l.icon) + '"></i></span><div class="max"><h6 class="small" style="margin:0">' + esc(tr(l.title)) +
+    '</h6><div>' + l.steps.length + ' short steps</div></div><i data-s="chevron"></i></li>').join('');
+  const EICO = {medical: 'heart-pulse', fire: 'flame', security: 'shield-alert'};
+  const showSos = id => {
+    $('sostabs').querySelectorAll('button').forEach(b => { const on = b.dataset.e === id; b.classList.toggle('fill', on); b.classList.toggle('border', !on); });
+    const c = em.categories.find(x => x.id === id);
+    $('sosbody').innerHTML = c.contacts.map(k => k.number
+      ? '<a class="button call" style="background:var(--sos);color:#fff" href="tel:' + esc(k.number) + '"><i data-l="phone"></i><span>' + esc(tr(k.label)) + ': ' + esc(k.number) + '</span></a>'
+      : '<div class="tbc"><i data-l="phone"></i><span>' + esc(tr(k.label)) + ' (number to be confirmed)</span></div>').join('');
+    fillIcons($('sosbody'));
+  };
+  $('sostabs').innerHTML = em.categories.map(c => '<button class="border" data-e="' + c.id + '"><i data-l="' + EICO[c.id] + '"></i><span>' + esc(tr(c.label)) + '</span></button>').join('');
+  $('sostabs').querySelectorAll('button').forEach(b => { b.onclick = () => showSos(b.dataset.e); });
+  showSos(em.categories[0].id);
+  fillIcons();
+}
+
+// Light / dark: follows the phone, and the moon/sun button switches it for the demo.
+const dark = matchMedia('(prefers-color-scheme: dark)');
+const setMode = d => { document.body.classList.toggle('dark', d); document.body.classList.toggle('light', !d); $('modeico').innerHTML = EXTRA[d ? 'sun' : 'moon']; };
+setMode(dark.matches); dark.onchange = e => setMode(e.matches);
+$('mode').onclick = () => setMode(!document.body.classList.contains('dark'));
+fillIcons();
+load();
+</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/beercss@5.0.3/dist/cdn/beer.min.js"></script>
+</body></html>

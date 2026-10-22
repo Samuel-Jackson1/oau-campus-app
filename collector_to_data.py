@@ -5,7 +5,8 @@
 # Drop EVERY file you receive into the folder. For each phone the program uses only its NEWEST file (a file already holds everything that phone saved),
 # then merges all phones together. If a place appears twice, the newest save wins, but every path walked to or from it is kept.
 # NOTE: data/places.json is rebuilt from the field files every time. Fix mistakes on the phone and re-send, not by editing places.json.
-import base64, datetime, glob, json, os, re, sys
+# At the end it also prints "Shortcuts to walk": close places whose walking route is missing or far too long. Send that list to Field Data.
+import base64, datetime, glob, heapq, json, math, os, re, sys
 args = sys.argv[1:]; out = "."
 if "--out" in args: i = args.index("--out"); out = args[i + 1]; del args[i:i + 2]
 files = []
@@ -79,6 +80,33 @@ for g in groups:
     if g is main: continue
     if len(g) == 1: problems.append(f"{label(next(iter(g)))}: no path to any other place")
     else: problems.append("Not joined to the " + ("Main Gate" if "main_gate" in main else "main") + " paths: " + ", ".join(sorted(label(x) for x in g)) + ". Walk from one of them to a place that is joined, with 'I walked here from' ticked")
+# Shortcuts to walk: two places close together whose walking route (along saved paths only) is missing or more than DETOUR times
+# the straight line. It never adds paths itself: only someone on the ground knows if a real path exists (no fence, building or gutter).
+NEAR_M, DETOUR = 200, 2
+def metres(a, b):
+    la1, lo1, la2, lo2 = map(math.radians, (a["lat"], a["lng"], b["lat"], b["lng"]))
+    h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
+    return 2 * 6371000 * math.asin(math.sqrt(h))
+byid = {p["id"]: p for p in places}
+def route_m(src):  # walking distance from src to every place it can reach, like the app's route finder (Dijkstra)
+    dist, heap = {src: 0.0}, [(0.0, src)]
+    while heap:
+        d, x = heapq.heappop(heap)
+        if d > dist[x]: continue
+        for y in nbr[x]:
+            nd = d + metres(byid[x], byid[y])
+            if nd < dist.get(y, math.inf): dist[y] = nd; heapq.heappush(heap, (nd, y))
+    return dist
+shown = [p for p in places if not p.get("hidden")]
+shortcuts = []
+for i, a in enumerate(shown):
+    dist = None
+    for b in shown[i + 1:]:
+        m = metres(a, b)
+        if m > NEAR_M: continue
+        dist = dist or route_m(a["id"])
+        r = dist.get(b["id"])
+        if r is None or r > DETOUR * m: shortcuts.append((m, a["name"], b["name"], r))
 with open(os.path.join(out, "data", "places.json"), "w", encoding="utf-8") as fh: json.dump(places, fh, ensure_ascii=False, indent=1)
 with open(os.path.join(out, "data", "paths.json"), "w", encoding="utf-8") as fh: json.dump(paths, fh)
 print(f"Wrote {len(places)} places and {len(paths)} paths to {out}")
@@ -92,3 +120,8 @@ if os.path.exists(sw):
         with open(sw, "w", encoding="utf-8", newline="\n") as fh: fh.write(s.replace(m.group(0), f'const CACHE = "{ver}";', 1))
         print("Raised the version in sw.js to", ver, "so phones fetch the new data")
 print("\n".join(["Fix these:"] + problems) if problems else "No problems found.")
+if shortcuts:
+    print(f"\nShortcuts to walk ({len(shortcuts)}): these places are close, but the app has no sensible walking route between them.")
+    print("Walk between each pair once with 'I walked here from' ticked, saving a Bend at every corner:")
+    for m, a, b, r in sorted(shortcuts):
+        print(f"  {a} <-> {b}: {round(m)} m apart, " + ("no route at all" if r is None else f"route now {round(r)} m"))

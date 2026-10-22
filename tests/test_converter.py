@@ -125,6 +125,29 @@ class ConverterTest(unittest.TestCase):
         with open(os.path.join(tmp, "data", "places.json"), encoding="utf-8") as f:
             self.assertIn("keep_me", f.read())
 
+    def test_close_places_with_a_long_route_are_listed_as_shortcuts(self):
+        # A and D are about 73 m apart, but the only walked path goes A -> B -> C -> D, nearly 1 km.
+        items = [place("a", "Place A", 7.5120, 4.5200), place("b", "Place B", 7.5160, 4.5200, "a"),
+                 place("c", "Place C", 7.5160, 4.52066, "b"), place("d", "Place D", 7.5120, 4.52066, "c")]
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["a", "b"], ["b", "c"], ["c", "d"]])])
+        self.assertIn("Shortcuts to walk (1)", out)
+        self.assertIn("Place A <-> Place D: 73 m apart, route now", out)
+        self.assertNotIn("Place B <-> Place C", out)  # directly joined, so not listed
+
+    def test_pairs_joined_through_a_bend_are_not_listed(self):
+        items = [place("a", "Place A", 7.5120, 4.5200), bend("bend_aaaa_1", 1, 7.5120, 4.5204, "a"),
+                 place("d", "Place D", 7.5124, 4.5204, "bend_aaaa_1")]
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["a", "bend_aaaa_1"], ["bend_aaaa_1", "d"]])])
+        self.assertNotIn("Shortcuts to walk", out)
+
+    def test_close_places_with_no_route_are_listed_and_far_ones_are_not(self):
+        items = [place("a", "Place A", 7.5120, 4.5200), place("near", "Near Place", 7.5125, 4.5200),
+                 place("far", "Far Place", 7.5200, 4.5200)]
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [])])
+        self.assertIn("Place A <-> Near Place: 56 m apart, no route at all", out)
+        self.assertNotIn("Far Place <->", out)
+        self.assertNotIn("<-> Far Place", out)
+
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "bank"]])])

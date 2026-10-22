@@ -1,5 +1,5 @@
 # Turns the files sent from collect.html into the app's data files and photos.
-# Put ALL the received field-*.json files in one folder (example: field-files), then run from the app folder:
+# Put ALL the received field-*.txt files (older Collector versions sent field-*.json; both work) in one folder (example: field-files), then run from the app folder:
 #     python collector_to_data.py field-files --out .
 # Writes data/places.json, data/paths.json and images/places/*, raises the version in sw.js, and lists anything to fix.
 # Drop EVERY file you receive into the folder. For each phone the program uses only its NEWEST file (a file already holds everything that phone saved),
@@ -10,15 +10,20 @@ args = sys.argv[1:]; out = "."
 if "--out" in args: i = args.index("--out"); out = args[i + 1]; del args[i:i + 2]
 files = []
 for a in args:
-    files += sorted(glob.glob(os.path.join(a, "*.json"))) if os.path.isdir(a) else sorted(glob.glob(a))
+    files += sorted(glob.glob(os.path.join(a, "*.json")) + glob.glob(os.path.join(a, "*.txt"))) if os.path.isdir(a) else sorted(glob.glob(a))
 if not files: sys.exit("No field files found. Example: python collector_to_data.py field-files --out .")
 print("Reading", len(files), "file(s):", ", ".join(os.path.basename(f) for f in files))
 CATS = {"Lecture Theatres","Faculties","Hostels","Libraries","Administration","Essential Services","Gates","Food & Shops","Sports"}
 items, links, problems = {}, [], []
 loaded = []
 for f in files:
-    with open(f, encoding="utf-8") as fh: d = json.load(fh)
+    try:
+        with open(f, encoding="utf-8-sig") as fh: d = json.load(fh)
+        if not isinstance(d, dict) or not isinstance(d.get("items"), list): raise ValueError("no 'items' list")
+    except (ValueError, UnicodeDecodeError) as e:
+        print("Skipping", os.path.basename(f), "- not a Field Collector file:", e); continue
     loaded.append((d.get("device") or os.path.basename(f), d.get("exportedAt") or datetime.datetime.fromtimestamp(os.path.getmtime(f)).isoformat(), f, d))
+if not loaded: sys.exit("None of the files is a Field Collector file, so nothing was changed.")
 newest = {}
 for dev, at, f, d in loaded:
     if dev not in newest or at > newest[dev][0]: newest[dev] = (at, f, d, dev)

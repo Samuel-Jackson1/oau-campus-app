@@ -100,6 +100,31 @@ class ConverterTest(unittest.TestCase):
         with open(os.path.join(self.tmp, "sw.js"), encoding="utf-8") as f:
             self.assertIn('const CACHE = "oau-navigator-v8";', f.read())
 
+    def test_txt_files_from_the_new_collector_are_read_and_other_files_skipped(self):
+        tmp = tempfile.mkdtemp(); os.makedirs(os.path.join(tmp, "field"))
+        body = {"by": "t", "device": "aaaa", "exportedAt": "2026-10-22T09:00:00Z",
+                "items": [place("main_gate", "Main Gate", 7.512, 4.520)], "links": []}
+        with open(os.path.join(tmp, "field", "field-t-aaaa.txt"), "w", encoding="utf-8") as f:
+            json.dump(body, f)
+        with open(os.path.join(tmp, "field", "notes.txt"), "w", encoding="utf-8") as f:
+            f.write("walk the hostels on Friday")
+        res = subprocess.run([sys.executable, CONVERTER, os.path.join(tmp, "field"), "--out", tmp], capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertIn("Skipping notes.txt", res.stdout)
+        with open(os.path.join(tmp, "data", "places.json"), encoding="utf-8") as f:
+            self.assertEqual([p["id"] for p in json.load(f)], ["main_gate"])
+
+    def test_nothing_is_overwritten_when_no_file_is_a_field_file(self):
+        tmp = tempfile.mkdtemp(); os.makedirs(os.path.join(tmp, "field")); os.makedirs(os.path.join(tmp, "data"))
+        with open(os.path.join(tmp, "field", "notes.txt"), "w", encoding="utf-8") as f:
+            f.write("not field data")
+        with open(os.path.join(tmp, "data", "places.json"), "w", encoding="utf-8") as f:
+            f.write('[{"id": "keep_me"}]')
+        res = subprocess.run([sys.executable, CONVERTER, os.path.join(tmp, "field"), "--out", tmp], capture_output=True, text=True, encoding="utf-8")
+        self.assertNotEqual(res.returncode, 0)
+        with open(os.path.join(tmp, "data", "places.json"), encoding="utf-8") as f:
+            self.assertIn("keep_me", f.read())
+
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "bank"]])])

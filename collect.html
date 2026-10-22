@@ -14,6 +14,7 @@ li{margin:.5rem 0}li button{min-height:36px;padding:0 .6rem;margin-left:.4rem}
 </style></head><body>
 <h1>Field Collector</h1>
 <p>Stand at the place. Fill the boxes. Tap <b>Save here</b>. The phone records the position for you. You never type coordinates.</p>
+<p id="inapp" class="bad" hidden>You opened this inside another app. Tap the menu (&#8942;) and choose <b>Open in Chrome</b> or <b>Open in Safari</b>, so location and sending work.</p>
 <noscript><p>Please open this page in Chrome or Safari.</p></noscript>
 <label for="by">Your name <small>(optional)</small></label><input id="by" placeholder="Ada">
 <label>What are you saving?</label>
@@ -88,9 +89,19 @@ $("save").onclick = () => {
 };
 $("send").onclick = async () => {
   if (!items.length) return say("Nothing saved yet.", 1);
-  const file = new File([JSON.stringify({by: $("by").value, device: dev, exportedAt: new Date().toISOString(), items, links})], "field-" + (slug($("by").value) || "phone") + "-" + dev + ".json", {type: "application/json"});
-  try { if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], title: "Field data"}); return; } } catch (e) { return; }
-  const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; a.click(); say("File downloaded. Send it to the group chat.");
+  // Sent as a .txt file: phones only let web pages share certain file types, and .json is not one of them (.txt is).
+  // The converter reads .txt and .json field files the same way.
+  const file = new File([JSON.stringify({by: $("by").value, device: dev, exportedAt: new Date().toISOString(), items, links})], "field-" + (slug($("by").value) || "phone") + "-" + dev + ".txt", {type: "text/plain"});
+  let shareProblem = "";
+  if (navigator.canShare && navigator.canShare({files: [file]})) {
+    try { await navigator.share({files: [file], title: "Field data"}); say("Shared. Check it arrived in the group chat."); return; }
+    catch (e) { if (e.name === "AbortError") return say("Sharing cancelled. Tap Send to the group again when ready.", 1); shareProblem = " (sharing did not open: " + e.name + ")"; }
+  }
+  try { const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
+  catch (e) { return say("This browser cannot send the file. Open this page in Chrome or Safari (not inside WhatsApp) and try again. Your saved places are kept.", 1); }
+  say("File saved to Downloads as " + file.name + shareProblem + ". Open WhatsApp, tap the paperclip, choose Document, and send that file. If nothing was saved, open this page in Chrome or Safari (not inside WhatsApp).");
 };
+// Built-in browsers inside other apps (WhatsApp, Facebook, Instagram) often block downloads and sharing.
+$("inapp").hidden = !/WhatsApp|FBAN|FBAV|Instagram|; wv\)/i.test(navigator.userAgent);
 draw();
 </script></body></html>

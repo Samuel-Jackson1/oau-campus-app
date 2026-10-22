@@ -31,6 +31,11 @@ Route lines on the map, voice and audio clips, live arrow or tracking, text/shar
 - data/places.json is rebuilt from the field files on every run: fix mistakes on the phone and re-send, not by editing places.json.
 - Tests: npm test (route.js + the data in data/, and the converter).
 
+## Category icons (v9)
+- The group's own set (concepts by Timi, Front End), redrawn as single-colour line icons: icons/categories/*.svg.
+- No circle and no text inside the icon: the app draws the circle and shows the name in the chosen language.
+- To change one: edit its SVG, run npm run icons (rebuilds category-icons.js), raise the sw.js version.
+
 ## Rules
 - After ANY change, raise the version number at the top of sw.js.
 - Category names are fixed: Lecture Theatres, Faculties, Hostels, Libraries, Administration, Essential Services, Gates, Food & Shops, Sports. Icons and translations depend on the spelling.

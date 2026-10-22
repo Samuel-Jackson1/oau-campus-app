@@ -94,3 +94,7 @@ button:disabled{opacity:.35}
 #all[aria-pressed="true"]{background:var(--green);color:#fff}#all svg{width:26px;height:26px}
 .embla{overflow:hidden}.embla__container{display:flex}.embla__slide{flex:0 0 100%;min-width:0;text-align:center}
 .row3{grid-template-columns:1fr 1fr}#waimsg{margin:.6rem 0;font-weight:700}#waimsg select{margin-top:.4rem}
+/* "hidden" must always win over display rules (the empty category pill showed under the search box) */
+[hidden]{display:none!important}
+/* Dark mode: category icons in the same light green as the dark-mode buttons, so they stand out from the dark circle */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mk{color:#7fd1a8}}

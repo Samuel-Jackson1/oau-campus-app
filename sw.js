@@ -1,13 +1,13 @@
 // sw.js: the offline helper ("service worker").
 // RULE: every time you change ANY file, change the number below (v1 -> v2 -> v3).
 // That tells phones to throw away the old saved copy and fetch the new one.
-const CACHE = "oau-navigator-v8";
+const CACHE = "oau-navigator-v9";
 
 const CORE = [
   "./", "index.html", "style.css", "route.js", "app.js", "manifest.webmanifest",
   "data/places.json", "data/paths.json", "data/emergency.json", "data/lessons.json", "collect.html",
   "icons/icon-192.png", "icons/icon-512.png",
-  "vendor/leaflet.js", "vendor/leaflet.css", "vendor/fonts.css", "vendor/icons.js"
+  "vendor/leaflet.js", "vendor/leaflet.css", "vendor/fonts.css", "vendor/icons.js", "category-icons.js"
 ];
 
 self.addEventListener("install", e => {

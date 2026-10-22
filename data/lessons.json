@@ -1,0 +1,178 @@
+[
+{
+"id": "fire",
+"icon": "flame",
+"title": {
+"en": "Fire",
+"yo": "Iná",
+"pcm": "Fire"
+},
+"reviewer": "Campus fire service",
+"steps": [
+{
+"icon": "bell-ring",
+"text": {
+"en": "Shout \"Fire!\" and raise the alarm.",
+"yo": "Pariwo \"Iná!\" kí o sì ké ìkìlọ̀.",
+"pcm": "Shout \"Fire!\" and raise alarm."
+}
+},
+{
+"icon": "door-open",
+"text": {
+"en": "Leave at once. Do not collect your things.",
+"yo": "Jáde lẹ́sẹ̀kẹsẹ̀. Má ṣe kó ẹrù rẹ.",
+"pcm": "Comot sharp sharp. No carry your load."
+}
+},
+{
+"icon": "arrow-down",
+"text": {
+"en": "Stay low if there is smoke. Use the stairs, not the lift.",
+"yo": "Wólẹ̀ tí èéfín bá wà. Lo àtẹ̀gùn, má lo lifiti.",
+"pcm": "Bend low if smoke dey. Use stairs, no use lift."
+}
+},
+{
+"icon": "phone",
+"text": {
+"en": "Go to open ground away from the building. Call 112. Never go back inside.",
+"yo": "Lọ sí ibi gbangba tó jìnnà sí ilé. Pe 112. Má padà sínú ilé.",
+"pcm": "Go open place wey far from house. Call 112. No go back inside."
+}
+}
+]
+},
+{
+"id": "medical",
+"icon": "heart-pulse",
+"title": {
+"en": "Sickness or injury",
+"yo": "Àìsàn tàbí ọgbẹ́",
+"pcm": "Sickness or injury"
+},
+"reviewer": "Health Centre",
+"steps": [
+{
+"icon": "shield-check",
+"text": {
+"en": "Make sure the place is safe for you.",
+"yo": "Rí i dájú pé ibẹ̀ kò séwu fún ọ.",
+"pcm": "Make sure say the place safe for you."
+}
+},
+{
+"icon": "phone",
+"text": {
+"en": "Call for help right away: 112 or the Health Centre.",
+"yo": "Pe ìrànwọ́ lẹ́sẹ̀kẹsẹ̀: 112 tàbí Ilé ìtọ́jú ìlera.",
+"pcm": "Call help sharp sharp: 112 or Health Centre."
+}
+},
+{
+"icon": "users",
+"text": {
+"en": "Stay with the person. Do not move them if they may have a neck or back injury.",
+"yo": "Dúró ti ẹni náà. Má ṣe gbé e tí ọrùn tàbí ẹ̀yìn rẹ̀ bá lè ti farapa.",
+"pcm": "Stay with the person. No move am if e fit get neck or back injury."
+}
+},
+{
+"icon": "map-pin",
+"text": {
+"en": "Tell the helpers exactly where you are.",
+"yo": "Sọ ibi tí ẹ wà fún àwọn olùrànlọ́wọ́ ní pàtó.",
+"pcm": "Tell helpers exactly where una dey."
+}
+}
+]
+},
+{
+"id": "danger",
+"icon": "shield-alert",
+"title": {
+"en": "Danger to you",
+"yo": "Ewu sí ààbò rẹ",
+"pcm": "Danger to you"
+},
+"reviewer": "Campus security",
+"steps": [
+{
+"icon": "users",
+"text": {
+"en": "Move to a place with many people and light.",
+"yo": "Lọ sí ibi tí ọ̀pọ̀ èèyàn àti ìmọ́lẹ̀ wà.",
+"pcm": "Go where plenty people and light dey."
+}
+},
+{
+"icon": "hand",
+"text": {
+"en": "Do not argue or fight. Keep your distance.",
+"yo": "Má jà, má sì bá wọn ṣe àríyànjiyàn. Jìnnà sí wọn.",
+"pcm": "No quarrel, no fight. Stay far."
+}
+},
+{
+"icon": "phone",
+"text": {
+"en": "Call or text campus security. Tell someone you trust.",
+"yo": "Pe tàbí fi ọ̀rọ̀ ránṣẹ́ sí ààbò ogba. Sọ fún ẹni tí o fọkàn tán.",
+"pcm": "Call or text campus security. Tell person wey you trust."
+}
+},
+{
+"icon": "pencil",
+"text": {
+"en": "Write down what happened as soon as you can.",
+"yo": "Kọ ohun tó ṣẹlẹ̀ sílẹ̀ ní kété tí o bá lè ṣe é.",
+"pcm": "Write wetin happen as soon as you fit."
+}
+}
+]
+},
+{
+"id": "theft",
+"icon": "eye",
+"title": {
+"en": "Thief",
+"yo": "Olè jíjà",
+"pcm": "Thief"
+},
+"reviewer": "Campus security",
+"steps": [
+{
+"icon": "shield-check",
+"text": {
+"en": "Your safety comes first. Do not fight for your things.",
+"yo": "Ààbò rẹ ló ṣe pàtàkì jù. Má jà fún ẹrù rẹ.",
+"pcm": "Your safety first. No fight for your things."
+}
+},
+{
+"icon": "eye",
+"text": {
+"en": "Remember how the person looked and where they went.",
+"yo": "Ṣàkíyèsí bí ẹni náà ṣe rí àti ibi tó lọ.",
+"pcm": "Remember how the person look and where e go."
+}
+},
+{
+"icon": "phone",
+"text": {
+"en": "Tell campus security right away.",
+"yo": "Sọ fún ààbò ogba lẹ́sẹ̀kẹsẹ̀.",
+"pcm": "Tell campus security sharp sharp."
+}
+},
+{
+"icon": "credit-card",
+"text": {
+"en": "Block your bank cards and SIM if they were taken.",
+"yo": "Dá káàdì báńkì àti SIM rẹ dúró tí wọ́n bá gbà wọ́n.",
+"pcm": "Block your bank card and SIM if dem carry am."
+}
+}
+]
+}
+]

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Field Collector</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0 auto;padding:1rem;max-width:34rem;line-height:1.4;font-size:18px;color:#14231b}
+h1{font-size:1.2rem;background:#0b5d3b;color:#fff;margin:-1rem -1rem 1rem;padding:.8rem 1rem}
+label{display:block;margin:.8rem 0 .2rem;font-weight:700}small{font-weight:400;opacity:.7}
+input,select{width:100%;min-height:48px;font:inherit;padding:0 .6rem;border:2px solid #14231b;border-radius:10px;box-sizing:border-box}
+button{font:inherit;min-height:52px;border-radius:10px;border:2px solid #0b5d3b;background:#fff;color:#0b5d3b;font-weight:700;padding:0 1rem}
+.big{width:100%;background:#0b5d3b;color:#fff;margin-top:1rem;min-height:60px}
+.kinds{display:flex;gap:.4rem}.kinds button{flex:1}.kinds button[aria-pressed=true]{background:#0b5d3b;color:#fff}
+#msg{min-height:1.5em;font-weight:700;margin-top:.6rem}.bad{color:#b3261e}.ok{color:#0b5d3b}
+.chk{display:flex;gap:.6rem;align-items:center}.chk input{width:28px;min-height:28px}
+li{margin:.5rem 0}li button{min-height:36px;padding:0 .6rem;margin-left:.4rem}
+</style></head><body>
+<h1>Field Collector</h1>
+<p>Stand at the place. Fill the boxes. Tap <b>Save here</b>. The phone records the position for you. You never type coordinates.</p>
+<noscript><p>Please open this page in Chrome or Safari.</p></noscript>
+<label for="by">Your name <small>(optional)</small></label><input id="by" placeholder="Ada">
+<label>What are you saving?</label>
+<div class="kinds" id="kinds"><button data-k="Place" aria-pressed="true">Place</button><button data-k="Landmark" aria-pressed="false">Landmark</button><button data-k="Bend" aria-pressed="false">Bend</button></div>
+<p><small>Place = a destination. Landmark = something you pass (kiosk, canteen, Coke House). Bend = a corner in the path (no name needed).</small></p>
+<div id="fields">
+<label for="name">Official name</label><input id="name" list="names" autocomplete="off"><datalist id="names"></datalist>
+<label for="cat">Category</label><select id="cat"></select>
+<label for="nick">What do students call it? <small>(nicknames, with commas)</small></label><input id="nick">
+<label for="land">Nearby landmark <small>(one short line)</small></label><input id="land">
+<label for="desc">One sentence about it</label><input id="desc">
+<label for="photo">Photo of the entrance</label><input id="photo" type="file" accept="image/*" capture="environment">
+<label class="chk"><input id="unsure" type="checkbox"> <span>I am not sure about this one <small>(it stays hidden in the app until someone re-checks it)</small></span></label>
+</div>
+<label class="chk"><input id="link" type="checkbox" checked> <span>I walked here from: <b id="prev">(nothing saved yet)</b></span></label>
+<button class="big" id="save">Save here</button><div id="msg" role="status"></div>
+<h2>Saved: <span id="n">0</span></h2><ol id="list"></ol>
+<button id="send" class="big">Send to the group</button>
+<script>
+const CATS = ["Lecture Theatres","Faculties","Hostels","Libraries","Administration","Essential Services","Gates","Food & Shops","Sports"];
+const $ = id => document.getElementById(id), mem = {};
+const store = {get: k => { try { return localStorage.getItem(k); } catch (e) { return mem[k] || null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { mem[k] = v; } }};
+const dev = store.get("dev") || (() => { const c = Math.random().toString(36).slice(2, 6); store.set("dev", c); return c; })(); // this phone's code, made once, no typing
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+let kind = "Place", photoData = "", warned = false, items = [], links = [];
+try { items = JSON.parse(store.get("items") || "[]"); } catch (e) { items = []; }
+// Walked paths are kept in their own list, so saving a place again (to branch off from it) never erases how you reached it before.
+// Phones that saved before this list existed get it rebuilt from their old "linkTo" values.
+try { links = JSON.parse(store.get("links") || "null") || items.filter(i => i.linkTo).map(i => [i.linkTo, i.id]); } catch (e) { links = []; }
+const saveAll = () => { store.set("items", JSON.stringify(items)); store.set("links", JSON.stringify(links)); };
+// Bends get an id that includes this phone's code, so "Bend 1" on two phones are never mixed up. Numbers never repeat, even after a delete.
+const nextBend = () => { const n = Math.max(+store.get("bendSeq") || 0, ...items.filter(i => i.kind === "Bend").map(i => +i.name.split(" ")[1] || 0)) + 1; store.set("bendSeq", n); return n; };
+$("cat").innerHTML = CATS.map(c => "<option>" + c + "</option>").join(""); $("by").value = store.get("by") || "";
+try { fetch("data/places.json").then(r => r.json()).then(p => { $("names").innerHTML = p.filter(x => !x.hidden).map(x => '<option value="' + x.name + '">').join(""); }).catch(() => {}); } catch (e) {} // optional: suggests names from the app data
+const say = (t, bad) => { $("msg").textContent = t; $("msg").className = bad ? "bad" : "ok"; };
+function draw() {
+  $("n").textContent = items.length; $("prev").textContent = items.length ? items[items.length - 1].name : "(nothing saved yet)";
+  $("list").innerHTML = items.map((it, i) => "<li>" + it.name + " <small>" + it.kind + ", within " + it.acc + " m" + (it.unsure ? ", not sure" : "") + "</small><button data-i=\"" + i + "\">Delete</button></li>").join("");
+  $("list").querySelectorAll("button").forEach(b => { b.onclick = () => { const gone = items.splice(+b.dataset.i, 1)[0]; links = links.filter(l => !l.includes(gone.id)); saveAll(); draw(); }; });
+}
+document.querySelectorAll("#kinds button").forEach(b => { b.onclick = () => { kind = b.dataset.k; document.querySelectorAll("#kinds button").forEach(x => x.setAttribute("aria-pressed", x === b)); $("fields").hidden = kind === "Bend"; }; });
+$("photo").onchange = e => {
+  const f = e.target.files[0]; if (!f) return; const r = new FileReader();
+  r.onload = () => { const img = new Image();
+    img.onload = () => { try { const c = document.createElement("canvas"); c.width = 640; c.height = 360; const x = c.getContext("2d"), s = Math.max(640 / img.width, 360 / img.height);
+      x.drawImage(img, (640 - img.width * s) / 2, (360 - img.height * s) / 2, img.width * s, img.height * s);
+      photoData = c.toDataURL("image/webp", 0.7); if (photoData.indexOf("data:image/webp") !== 0) photoData = c.toDataURL("image/jpeg", 0.7); } catch (err) { photoData = r.result; } say("Photo ready."); };
+    img.onerror = () => { photoData = r.result; say("Photo ready."); }; img.src = r.result; };
+  r.readAsDataURL(f);
+};
+$("save").onclick = () => {
+  store.set("by", $("by").value);
+  const typed = $("name").value.trim();
+  if (kind !== "Bend" && !typed) return say("Type the official name first.", 1);
+  if (kind === "Place" && !photoData) return say("Take a photo of the entrance first.", 1);
+  if (!navigator.geolocation) return say("This browser cannot get your position. Try Chrome or Safari.", 1);
+  say("Getting your position... stand still.");
+  navigator.geolocation.getCurrentPosition(pos => {
+    const acc = Math.round(pos.coords.accuracy);
+    if (acc > 40 && !warned) { warned = true; return say("Position is only good to " + acc + " m. Move to open sky and tap Save again. Tap once more to keep it anyway.", 1); }
+    warned = false;
+    const n = kind === "Bend" ? nextBend() : 0, name = kind === "Bend" ? "Bend " + n : typed;
+    const prevId = $("link").checked && items.length ? items[items.length - 1].id : "";
+    const it = {id: kind === "Bend" ? "bend_" + dev + "_" + n : slug(name), name, kind, by: $("by").value, lat: pos.coords.latitude, lng: pos.coords.longitude, acc, photo: photoData, linkTo: prevId};
+    if (kind !== "Bend") Object.assign(it, {category: $("cat").value, aliases: $("nick").value, landmark: $("land").value.trim(), description: $("desc").value.trim(), unsure: $("unsure").checked});
+    const old = items.findIndex(x => x.id === it.id); if (old >= 0) items.splice(old, 1);
+    if (prevId && prevId !== it.id && !links.some(([a, b]) => (a === prevId && b === it.id) || (a === it.id && b === prevId))) links.push([prevId, it.id]);
+    items.push(it); saveAll();
+    ["name", "nick", "land", "desc", "photo"].forEach(k => { $(k).value = ""; }); $("unsure").checked = false; photoData = ""; draw();
+    say((old >= 0 ? "Updated " + name + " (its earlier paths are kept)." : "Saved " + name + ".") + " Walk to the next one.");
+  }, err => say(err.code === 1 ? "Location is blocked. Allow location for this page in your browser settings, then try again." : "Could not get a position. Go outside, wait, and try again.", 1), {enableHighAccuracy: true, timeout: 25000, maximumAge: 0});
+};
+$("send").onclick = async () => {
+  if (!items.length) return say("Nothing saved yet.", 1);
+  const file = new File([JSON.stringify({by: $("by").value, device: dev, exportedAt: new Date().toISOString(), items, links})], "field-" + (slug($("by").value) || "phone") + "-" + dev + ".json", {type: "application/json"});
+  try { if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], title: "Field data"}); return; } } catch (e) { return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; a.click(); say("File downloaded. Send it to the group chat.");
+};
+draw();
+</script></body></html>

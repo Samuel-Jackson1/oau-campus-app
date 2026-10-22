@@ -1,0 +1,261 @@
+[
+{
+"id": "main_gate",
+"name": "Main Gate",
+"category": "Gates",
+"aliases": [
+"gate",
+"front gate"
+],
+"landmark": {
+"en": "Main road entrance",
+"yo": "Ẹnu ọ̀nà ojú ọ̀nà ńlá",
+"pcm": "Entrance for main road"
+},
+"verified": true,
+"lat": 7.512,
+"lng": 4.52,
+"sample": true
+},
+{
+"id": "bus_stop",
+"name": "Bus Stop",
+"category": "Gates",
+"aliases": [
+"park"
+],
+"landmark": {
+"en": "Just inside the gate",
+"yo": "Lẹ́yìn ẹnu ọ̀nà díẹ̀",
+"pcm": "Just inside the gate"
+},
+"verified": true,
+"lat": 7.513,
+"lng": 4.5215,
+"sample": true
+},
+{
+"id": "health_centre",
+"name": "Health Centre",
+"category": "Essential Services",
+"aliases": [
+"clinic",
+"hospital"
+],
+"landmark": {
+"en": "Left of the Main Gate",
+"yo": "Ní ọwọ́ òsì ẹnu ọ̀nà ńlá",
+"pcm": "Left side of Main Gate"
+},
+"verified": true,
+"lat": 7.514,
+"lng": 4.519,
+"sample": true
+},
+{
+"id": "j_library",
+"name": "Junction",
+"hidden": true,
+"verified": true,
+"lat": 7.5152,
+"lng": 4.5225,
+"sample": true
+},
+{
+"id": "library",
+"name": "Library",
+"category": "Libraries",
+"aliases": [
+"lib",
+"reading room"
+],
+"landmark": {
+"en": "Beside the main walkway",
+"yo": "Ní ẹ̀gbẹ́ ọ̀nà ìrìn ńlá",
+"pcm": "Beside the main walkway"
+},
+"verified": true,
+"lat": 7.517,
+"lng": 4.5235,
+"sample": true
+},
+{
+"id": "senate_building",
+"name": "Senate Building",
+"category": "Administration",
+"aliases": [
+"senate",
+"admin"
+],
+"landmark": {
+"en": "Facing Senate Square",
+"yo": "Ní iwájú Senate Square",
+"pcm": "Front of Senate Square"
+},
+"verified": true,
+"lat": 7.5185,
+"lng": 4.5245,
+"sample": true
+},
+{
+"id": "amphitheatre",
+"name": "Amphitheatre",
+"category": "Lecture Theatres",
+"aliases": [
+"amphi"
+],
+"landmark": {
+"en": "Near Senate Square",
+"yo": "Nítòsí Senate Square",
+"pcm": "Near Senate Square"
+},
+"verified": true,
+"lat": 7.5175,
+"lng": 4.526,
+"sample": true
+},
+{
+"id": "motion_ground",
+"name": "Motion Ground",
+"category": "Sports",
+"aliases": [
+"motion"
+],
+"landmark": {
+"en": "Behind the Senate Building",
+"yo": "Lẹ́yìn Senate Building",
+"pcm": "Behind Senate Building"
+},
+"verified": true,
+"lat": 7.5195,
+"lng": 4.5265,
+"sample": true
+},
+{
+"id": "lt_one",
+"name": "Lecture Theatre One (sample)",
+"category": "Lecture Theatres",
+"aliases": [
+"lt1",
+"lt 1"
+],
+"landmark": {
+"en": "Next to Spider Building",
+"yo": "Lẹ́gbẹ̀ẹ́ Spider Building",
+"pcm": "Beside Spider Building"
+},
+"verified": true,
+"lat": 7.5205,
+"lng": 4.5232,
+"sample": true
+},
+{
+"id": "spider_building",
+"name": "Spider Building",
+"category": "Faculties",
+"aliases": [
+"technology",
+"tech faculty"
+],
+"landmark": {
+"en": "Past the Library",
+"yo": "Lẹ́yìn Ibi ìkàwé",
+"pcm": "After the Library"
+},
+"verified": true,
+"lat": 7.52,
+"lng": 4.5225,
+"sample": true
+},
+{
+"id": "white_house",
+"name": "White House",
+"category": "Faculties",
+"aliases": [
+"science"
+],
+"landmark": {
+"en": "Behind the Spider Building",
+"yo": "Lẹ́yìn Spider Building",
+"pcm": "Behind Spider Building"
+},
+"verified": true,
+"lat": 7.521,
+"lng": 4.524,
+"sample": true
+},
+{
+"id": "awolowo_hall",
+"name": "Awolowo Hall",
+"category": "Hostels",
+"aliases": [
+"awo hall"
+],
+"landmark": {
+"en": "Past the Amphitheatre",
+"yo": "Lẹ́yìn Amphitheatre",
+"pcm": "After the Amphitheatre"
+},
+"verified": true,
+"lat": 7.516,
+"lng": 4.5275,
+"sample": true
+},
+{
+"id": "coke_house",
+"name": "Coke House",
+"category": "Food & Shops",
+"kind": "landmark",
+"aliases": [
+"coke",
+"drinks"
+],
+"landmark": {
+"en": "Red kiosk on the left",
+"yo": "Ilé ìtajà pupa ní ọwọ́ òsì",
+"pcm": "Red kiosk for left side"
+},
+"verified": true,
+"lat": 7.5141,
+"lng": 4.5221,
+"sample": true
+},
+{
+"id": "canteen",
+"name": "Canteen",
+"category": "Food & Shops",
+"kind": "landmark",
+"aliases": [
+"cafeteria",
+"food"
+],
+"landmark": {
+"en": "Food place before the Spider Building",
+"yo": "Ibi oúnjẹ ṣáájú Spider Building",
+"pcm": "Food place before Spider Building"
+},
+"verified": true,
+"lat": 7.5186,
+"lng": 4.523,
+"sample": true
+},
+{
+"id": "kiosk",
+"name": "Campus Kiosk",
+"category": "Food & Shops",
+"kind": "landmark",
+"aliases": [
+"shop",
+"store"
+],
+"landmark": {
+"en": "Small shop near the Amphitheatre",
+"yo": "Ṣọ́ọ̀bù kékeré nítòsí Amphitheatre",
+"pcm": "Small shop near Amphitheatre"
+},
+"verified": true,
+"lat": 7.5168,
+"lng": 4.5268,
+"sample": true
+}
+]

@@ -175,7 +175,7 @@ async function load() {
     $('sostabs').querySelectorAll('button').forEach(b => { const on = b.dataset.e === id; b.classList.toggle('fill', on); b.classList.toggle('border', !on); });
     const c = em.categories.find(x => x.id === id);
     $('sosbody').innerHTML = c.contacts.map(k => k.number
-      ? '<a class="button call" style="background:var(--sos);color:#fff" href="tel:' + esc(k.number) + '"><i data-l="phone"></i><span>' + esc(tr(k.label)) + ': ' + esc(k.number) + '</span></a>'
+      ? '<a class="button call" style="background:var(--sos);color:#fff" href="tel:' + esc(k.number.replace(/[^\d+]/g, '')) + '"><i data-l="phone"></i><span>' + esc(tr(k.label)) + ': ' + esc(k.number) + '</span></a>'
       : '<div class="tbc"><i data-l="phone"></i><span>' + esc(tr(k.label)) + ' (number to be confirmed)</span></div>').join('');
     fillIcons($('sosbody'));
   };

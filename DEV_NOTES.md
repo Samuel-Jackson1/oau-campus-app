@@ -9,7 +9,7 @@ Route lines on the map, voice and audio clips, live arrow or tracking, text/shar
 ## Simulated now (replace with real data; the yellow DEV bar disappears when no place has "sample": true)
 - data/places.json and data/paths.json: sample places. Real ones come from the Collector (collect.html) through collector_to_data.py.
 - Photos: placeholders until real photos arrive.
-- data/emergency.json: only 112 is filled in. Add campus numbers ONLY after calling each office.
+- data/emergency.json: 112 and the Health Centre (+234 810 747 5862, given directly by the Health Centre team, 2026-10-22) are filled in. Campus fire service and campus security are still "to be confirmed". Add a number ONLY from the office itself, with "source" and "confirmedOn" (npm test checks this). Call every number again on Day 5.
 - data/lessons.json: 4 DRAFT slides. Each must be reviewed by the office named in "reviewer".
 - All Yoruba and Pidgin text is a first draft. Native speakers must check every line.
 

@@ -113,7 +113,7 @@ function ecats() {
   $("ecats").querySelectorAll("button").forEach(b => { b.onclick = () => { ecat = b.dataset.c; ecats(); }; });
   const c = cs.find(x => x.id === ecat), g = c.guidance;
   $("ebody").innerHTML = c.contacts.map(k => k.number
-    ? '<a class="call" href="tel:' + k.number + '">' + I("phone") + " " + tr(k.label) + ": " + k.number + "</a>"
+    ? '<a class="call" href="tel:' + k.number.replace(/[^\d+]/g, "") + '">' + I("phone") + " " + tr(k.label) + ": " + k.number + "</a>"
     : '<span class="tbc">' + tr(k.label) + " (" + t("tbc") + ")</span>").join("") +
     '<button id="wai" class="secondary">' + icon("ic", I("map-pin")) + t("wai") + '</button><p id="waimsg"></p>' +
     (g.reviewed && g.steps.length ? "<ol>" + g.steps.map(s => "<li>" + tr(s) + "</li>").join("") + "</ol>" : '<p class="tbc">' + t("pending") + "</p>");

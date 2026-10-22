@@ -47,3 +47,20 @@ test('every shown place uses one of the nine fixed category names', () => {
   const wrong = places.filter((p) => !p.hidden && !CATS.includes(p.category)).map((p) => `${p.name} (${p.category})`);
   assert.deepEqual(wrong, []);
 });
+
+// A filled-in number becomes a Call button on the Emergency screen, so each one (except the national 112)
+// must say where it came from and when it was confirmed. Empty numbers show "to be confirmed".
+test('every emergency number is well formed and says who confirmed it', () => {
+  const problems = [];
+  for (const c of load('emergency').categories) {
+    for (const k of c.contacts) {
+      if (!k.number) continue;
+      const name = `${c.id}: ${k.label.en}`;
+      if (!/^\+?[\d ]{3,20}$/.test(k.number)) problems.push(`${name}: "${k.number}" should be digits, spaces and an optional +`);
+      if (k.number === '112') continue;
+      if (!k.source) problems.push(`${name}: add "source" (who gave or confirmed the number)`);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(k.confirmedOn ?? '')) problems.push(`${name}: add "confirmedOn" as YYYY-MM-DD`);
+    }
+  }
+  assert.deepEqual(problems, []);
+});

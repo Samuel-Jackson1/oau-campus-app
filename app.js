@@ -7,21 +7,32 @@ const S = {
   en: {find:"Find a place", sos:"Emergency", here:"Use my location", where:"Where are you now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This screen does not alert anyone. It helps you call and shows what to do.",
     nopath:"No walking route saved yet. Landmark:", pending:"Advice not yet confirmed.", tbc:"Number to be confirmed", arrived:"You have arrived",
-    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At"},
+    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark"},
   yo: {find:"Wá ibì kan", sos:"Pàjáwìrì", here:"Lo ibi tí mo wà", where:"Níbo ni o wà báyìí?", listen:"Gbọ́", live:"Ọfà ìtọ́sọ́nà",
     turn:"Yí fóònù rẹ", search:"Wá orúkọ ibì kan...", map:"Wo àwòrán ilẹ̀", note:"Èyí kò ní ránṣẹ́ sí ẹnikẹ́ni. Ó ń ràn ọ́ lọ́wọ́ láti pe ìrànwọ́, ó sì fi ohun tí o máa ṣe hàn ọ́.",
     nopath:"A kò tíì fi ọ̀nà pamọ́. Àmì ibi:", pending:"A kò tíì jẹ́rìí ìmọ̀ràn yìí.", tbc:"A ṣì ń jẹ́rìí nọ́ńbà náà", arrived:"O ti dé",
-    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní"},
+    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn"},
   pcm: {find:"Find place", sos:"Emergency", here:"Use where I dey now", where:"Where you dey now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This one no dey call anybody. E go help you call and show wetin to do.",
     nopath:"We never save road yet. Landmark:", pending:"Dem never confirm this advice.", tbc:"Dem never confirm the number", arrived:"You don reach",
-    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For"}
+    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark"}
 };
 const CAT = {Libraries:{yo:"Ibi ìkàwé",pcm:"Library"}, "Essential Services":{yo:"Àwọn iṣẹ́ pàtàkì",pcm:"Important services"}, Gates:{yo:"Ẹnu ọ̀nà",pcm:"Gate"},
   "Lecture Theatres":{yo:"Gbọ̀ngàn ìkẹ́kọ̀ọ́",pcm:"Lecture hall"}, Faculties:{yo:"Ẹ̀ka ẹ̀kọ́",pcm:"Faculty"}, Administration:{yo:"Ọ́fíìsì ìṣàkóso",pcm:"Admin"},
   Hostels:{yo:"Ilé ibùgbé akẹ́kọ̀ọ́",pcm:"Hostel"}, Sports:{yo:"Eré ìdárayá",pcm:"Sports ground"}, "Food & Shops":{yo:"Oúnjẹ àti ọjà",pcm:"Food and shops"}};
 const EICO = {medical:"heart-pulse", fire:"flame", security:"shield-alert"};
 const $ = id => document.getElementById(id);
+// Light / dark switch: follows the phone until someone taps it, then remembers their choice.
+const SUN = '<svg viewBox="0 0 24 24" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>';
+const MOON = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+const darkNow = () => document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+function applyTheme() {
+  const th = store.get("theme");
+  if (th) document.documentElement.dataset.theme = th; else delete document.documentElement.dataset.theme;
+  $("themebtn").innerHTML = darkNow() ? SUN : MOON;
+}
+applyTheme();
+$("themebtn").onclick = () => { store.set("theme", darkNow() ? "light" : "dark"); applyTheme(); };
 let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = ["home"];
 let lang = store.get("lang"), session = 0, cur = null, route = null, steps = [], si = 0, seq = [];
 let lm, lg, mb;
@@ -54,6 +65,7 @@ function applyLang() {
   document.querySelectorAll("[data-t]").forEach(e => { e.innerHTML = (e.dataset.i ? icon("ic", I(e.dataset.i)) : "") + t(e.dataset.t); });
   $("q").placeholder = t("search"); $("all").setAttribute("aria-label", t("allplaces"));
   $("langbtn").innerHTML = I("globe") + " " + t("langname");
+  $("themebtn").setAttribute("aria-label", t("theme"));
   $("mapbtn").innerHTML = icon("ic", I("map")) + t("map");
   $("devbar").hidden = !places.some(p => p.sample);
   topics(); if (topic && !$("slides").hidden) slide();
@@ -97,17 +109,31 @@ function renderStep(say) {
     : (graph.byId[s.to].kind === "landmark" ? '<small class="lm">' + t("lookfor") + "</small>" : "") + (s.near ? '<small class="lm">' + t("at") + " " + nameOf(s.near) + "</small>" : "") + "<small>" + t(s.turn) + '</small><span class="dest">' + icon("mk", M(graph.byId[s.to].category)) + "<b>" + nameOf(s.to) + "</b></span><small>" + s.meters + " m</small>";
   seq = done ? [{key: "arrive", text: t("arrived")}] : [{key: s.turn, text: t(s.turn)}, {key: s.to, text: nameOf(s.to)}];
 }
+// The map is drawn from our own data, so it works offline: OpenStreetMap roads in grey, footpaths the Field team
+// walked as green dashes, every place as a small dot, then the route on top with pins at both ends and at turn landmarks.
+let proj;
 function map(ids) {
-  if (!lm) { lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 3, zoomSnap: 0.25, attributionControl: false}); lg = L.layerGroup().addTo(lm); }
+  if (!lm) {
+    lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 4, zoomSnap: 0.25, attributionControl: false});
+    let lat0 = Infinity, lng0 = Infinity;
+    places.forEach(p => { lat0 = Math.min(lat0, p.lat); lng0 = Math.min(lng0, p.lng); });
+    const kx = Math.cos(lat0 * Math.PI / 180);
+    proj = p => [(p.lat - lat0) * 1e5, (p.lng - lng0) * kx * 1e5];
+    const roads = [], foot = [];
+    paths.forEach(([a, b]) => { const A = graph.byId[a], B = graph.byId[b]; (A.osm || B.osm ? roads : foot).push([proj(A), proj(B)]); });
+    L.polyline(roads, {className: "mroad", interactive: false}).addTo(lm);
+    L.polyline(foot, {className: "mfoot", interactive: false}).addTo(lm);
+    shown().forEach(p => L.circleMarker(proj(p), {radius: 4, className: "mdot", interactive: false}).addTo(lm));
+    lg = L.layerGroup().addTo(lm);
+  }
   lg.clearLayers(); mb = null; if (!ids) return;
-  const pts = ids.map(i => graph.byId[i]), lat0 = Math.min(...pts.map(p => p.lat)), lng0 = Math.min(...pts.map(p => p.lng));
-  const kx = Math.cos(lat0 * Math.PI / 180), P = p => [(p.lat - lat0) * 1e5, (p.lng - lng0) * kx * 1e5];
-  pts.forEach((p, i) => {
-    const end = i === pts.length - 1, st = i === 0; if (p.hidden && !end && !st) return;
-    const html = '<div class="pin' + (end ? " focus" : st ? "" : " on") + '"><span>' + (st ? I("footprints") : M(p.category)) + "</span><em>" + p.name + "</em></div>";
-    L.marker(P(p), {icon: L.divIcon({className: "", iconSize: null, html})}).addTo(lg);
-  });
-  mb = L.latLngBounds(pts.map(P)).pad(0.25); fit();
+  const pts = ids.map(i => graph.byId[i]);
+  L.polyline(pts.map(proj), {className: "mroute", interactive: false}).addTo(lg);
+  const pin = (p, cls, ico) => L.marker(proj(p), {icon: L.divIcon({className: "", iconSize: null, html: '<div class="pin' + cls + '"><span>' + ico + "</span><em>" + p.name + "</em></div>"})}).addTo(lg);
+  [...new Set(steps.map(s => s.near).filter(Boolean))].forEach(id => pin(graph.byId[id], " on", M(graph.byId[id].category)));
+  pin(pts[0], "", I("footprints"));
+  pin(pts[pts.length - 1], " focus", M(pts[pts.length - 1].category));
+  mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit();
 }
 function fit() { if (lm && mb) { lm.invalidateSize(); if (lm.getSize().x) lm.fitBounds(mb); } }
 function ecats() {

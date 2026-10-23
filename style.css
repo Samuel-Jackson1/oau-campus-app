@@ -138,5 +138,22 @@ input,select{border:0;border-radius:999px;background:var(--card2);padding:0 1.2r
 #dots i.on,#ldots i.on{background:var(--green)}
 .pic img,.ph{border-radius:22px}
 #map{border:0;border-radius:22px}
+/* In-app map drawn from our data: roads, walked footpaths, place dots and the route */
+.leaflet-container{background:var(--card2)}
+.mroad{stroke:#c4cdc6;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mfoot{stroke:#1d7a50;stroke-width:3;stroke-dasharray:6 5;fill:none;stroke-linecap:round}
+.mdot{fill:#6b776f;fill-opacity:1;stroke:#fff;stroke-width:1.5}
+.mroute{stroke:#1d4ed8;stroke-width:7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pin.on span{background:#1d4ed8}
+/* Light/dark switch in the header, same style as the language button */
+#themebtn{display:grid;place-items:center;min-width:44px;min-height:44px;border:0;border-radius:999px;background:rgba(255,255,255,.16);color:#fff}
+/* Dark colours also when the switch (not the phone) chose dark */
+:root[data-theme="dark"] .mk{color:#7fd1a8}
+:root[data-theme="dark"] .grid .mk,:root[data-theme="dark"] .secondary,:root[data-theme="dark"] .lm{color:#8dd6ab}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mroad{stroke:#3a463f} :root:not([data-theme="light"]) .mdot{fill:#a6b2aa;stroke:#101411} :root:not([data-theme="light"]) .mroute{stroke:#6ea8ff} :root:not([data-theme="light"]) .mfoot{stroke:#8dd6ab}}
+:root[data-theme="dark"] .mroad{stroke:#3a463f}
+:root[data-theme="dark"] .mdot{fill:#a6b2aa;stroke:#101411}
+:root[data-theme="dark"] .mroute{stroke:#6ea8ff}
+:root[data-theme="dark"] .mfoot{stroke:#8dd6ab}
 .note{color:var(--muted);opacity:1}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grid .mk{color:#8dd6ab} :root:not([data-theme="light"]) .secondary{color:#8dd6ab} :root:not([data-theme="light"]) .lm{color:#8dd6ab}}

@@ -1,7 +1,8 @@
 // sw.js: the offline helper ("service worker").
 // RULE: every time you change ANY file, change the number below (v1 -> v2 -> v3).
-// That tells phones to throw away the old saved copy and fetch the new one.
-const CACHE = "oau-navigator-v15";
+// That tells phones to throw away the old saved copy and fetch the new one. (Pages, code and data are also checked
+// online first on every open, so updates show up quickly; photos are only refreshed when this number changes.)
+const CACHE = "oau-navigator-v16";
 
 const CORE = [
   "./", "index.html", "style.css", "route.js", "app.js", "manifest.webmanifest",
@@ -43,8 +44,28 @@ async function fromCache(req) {
   });
 }
 
+// Pages, code and data: try the internet first, so everyone sees the newest version (and the newest Collector form)
+// as soon as they open the app online. If there is no internet, or it takes more than 3 seconds, use the saved copy.
+const FRESH_FIRST = /(\/|\.html|\.js|\.css|\.json|\.webmanifest)$/;
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE);
+  try {
+    const res = await Promise.race([fetch(req), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 3000))]);
+    if (res.status === 200) cache.put(req, res.clone());
+    return res;
+  } catch (err) {
+    const hit = await caches.match(req, {ignoreSearch: req.mode === "navigate"});
+    if (hit) return hit;
+    throw err;
+  }
+}
+
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+  if (e.request.mode === "navigate" || FRESH_FIRST.test(url.pathname)) { e.respondWith(networkFirst(e.request)); return; }
+  // Photos, icons, fonts and audio rarely change: saved copy first, internet only if it is missing.
   e.respondWith((async () => {
     const cached = await fromCache(e.request);
     if (cached) return cached;

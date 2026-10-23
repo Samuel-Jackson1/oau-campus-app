@@ -9,10 +9,15 @@ Directory with nicknames, browse by category, place photo slot and landmark, one
 - route.js: faster route finder (heap), turns announced only at junctions and saved bends (not on road curves),
   and each turn names a known place within 80 m ("At Faculty of Pharmacy, turn left"). The step photo shows that place.
 - The directions screen credits OpenStreetMap contributors (ODbL). Yoruba "Ní" and Pidgin "For" for "At" are drafts.
+- In-app map (v16): drawn from our own data, works offline: OpenStreetMap roads (grey), walked footpaths (green dashes),
+  every place as a dot, the route as a blue line, pins at both ends and at turn landmarks.
+- Updates (v16): sw.js checks pages, code and data online first (3 s limit, then the saved copy), so a new version and
+  the newest Collector form show on the next open with internet. Photos stay saved-copy-first.
+- Light/dark switch (v16) in the header: follows the phone until tapped, then remembered.
 - Focus for the presentation: Main Gate to the Faculty of Computing Science and Engineering. Full campus later.
 
 ## NOT in this build (Tier 2 and 3 are parked)
-Route lines on the map, voice and audio clips, live arrow or tracking, text/share/online alerts, responder dashboard, room finder, fresher mode, favourites, closed-path rule, campus notices. Do not add these in Phase 1.
+Voice and audio clips, live arrow or tracking, text/share/online alerts, responder dashboard, room finder, fresher mode, favourites, closed-path rule, campus notices. Do not add these in Phase 1.
 
 ## Simulated now (replace with real data; the yellow DEV bar disappears when no place has "sample": true)
 - data/places.json and data/paths.json: sample places. Real ones come from the Collector (collect.html) through collector_to_data.py.

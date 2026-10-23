@@ -2,7 +2,7 @@
 // RULE: every time you change ANY file, change the number below (v1 -> v2 -> v3).
 // That tells phones to throw away the old saved copy and fetch the new one. (Pages, code and data are also checked
 // online first on every open, so updates show up quickly; photos are only refreshed when this number changes.)
-const CACHE = "oau-navigator-v16";
+const CACHE = "oau-navigator-v17";
 
 const CORE = [
   "./", "index.html", "style.css", "route.js", "app.js", "manifest.webmanifest",
@@ -11,8 +11,10 @@ const CORE = [
   "vendor/leaflet.js", "vendor/leaflet.css", "vendor/fonts.css", "vendor/icons.js", "category-icons.js"
 ];
 
+// GitHub Pages lets browsers keep files for 10 minutes, so every download here says "reload" / "no-cache":
+// otherwise the browser would quietly hand back the OLD file and phones would stay on the old version.
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(u => new Request(u, {cache: "reload"})))));
   self.skipWaiting();
 });
 
@@ -50,7 +52,8 @@ const FRESH_FIRST = /(\/|\.html|\.js|\.css|\.json|\.webmanifest)$/;
 async function networkFirst(req) {
   const cache = await caches.open(CACHE);
   try {
-    const res = await Promise.race([fetch(req), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 3000))]);
+    const fresh = req.mode === "navigate" ? fetch(req.url, {cache: "no-cache", credentials: "same-origin"}) : fetch(req, {cache: "no-cache"});
+    const res = await Promise.race([fresh, new Promise((_, no) => setTimeout(() => no(new Error("slow")), 3000))]);
     if (res.status === 200) cache.put(req, res.clone());
     return res;
   } catch (err) {

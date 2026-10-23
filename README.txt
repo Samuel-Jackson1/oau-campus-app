@@ -25,7 +25,10 @@ Fixing names, categories and duplicates without re-walking (field-fixes.json):
     Two entries under 15 m apart that ARE different places: the converter stops listing them as "possibly the same".
 - "remove": ["my_test_place"]            drops a test entry and its paths.
 - "change": {"faculty_of_pharmacy": {"name": "Faculty of Pharmacy", "category": "Faculties"}}
-    Can set: name, category, aliases (a list), landmark, description, verified (true/false).
+    Can set: name, category, aliases (a list), landmark, description, verified (true/false), and
+    waypoint (true): a named junction, walkway or road. Directions and "Where am I?" use it
+    ("At Road 4 T-Junction, turn left"), but it is not listed as a destination in categories or search.
+- Photos are shrunk to about 60 KB WebP when Pillow is installed (python -m pip install pillow).
 - Fixes are applied on every convert, so they are never lost when new field files arrive.
 - Only labels can be fixed here. Weak GPS, missing paths and bends still need the Field team.
 

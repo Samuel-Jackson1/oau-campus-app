@@ -79,9 +79,30 @@ if os.path.exists(fixes_path):
             if key in ch: it[key] = ch[key]
         if "aliases" in ch: it["aliases"] = ", ".join(ch["aliases"])
         if "verified" in ch: it["unsure"] = not ch["verified"]
+        if "waypoint" in ch: it["waypoint"] = bool(ch["waypoint"])   # named junction/walkway: used in directions, not listed
         done += 1
     print(f"Applied {done} fix(es) from field-fixes.json")
 os.makedirs(os.path.join(out, "data"), exist_ok=True); os.makedirs(os.path.join(out, "images", "places"), exist_ok=True)
+# Photos: the app saves every photo on the phone for offline use, so keep each one small (about 60 KB, 640x360 WebP),
+# like compress_photos.py. Needs Pillow (python -m pip install pillow); without it the photo is kept as sent.
+try:
+    import io
+    from PIL import Image, ImageOps
+except ImportError:
+    Image = None
+    print("Pillow is not installed, so photos are not shrunk. Install it with: python -m pip install pillow")
+def shrink_photo(pid, data_url):
+    raw = base64.b64decode(data_url.split(",", 1)[1])
+    as_sent = (f"{pid}.{'webp' if 'webp' in data_url[:30] else 'jpg'}", raw)
+    if Image is None: return as_sent
+    try:
+        im = ImageOps.fit(ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert("RGB"), (640, 360))
+    except Exception:
+        return as_sent   # a photo Pillow cannot read is kept exactly as the phone sent it
+    for q in (80, 70, 60, 50, 40, 30):
+        buf = io.BytesIO(); im.save(buf, "WEBP", quality=q)
+        if buf.tell() <= 60000: break
+    return f"{pid}.webp", buf.getvalue()
 places = []
 for pid, it in items.items():
     p = {"id": pid, "name": it["name"], "verified": not it.get("unsure"), "lat": it["lat"], "lng": it["lng"]}
@@ -89,12 +110,13 @@ for pid, it in items.items():
     else:
         if it.get("category") not in CATS: problems.append(f"{it['name']}: category '{it.get('category')}' is not on the list")
         p.update(category=it.get("category", ""), aliases=[a.strip() for a in it.get("aliases", "").split(",") if a.strip()], landmark=it.get("landmark", ""), description=it.get("description", ""))
+        if it.get("waypoint"): p["waypoint"] = True
         if it["kind"] == "Landmark": p["kind"] = "landmark"
         if it.get("unsure"): problems.append(f"{it['name']}: marked 'not sure'. It stays hidden in the app until someone re-checks it and saves it again")
         ph = it.get("photo", "")
         if ph.startswith("data:image/"):
-            ext = "webp" if "webp" in ph[:30] else "jpg"; name = f"{pid}.{ext}"
-            with open(os.path.join(out, "images", "places", name), "wb") as fh: fh.write(base64.b64decode(ph.split(",", 1)[1]))
+            name, data = shrink_photo(pid, ph)
+            with open(os.path.join(out, "images", "places", name), "wb") as fh: fh.write(data)
             p["photo"] = "images/places/" + name
         elif it["kind"] == "Place": problems.append(f"{it['name']}: no photo")
     if it.get("acc", 0) > 40: problems.append(f"{it['name']}: position only good to {it['acc']} m, consider re-walking it")
@@ -197,6 +219,11 @@ for i, a in enumerate(shown):
         dist = dist or route_m(a["id"])
         r = dist.get(b["id"])
         if r is None or (r > DETOUR * m and r - m >= EXTRA_M): shortcuts.append((m, a["name"], b["name"], r))
+# Remove photo files no place uses any more (an older .jpg after shrinking to .webp, a deleted place), so they are not published.
+used = {os.path.basename(p["photo"]) for p in places if p.get("photo")}
+photo_dir = os.path.join(out, "images", "places")
+for f in os.listdir(photo_dir):
+    if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")) and f not in used: os.remove(os.path.join(photo_dir, f))
 # One place per line: still readable, but small enough for weak phones even with thousands of road points.
 with open(os.path.join(out, "data", "places.json"), "w", encoding="utf-8") as fh:
     fh.write("[\n" + ",\n".join(json.dumps(p, ensure_ascii=False, separators=(",", ":")) for p in places) + "\n]\n")

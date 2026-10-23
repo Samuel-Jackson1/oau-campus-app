@@ -1,5 +1,5 @@
 {
-  "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). not_same: close pairs that are different places. remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description or verified. See README.txt.",
+  "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). not_same: close pairs that are different places. remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description, verified, or waypoint (true = a named junction/walkway used in directions but not listed as a destination). See README.txt.",
 
   "_notes": [
     "faculty_of_technology is the Faculty of Technology BUILDING (Samuel, 23 Oct). Ezekiel had saved the lecture theatre under the same name, so his entry was replaced.",
@@ -39,6 +39,16 @@
     "moremi_hall": { "name": "Moremi Hall" },
     "health_sciences_lecture_theatre": { "name": "Health Sciences Lecture Theatre" },
     "faculty_of_computing_science_and_engineering": { "name": "Faculty of Computing Science and Engineering" },
-    "bustop": { "name": "Bus Stop" }
+    "bustop": { "name": "Main Gate Bus Stop", "category": "Essential Services", "aliases": ["Bus Stop"] },
+    "road_1": { "waypoint": true },
+    "oduduwa_walkway": { "name": "Oduduwa Hall Walkway", "waypoint": true },
+    "walkway": { "name": "Motion Ground Walkway", "aliases": ["Walkway"], "waypoint": true },
+    "t_junction_to_faculties": { "name": "Road 3 T-Junction", "aliases": ["T Junction to Faculties", "Road 3"], "waypoint": true },
+    "t_junction_road_4": { "name": "Road 4 T-Junction", "aliases": ["Road to Chemengine", "Road 4"], "waypoint": true },
+    "university_hall": { "name": "University Bookshop (University Hall)", "category": "Food & Shops", "aliases": ["University Hall", "Bookshop"] },
+    "oak_park_researcher_s_lodge": { "name": "OAK Park Researcher's Lodge", "category": "Hostels" },
+    "oau_ict_driven_knowledge_park_incubation_centre": { "name": "OAU ICT-Driven Knowledge Park Incubation Centre", "aliases": ["Incubation Centre"] },
+    "postgraduate_college": { "name": "Postgraduate College" },
+    "ict": { "name": "ICT Centre", "aliases": ["ICT", "CBT Centre"] }
   }
 }

@@ -30,6 +30,9 @@ const tr = o => typeof o === "string" ? o : (o && (o[lang] || o.en)) || "";
 const ct = c => (CAT[c] && CAT[c][lang]) || c;
 const data = n => window.__DATA ? Promise.resolve(window.__DATA[n]) : fetch("data/" + n + ".json").then(r => r.json());
 const shown = () => places.filter(p => !p.hidden && p.verified);
+// Waypoints (named junctions, walkways, roads) help directions and "Where am I?", but are not destinations,
+// so category lists and search leave them out.
+const listed = () => shown().filter(p => !p.waypoint);
 const nameOf = id => graph.byId[id].name;
 const icon = (cls, svg) => '<i class="' + cls + '">' + svg + "</i>";
 const pic = p => p.photo ? '<img src="' + p.photo + '" alt="" width="640" height="360">' : '<div class="ph">' + I("camera") + "<span>" + t("photo") + "</span>" + (p.sample ? '<small class="dev">DEV: add real photo</small>' : "") + "</div>";
@@ -57,7 +60,7 @@ function applyLang() {
   cats(); list(); ecats(); if (placeId) startHead(); if (route) renderStep(false);
 }
 function cats() {
-  const cs = [...new Set(shown().map(p => p.category))].sort();
+  const cs = [...new Set(listed().map(p => p.category))].sort();
   $("cats").innerHTML = cs.map(c => '<button data-c="' + c + '">' + icon("mk", M(c)) + "<b>" + ct(c) + "</b></button>").join("");
   $("cats").querySelectorAll("button").forEach(b => { b.onclick = () => { cat = b.dataset.c; list(); }; });
 }
@@ -66,7 +69,7 @@ function list() {
   $("cats").hidden = !!on; $("list").hidden = !on; $("catpill").hidden = !cat;
   $("catpill").innerHTML = cat ? icon("mk", M(cat)) + ct(cat) + " " + I("x") : "";
   $("all").innerHTML = I(all ? "layout-grid" : "list"); $("all").setAttribute("aria-pressed", all);
-  $("list").innerHTML = shown().filter(p => (!cat || p.category === cat) &&
+  $("list").innerHTML = listed().filter(p => (!cat || p.category === cat) &&
     (!q || [p.name].concat(p.aliases || []).some(x => x.toLowerCase().includes(q)))).sort((x, y) => x.name.localeCompare(y.name)).map(card).join("");
   $("list").querySelectorAll("button").forEach(b => { b.onclick = () => pick(b.dataset.id); });
 }

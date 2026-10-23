@@ -236,6 +236,23 @@ class ConverterTest(unittest.TestCase):
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, links)], fixes={"not_same": [["lib", "shop"]]})
         self.assertNotIn("Possibly the same place", out)
 
+    def test_real_photos_are_shrunk_and_old_files_removed(self):
+        try:
+            import base64, io, random
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not installed")
+        random.seed(1)  # a noisy 1600x900 photo: hard to compress, like a real one
+        im = Image.frombytes("RGB", (1600, 900), bytes(random.getrandbits(8) for _ in range(1600 * 900 * 3)))
+        buf = io.BytesIO(); im.save(buf, "JPEG", quality=95)
+        photo = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+        items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=photo)]
+        places, _, _ = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [])])
+        self.assertEqual(places["main_gate"]["photo"], "images/places/main_gate.webp")
+        size = os.path.getsize(os.path.join(self.tmp, "images", "places", "main_gate.webp"))
+        self.assertLessEqual(size, 60000)
+        self.assertGreater(len(buf.getvalue()), 500000)  # the original was far bigger
+
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "bank"]])])

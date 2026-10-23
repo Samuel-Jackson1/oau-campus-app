@@ -3,6 +3,14 @@
 ## What this build contains
 Directory with nicknames, browse by category, place photo slot and landmark, one-step-at-a-time landmark directions with a markers map, emergency categories with tap-to-call, "Where am I?", "Stay safe" slides (4 drafts), offline saving, three-language screens (drafts).
 
+## Directions: OpenStreetMap roads + field data (v13)
+- The converter builds the walking network from OpenStreetMap roads and footpaths (osm/), joins every field place to
+  its nearest road, keeps short walked footpaths and replaces long straight walked lines with the real roads.
+- route.js: faster route finder (heap), turns announced only at junctions and saved bends (not on road curves),
+  and each turn names a known place within 80 m ("At Faculty of Pharmacy, turn left"). The step photo shows that place.
+- The directions screen credits OpenStreetMap contributors (ODbL). Yoruba "Ní" and Pidgin "For" for "At" are drafts.
+- Focus for the presentation: Main Gate to the Faculty of Computing Science and Engineering. Full campus later.
+
 ## NOT in this build (Tier 2 and 3 are parked)
 Route lines on the map, voice and audio clips, live arrow or tracking, text/share/online alerts, responder dashboard, room finder, fresher mode, favourites, closed-path rule, campus notices. Do not add these in Phase 1.
 

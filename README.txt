@@ -27,4 +27,15 @@ Fixing names, categories and duplicates without re-walking (field-fixes.json):
 - Fixes are applied on every convert, so they are never lost when new field files arrive.
 - Only labels can be fixed here. Weak GPS, missing paths and bends still need the Field team.
 
+OpenStreetMap (OSM) roads + our field data (best of both):
+- osm/oau-campus-osm.json is one saved copy of OSM roads, footpaths and named places (python tools/fetch_osm.py
+  refreshes it, rarely). Credit: (c) OpenStreetMap contributors, ODbL. See osm/README.txt.
+- npm run convert now uses OSM roads as the walking network: each field place is joined to its nearest road,
+  short walked paths (150 m or less) are kept as footpath shortcuts, and long walked lines are replaced by the real
+  roads (a long straight line between two saved points can cut through buildings). Add --no-osm to switch it off.
+- Field data stays the source for places, names, photos, nicknames and landmarks. OSM gives the roads.
+- python tools/compare_osm.py   compares our places with OSM's named places (position check).
+  Add --near <id> --radius 350 to list OSM places near a place that we have not collected yet.
+- Focus for now: the Faculty of Computing Science and Engineering area. Full campus coverage is a later phase.
+
 Test on your computer: npm start, then open http://localhost:8000

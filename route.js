@@ -35,20 +35,46 @@
   }
 
   // Dijkstra: shortest walkable route. Returns { ids: [...], meters } or null if no route exists.
+  // Uses a small "heap" (a list that always gives back the nearest unvisited point first), so it stays fast
+  // with thousands of road points from OpenStreetMap.
   function shortestPath(graph, from, to) {
-    const dist = {}, prev = {}, done = {};
-    Object.keys(graph.adj).forEach(id => { dist[id] = Infinity; });
-    dist[from] = 0;
-    while (true) {
-      let u = null;
-      for (const id in dist) if (!done[id] && (u === null || dist[id] < dist[u])) u = id;
-      if (u === null || dist[u] === Infinity) return null;
+    if (!graph.adj[from] || !graph.adj[to]) return null;
+    const dist = { [from]: 0 }, prev = {}, done = {};
+    const heap = [[0, from]];
+    const push = item => {
+      heap.push(item);
+      for (let i = heap.length - 1; i > 0;) {
+        const p = (i - 1) >> 1;
+        if (heap[p][0] <= heap[i][0]) break;
+        [heap[p], heap[i]] = [heap[i], heap[p]]; i = p;
+      }
+    };
+    const pop = () => {
+      const top = heap[0], last = heap.pop();
+      if (heap.length) {
+        heap[0] = last;
+        for (let i = 0; ;) {
+          const l = 2 * i + 1, r = l + 1;
+          let m = i;
+          if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+          if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+          if (m === i) break;
+          [heap[m], heap[i]] = [heap[i], heap[m]]; i = m;
+        }
+      }
+      return top;
+    };
+    while (heap.length) {
+      const [d, u] = pop();
+      if (done[u]) continue;
       if (u === to) break;
       done[u] = true;
       for (const e of graph.adj[u]) {
-        if (dist[u] + e.d < dist[e.to]) { dist[e.to] = dist[u] + e.d; prev[e.to] = u; }
+        const nd = d + e.d;
+        if (!(e.to in dist) || nd < dist[e.to]) { dist[e.to] = nd; prev[e.to] = u; push([nd, e.to]); }
       }
     }
+    if (dist[to] === undefined) return null;
     const ids = [to];
     while (ids[0] !== from) ids.unshift(prev[ids[0]]);
     return { ids, meters: Math.round(dist[to]) };
@@ -60,8 +86,18 @@
 
   // Turns the list of ids into spoken-style steps: { turn, to, meters }.
   // "hidden" places (junctions) are never announced. Only the next real place is.
+  // OpenStreetMap road points that only follow a curve (osm, not junction) never cause a "turn" step;
+  // turns are announced at real junctions, at bends the Field team saved, and at named places.
   function directions(graph, ids) {
     const named = id => !graph.byId[id].hidden;
+    const corner = id => !graph.byId[id].osm || graph.byId[id].junction;
+    // Landmarks: when a turn happens within 80 m of a known place, the step says "at <place>" too.
+    const known = Object.values(graph.byId).filter(p => !p.hidden);
+    const landmarkAt = (id, not) => {
+      let best = null, bd = 80;
+      for (const p of known) { const d = haversine(graph.byId[id], p); if (d < bd && p.id !== not) { bd = d; best = p.id; } }
+      return best;
+    };
     const steps = [];
     const stepFrom = (i, turn) => {
       let j = i + 1, m = 0;
@@ -70,14 +106,17 @@
         j++;
         m += haversine(graph.byId[ids[j - 1]], graph.byId[ids[j]]);
       }
-      steps.push({ turn, to: ids[j], meters: Math.round(m) });
+      const step = { turn, to: ids[j], meters: Math.round(m) };
+      const near = named(ids[i]) ? null : landmarkAt(ids[i], ids[j]);
+      if (near && near !== ids[0]) step.near = near;
+      steps.push(step);
     };
     if (ids.length < 2) return steps;
     stepFrom(0, "start");
     for (let i = 1; i < ids.length - 1; i++) {
       const A = graph.byId[ids[i - 1]], B = graph.byId[ids[i]], C = graph.byId[ids[i + 1]];
       const turn = turnWord(angleDiff(bearing(A, B), bearing(B, C)));
-      if (turn !== "straight" || named(ids[i])) stepFrom(i, turn);
+      if ((turn !== "straight" && corner(ids[i])) || named(ids[i])) stepFrom(i, turn);
     }
     return steps;
   }

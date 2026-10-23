@@ -8,11 +8,15 @@
 # At the end it also prints "Shortcuts to walk": close places whose walking route is missing or far too long. Send that list to Field Data.
 # Back End corrections go in field-fixes.json (in the --out folder): merge duplicate places, fix names, categories and nicknames,
 # remove test entries. They are applied on every run, so they survive new field files. Add --list to print every place's id.
-import base64, datetime, glob, heapq, json, math, os, re, sys
+# If osm/oau-campus-osm.json exists (tools/fetch_osm.py), OpenStreetMap roads and footpaths become the base walking network
+# and each field place is joined to the nearest road. Add --no-osm to use only the walked paths.
+import base64, collections, datetime, glob, heapq, json, math, os, re, sys
 args = sys.argv[1:]; out = "."
 if "--out" in args: i = args.index("--out"); out = args[i + 1]; del args[i:i + 2]
 show_list = "--list" in args
 if show_list: args.remove("--list")
+use_osm = "--no-osm" not in args
+if not use_osm: args.remove("--no-osm")
 files = []
 for a in args:
     files += sorted(glob.glob(os.path.join(a, "*.json")) + glob.glob(os.path.join(a, "*.txt"))) if os.path.isdir(a) else sorted(glob.glob(a))
@@ -99,6 +103,54 @@ for a, b in links:
     missing = [x for x in (a, b) if x not in items]
     if missing: problems.append(f"a walked path uses '{missing[0]}', which is not in any file (deleted on the phone?)"); continue
     seen.add(frozenset((a, b))); paths.append([a, b])
+def metres(a, b):
+    la1, lo1, la2, lo2 = map(math.radians, (a["lat"], a["lng"], b["lat"], b["lng"]))
+    h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
+    return 2 * 6371000 * math.asin(math.sqrt(h))
+# OpenStreetMap roads and footpaths: the base walking network, so routes follow real roads instead of straight lines.
+# Road points are hidden in the app (like bends). A point is kept at every junction, at both ends, and about every 40 m,
+# so curves keep their shape. Each field place is joined to its nearest road point if it is within SNAP_M.
+SNAP_M, SPACING_M = 150, 40
+osm_file = os.path.join(out, "osm", "oau-campus-osm.json")
+if use_osm and os.path.exists(osm_file):
+    with open(osm_file, encoding="utf-8") as fh: osm = json.load(fh)
+    ways = [e for e in osm["elements"] if e["type"] == "way" and "geometry" in e and "nodes" in e]
+    uses = collections.Counter(n for w in ways for n in w["nodes"])   # a node used by 2+ roads is a junction
+    road = {}
+    def road_point(nid, g):
+        pid = f"osm_{nid}"
+        if pid not in road:
+            road[pid] = {"id": pid, "name": "Road", "hidden": True, "osm": True, "verified": True, "lat": round(g["lat"], 6), "lng": round(g["lon"], 6)}
+            if uses[nid] > 1: road[pid]["junction"] = True   # the app only announces turns at junctions, not on curves
+        return road[pid]
+    osm_paths = set()
+    for w in ways:
+        pts = list(zip(w["nodes"], w["geometry"]))
+        kept = [road_point(*pts[0])]
+        for k, (nid, g) in enumerate(pts[1:], 1):
+            here = {"lat": g["lat"], "lng": g["lon"]}
+            if k == len(pts) - 1 or uses[nid] > 1 or metres(kept[-1], here) >= SPACING_M:
+                kept.append(road_point(nid, g))
+        osm_paths |= {frozenset((a["id"], b["id"])) for a, b in zip(kept, kept[1:]) if a["id"] != b["id"]}
+    joined, far = 0, []
+    for p in places:
+        if p.get("hidden"): continue
+        d, r = min(((metres(p, r), r) for r in road.values()), key=lambda x: x[0])
+        if d <= SNAP_M: osm_paths.add(frozenset((p["id"], r["id"]))); joined += 1
+        else: far.append(f"{p['name']} ({round(d)} m)")
+    # Use the best of both: a long walked line (over LONG_M) is only a straight guess between two saved points and may cut
+    # through buildings, so the real roads replace it. Short walked paths stay: they are the footpaths OSM does not know.
+    LONG_M = 150
+    on_road = {pid for pair in osm_paths for pid in pair}
+    byid0 = {p["id"]: p for p in places}
+    keep = [pair for pair in paths if metres(byid0[pair[0]], byid0[pair[1]]) <= LONG_M
+            or any(x not in on_road and not byid0[x].get("hidden") for x in pair)]
+    print(f"OpenStreetMap: {len(road)} road points, {len(osm_paths) - joined} road segments; {joined} places joined to the nearest road; "
+          f"{len(paths) - len(keep)} long walked lines (over {LONG_M} m) replaced by real roads, {len(keep)} short walked paths kept")
+    paths = keep
+    places += road.values()
+    paths += [sorted(pair) for pair in osm_paths]
+    if far: problems.append("More than " + str(SNAP_M) + " m from any OpenStreetMap road, so only walked paths reach them: " + ", ".join(far))
 # Every place must be reachable on foot. Find groups of places joined by paths; anything outside the main group gets no directions.
 nbr = {p["id"]: set() for p in places}
 for a, b in paths: nbr[a].add(b); nbr[b].add(a)
@@ -109,18 +161,15 @@ while left:
         x = todo.pop(); grp.add(x); todo += [y for y in nbr[x] if y in left]; left -= nbr[x]
     groups.append(grp)
 main = next((g for g in groups if "main_gate" in g), max(groups, key=len)) if groups else set()
-label = lambda pid: items[pid]["name"]
 for g in groups:
     if g is main: continue
-    if len(g) == 1: problems.append(f"{label(next(iter(g)))}: no path to any other place")
-    else: problems.append("Not joined to the " + ("Main Gate" if "main_gate" in main else "main") + " paths: " + ", ".join(sorted(label(x) for x in g)) + ". Walk from one of them to a place that is joined, with 'I walked here from' ticked")
+    named = sorted(items[x]["name"] for x in g if x in items and items[x]["kind"] != "Bend")
+    if not named: continue   # a separate bit of road or a lone bend with no place on it does not matter
+    if len(g) == 1: problems.append(f"{named[0]}: no path to any other place")
+    else: problems.append("Not joined to the " + ("Main Gate" if "main_gate" in main else "main") + " paths: " + ", ".join(named) + ". Walk from one of them to a place that is joined, with 'I walked here from' ticked")
 # Shortcuts to walk: two places close together whose walking route (along saved paths only) is missing or more than DETOUR times
 # the straight line. It never adds paths itself: only someone on the ground knows if a real path exists (no fence, building or gutter).
 NEAR_M, DETOUR = 200, 2
-def metres(a, b):
-    la1, lo1, la2, lo2 = map(math.radians, (a["lat"], a["lng"], b["lat"], b["lng"]))
-    h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
-    return 2 * 6371000 * math.asin(math.sqrt(h))
 byid = {p["id"]: p for p in places}
 def route_m(src):  # walking distance from src to every place it can reach, like the app's route finder (Dijkstra)
     dist, heap = {src: 0.0}, [(0.0, src)]
@@ -141,7 +190,9 @@ for i, a in enumerate(shown):
         dist = dist or route_m(a["id"])
         r = dist.get(b["id"])
         if r is None or r > DETOUR * m: shortcuts.append((m, a["name"], b["name"], r))
-with open(os.path.join(out, "data", "places.json"), "w", encoding="utf-8") as fh: json.dump(places, fh, ensure_ascii=False, indent=1)
+# One place per line: still readable, but small enough for weak phones even with thousands of road points.
+with open(os.path.join(out, "data", "places.json"), "w", encoding="utf-8") as fh:
+    fh.write("[\n" + ",\n".join(json.dumps(p, ensure_ascii=False, separators=(",", ":")) for p in places) + "\n]\n")
 with open(os.path.join(out, "data", "paths.json"), "w", encoding="utf-8") as fh: json.dump(paths, fh)
 print(f"Wrote {len(places)} places and {len(paths)} paths to {out}")
 # Phones keep the old saved copy until the version in sw.js changes, so raise it on every run.

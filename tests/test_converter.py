@@ -17,10 +17,14 @@ def bend(id, n, lat, lng, link=""):
 
 
 class ConverterTest(unittest.TestCase):
-    def run_converter(self, phones, sw_version=None, fixes=None, extra=()):
+    def run_converter(self, phones, sw_version=None, fixes=None, extra=(), osm=None):
         """phones: list of (device, exportedAt, items, links or None). Returns (places by id, paths, printed text)."""
         tmp = tempfile.mkdtemp()
         os.makedirs(os.path.join(tmp, "field"))
+        if osm is not None:
+            os.makedirs(os.path.join(tmp, "osm"))
+            with open(os.path.join(tmp, "osm", "oau-campus-osm.json"), "w", encoding="utf-8") as f:
+                json.dump(osm, f)
         if fixes is not None:
             with open(os.path.join(tmp, "field-fixes.json"), "w", encoding="utf-8") as f:
                 json.dump(fixes, f)
@@ -187,6 +191,36 @@ class ConverterTest(unittest.TestCase):
         items = [place("main_gate", "Main Gate", 7.512, 4.520), place("moremi_hall", "Moremi Hall", 7.513, 4.521, "main_gate", "Hostels")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "moremi_hall"]])], extra=["--list"])
         self.assertIn("moremi_hall | Moremi Hall | Hostels", out)
+
+    # A tiny pretend OpenStreetMap file: road 1 runs east (nodes 1-2-3), road 2 turns north at node 3 (a junction) to node 4.
+    OSM = {"elements": [
+        {"type": "way", "id": 10, "tags": {"highway": "service"}, "nodes": [1, 2, 3],
+         "geometry": [{"lat": 7.5000, "lon": 4.5000}, {"lat": 7.5000, "lon": 4.5010}, {"lat": 7.5000, "lon": 4.5020}]},
+        {"type": "way", "id": 11, "tags": {"highway": "footway"}, "nodes": [3, 4],
+         "geometry": [{"lat": 7.5000, "lon": 4.5020}, {"lat": 7.5010, "lon": 4.5020}]}]}
+
+    def test_osm_roads_join_places_and_replace_long_walked_lines(self):
+        items = [place("a", "Place A", 7.5001, 4.5000), place("b", "Place B", 7.5010, 4.5021, "a"),
+                 place("c", "Place C", 7.5002, 4.5003, "a")]
+        phone = [("aaaa", "2026-10-22T09:00:00Z", items, [["a", "b"], ["a", "c"]])]
+        places, paths, out = self.run_converter(phone, osm=self.OSM)
+        self.assertTrue(places["osm_3"]["junction"])                  # used by two roads
+        self.assertNotIn("junction", places["osm_2"])                 # only a point along a road
+        self.assertTrue(places["osm_2"]["hidden"])
+        self.assertIn(frozenset(("a", "osm_1")), paths)               # A joined to its nearest road point
+        self.assertIn(frozenset(("b", "osm_4")), paths)
+        self.assertNotIn(frozenset(("a", "b")), paths)                # 250 m straight guess replaced by real roads
+        self.assertIn(frozenset(("a", "c")), paths)                   # short walked path kept
+        self.assertIn("1 long walked lines (over 150 m) replaced by real roads", out)
+        places, paths, out = self.run_converter(phone, osm=self.OSM, extra=["--no-osm"])
+        self.assertIn(frozenset(("a", "b")), paths)
+        self.assertNotIn("osm_1", places)
+
+    def test_places_far_from_any_osm_road_keep_their_walked_lines(self):
+        items = [place("a", "Place A", 7.5001, 4.5000), place("far", "Far Place", 7.5050, 4.5050, "a")]
+        places, paths, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["a", "far"]])], osm=self.OSM)
+        self.assertIn(frozenset(("a", "far")), paths)
+        self.assertIn("only walked paths reach them: Far Place", out)
 
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]

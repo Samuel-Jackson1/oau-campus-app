@@ -28,6 +28,27 @@ test('shortest path picks the shorter of two routes', () => {
   assert.deepEqual(Route.shortestPath(g, 'a', 'c').ids, ['a', 'b', 'c']);
 });
 
+test('shortestPath returns null when there is no route', () => {
+  const g = Route.buildGraph([{ id: 'a', lat: 7.5, lng: 4.5 }, { id: 'b', lat: 7.501, lng: 4.5 }], []);
+  assert.equal(Route.shortestPath(g, 'a', 'b'), null);
+});
+
+test('directions turn only at junctions and bends, and name a nearby landmark', () => {
+  // A -> curve point (osm, not a junction) -> junction -> B. Both hidden points bend the path by 90 degrees.
+  const ps = [
+    { id: 'a', name: 'A', lat: 7.5000, lng: 4.5000 },
+    { id: 'curve', hidden: true, osm: true, lat: 7.5000, lng: 4.5010 },
+    { id: 'junc', hidden: true, osm: true, junction: true, lat: 7.5010, lng: 4.5010 },
+    { id: 'b', name: 'B', lat: 7.5010, lng: 4.5000 },
+    { id: 'shop', name: 'Shop', lat: 7.5012, lng: 4.5012 }   // about 30 m from the junction, not on the route
+  ];
+  const g = Route.buildGraph(ps, [['a', 'curve'], ['curve', 'junc'], ['junc', 'b']]);
+  const steps = Route.directions(g, ['a', 'curve', 'junc', 'b']);
+  assert.deepEqual(steps.map((s) => s.turn), ['start', 'left']);   // no step at the curve point
+  assert.equal(steps[1].near, 'shop');
+  assert.equal(steps[1].to, 'b');
+});
+
 test('every id in paths.json exists in places.json', () => {
   assert.doesNotThrow(() => Route.buildGraph(places, paths));
 });

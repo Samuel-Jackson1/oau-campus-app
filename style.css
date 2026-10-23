@@ -1,6 +1,7 @@
-:root{--ink:#14231b;--paper:#fff;--card:#f3f8f5;--green:#0b5d3b;--soft:#e3f1ea;--line:#b9c7bf;--route:#d4380d;--red:#b3261e}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8f1ec;--paper:#0f1a14;--card:#17251d;--soft:#1c2b23;--line:#33463b}}
-:root[data-theme="dark"]{--ink:#e8f1ec;--paper:#0f1a14;--card:#17251d;--soft:#1c2b23;--line:#33463b}
+/* Colours: Material 3 palette generated from OAU green (#0b5d3b) with Google's material-color-utilities (Beer CSS look) */
+:root{--ink:#181d19;--paper:#f7faf5;--card:#ffffff;--card2:#ecefe9;--green:#0b5d3b;--green-deep:#004429;--soft:#c9e7d1;--on-soft:#1d3a29;--line:#bfc9c0;--route:#d4380d;--red:#b3261e;--muted:#404942}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e0e3de;--paper:#101411;--card:#1c211d;--card2:#272b28;--soft:#344f3f;--on-soft:#c9e7d1;--line:#404942;--muted:#bfc9c0}}
+:root[data-theme="dark"]{--ink:#e0e3de;--paper:#101411;--card:#1c211d;--card2:#272b28;--soft:#344f3f;--on-soft:#c9e7d1;--line:#404942;--muted:#bfc9c0}
 *{box-sizing:border-box}html{font-size:18px}
 body{margin:0;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5}
 header{display:flex;align-items:center;gap:.6rem;background:var(--green);color:#fff;padding:.8rem 1rem}
@@ -98,3 +99,44 @@ button:disabled{opacity:.35}
 [hidden]{display:none!important}
 /* Dark mode: category icons in the same light green as the dark-mode buttons, so they stand out from the dark circle */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mk{color:#7fd1a8}}
+
+/* ===== Beer CSS look (Material 3), ported by hand: no library, same HTML, works offline ===== */
+header{background:var(--green-deep);padding:.7rem 1rem}
+h1{font-weight:700;letter-spacing:.01em}
+#back,#langbtn{border:0;border-radius:999px;background:rgba(255,255,255,.16)}
+#status{color:var(--muted);opacity:1}
+/* Home: three big tonal action cards */
+.tile{min-height:96px;border:0;border-radius:24px;padding:1.1rem 1.2rem;box-shadow:none;font-weight:700}
+.tile i{display:grid;place-items:center;width:60px;height:60px;border-radius:18px;background:rgba(255,255,255,.18)}
+.tile i svg{width:34px;height:34px}
+.tile[data-go="find"]{background:var(--green);color:#fff}
+.tile[data-go="lessons"]{background:var(--soft);color:var(--on-soft)}
+.tile[data-go="lessons"] i{background:rgba(11,93,59,.12)}
+.tile.sos{background:var(--red);color:#fff}
+#lang .tile{background:var(--card2);color:var(--ink);border:1px solid var(--line)}
+/* Search: a filled pill, like Beer's search field */
+input,select{border:0;border-radius:999px;background:var(--card2);padding:0 1.2rem;min-height:56px}
+#waimsg select{border-radius:16px}
+#all{border:0;border-radius:999px;background:var(--soft);color:var(--on-soft)}
+#all[aria-pressed="true"]{background:var(--green);color:#fff}
+#catpill{border:0;background:var(--soft);color:var(--on-soft)}
+/* Category grid and lists: tonal cards without hard borders */
+.grid button{border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:none}
+.grid .mk{background:var(--soft);color:var(--green)}
+.cards button,#steps li{border:0;border-radius:20px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cards span,.meta{color:var(--muted);opacity:1}
+/* Buttons: pills */
+.primary,.secondary,.row3 button{border-radius:999px}
+.primary{background:var(--green);border-color:var(--green)}
+.secondary{border:1px solid var(--line);color:var(--green);background:var(--card)}
+.call{border-radius:999px;padding:1.1rem 1.4rem;box-shadow:0 2px 6px rgba(179,38,30,.35)}
+.tbc{border-radius:20px}
+#ecats button{border:1px solid var(--line);border-radius:22px}
+#ecats button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+/* Directions and lessons */
+#big,.lbig{background:var(--green);box-shadow:0 6px 18px rgba(11,93,59,.28)}
+#dots i.on,#ldots i.on{background:var(--green)}
+.pic img,.ph{border-radius:22px}
+#map{border:0;border-radius:22px}
+.note{color:var(--muted);opacity:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grid .mk{color:#8dd6ab} :root:not([data-theme="light"]) .secondary{color:#8dd6ab} :root:not([data-theme="light"]) .lm{color:#8dd6ab}}

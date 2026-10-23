@@ -232,6 +232,9 @@ class ConverterTest(unittest.TestCase):
         self.assertIn("Possibly the same place (1)", out)
         self.assertIn("Library <-> Shop: 7 m apart", out)
         self.assertNotIn("Library <-> Place B", out)
+        # Once the team confirms they are different places, the converter stops asking.
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, links)], fixes={"not_same": [["lib", "shop"]]})
+        self.assertNotIn("Possibly the same place", out)
 
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]

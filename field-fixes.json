@@ -1,5 +1,5 @@
 {
-  "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description or verified. See README.txt.",
+  "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). not_same: close pairs that are different places. remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description or verified. See README.txt.",
 
   "_notes": [
     "faculty_of_technology is the Faculty of Technology BUILDING (Samuel, 23 Oct). Ezekiel had saved the lecture theatre under the same name, so his entry was replaced.",
@@ -14,7 +14,21 @@
 
   "remove": [],
 
+  "_not_same_help": "Pairs under 15 m apart that the team confirmed are DIFFERENT places, so the converter stops asking about them.",
+  "not_same": [
+    ["intercu_computer_station", "ict_postgraduate_research_laboratory"],
+    ["oak_park_researcher_s_lodge", "oau_ict_driven_knowledge_park_incubation_centre"],
+    ["nacoss_library", "shop"],
+    ["part_advisor_office", "dean_office_of_the_faculty_of_computing_science_and_engineering"],
+    ["ict", "seminar_room_a_and_b"],
+    ["oau_admissions_office", "university_hall"],
+    ["first_bus_stop", "university_hall"]
+  ],
+
   "change": {
+    "intercu_computer_station": { "name": "INTECU", "aliases": ["Intecu computer station", "Intercu"] },
+    "hod_of_computer_engineering": { "name": "HOD Office, Computer Engineering", "aliases": ["HOD office for Computer Engineering"], "description": "Office of the Head of Department, Computer Engineering" },
+    "part_advisor_office": { "name": "Part Adviser's Office", "aliases": ["Part Advisor Office"], "description": "An office on the first floor inside the Incubation Centre building" },
     "student_union_building": { "name": "Student Union Building", "category": "Administration", "aliases": ["SUB", "Captain Cook"] },
     "oau_second_bus_stop": { "name": "Second Bus Stop", "aliases": [] },
     "department_of_kinesiology_health_education_and_recreation": { "name": "Department of Kinesiology, Health Education and Recreation", "category": "Faculties", "aliases": ["PHE"] },

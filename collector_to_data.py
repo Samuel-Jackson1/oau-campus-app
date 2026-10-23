@@ -51,8 +51,10 @@ for at, f, d, dev in sorted(newest.values(), key=lambda x: x[0]):
     links += [(fix(a), fix(b)) for a, b in pairs]
 # Back End fixes. Order: merge duplicates, then remove, then change details (so changes can use the kept id).
 fixes_path = os.path.join(out, "field-fixes.json")
+not_same = set()   # pairs the team confirmed are different places, so "Possibly the same place" stops listing them
 if os.path.exists(fixes_path):
     with open(fixes_path, encoding="utf-8-sig") as fh: fixes = json.load(fh)
+    not_same = {frozenset(pair) for pair in fixes.get("not_same", [])}
     split = lambda s: [a.strip() for a in (s or "").split(",") if a.strip()]
     redirect = lambda old, new: [tuple(new if x == old else x for x in pair) for pair in links]
     done = 0
@@ -189,7 +191,9 @@ for i, a in enumerate(shown):
     for b in shown[i + 1:]:
         m = metres(a, b)
         if m > NEAR_M: continue
-        if m < SAME_M: maybe_same.append((m, a["name"], b["name"])); continue
+        if m < SAME_M:
+            if frozenset((a["id"], b["id"])) not in not_same: maybe_same.append((m, a["name"], b["name"]))
+            continue
         dist = dist or route_m(a["id"])
         r = dist.get(b["id"])
         if r is None or (r > DETOUR * m and r - m >= EXTRA_M): shortcuts.append((m, a["name"], b["name"], r))

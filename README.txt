@@ -21,6 +21,8 @@ Fixing names, categories and duplicates without re-walking (field-fixes.json):
 - "same_place": [{"keep": "student_union_building", "merge": "sub"}]
     Two entries are one real place. The kept one keeps its position and photo; the other one's
     paths move to it and its name becomes a nickname. This is how two people's walks get joined.
+- "not_same": [["ict", "seminar_room_a_and_b"]]
+    Two entries under 15 m apart that ARE different places: the converter stops listing them as "possibly the same".
 - "remove": ["my_test_place"]            drops a test entry and its paths.
 - "change": {"faculty_of_pharmacy": {"name": "Faculty of Pharmacy", "category": "Faculties"}}
     Can set: name, category, aliases (a list), landmark, description, verified (true/false).

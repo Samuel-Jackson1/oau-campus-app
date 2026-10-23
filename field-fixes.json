@@ -1,0 +1,24 @@
+{
+  "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description or verified. See README.txt.",
+
+  "same_place": [
+    { "keep": "student_union_building", "merge": "sub" },
+    { "keep": "oau_second_bus_stop", "merge": "second_bustop" }
+  ],
+
+  "remove": [],
+
+  "change": {
+    "student_union_building": { "name": "Student Union Building", "category": "Administration", "aliases": ["SUB", "Captain Cook"] },
+    "oau_second_bus_stop": { "name": "Second Bus Stop", "aliases": [] },
+    "department_of_kinesiology_health_education_and_recreation": { "name": "Department of Kinesiology, Health Education and Recreation", "category": "Faculties", "aliases": ["PHE"] },
+    "hezekiah_oluwasanmi_library": { "name": "Hezekiah Oluwasanmi Library", "category": "Libraries" },
+    "faculty_of_pharmacy": { "name": "Faculty of Pharmacy", "category": "Faculties" },
+    "nacoss_library": { "name": "NACOSS Library", "aliases": [] },
+    "moremi_hall": { "name": "Moremi Hall" },
+    "health_sciences_lecture_theatre": { "name": "Health Sciences Lecture Theatre" },
+    "faculty_of_computing_science_and_engineering": { "name": "Faculty of Computing Science and Engineering" },
+    "faculty_of_technology": { "name": "Faculty of Technology Lecture Theatre" },
+    "bustop": { "name": "Bus Stop" }
+  }
+}

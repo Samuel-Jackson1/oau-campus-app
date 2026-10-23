@@ -17,10 +17,13 @@ def bend(id, n, lat, lng, link=""):
 
 
 class ConverterTest(unittest.TestCase):
-    def run_converter(self, phones, sw_version=None):
+    def run_converter(self, phones, sw_version=None, fixes=None, extra=()):
         """phones: list of (device, exportedAt, items, links or None). Returns (places by id, paths, printed text)."""
         tmp = tempfile.mkdtemp()
         os.makedirs(os.path.join(tmp, "field"))
+        if fixes is not None:
+            with open(os.path.join(tmp, "field-fixes.json"), "w", encoding="utf-8") as f:
+                json.dump(fixes, f)
         for dev, at, items, links in phones:
             body = {"by": "t", "device": dev, "exportedAt": at, "items": items}
             if links is not None:
@@ -30,7 +33,7 @@ class ConverterTest(unittest.TestCase):
         if sw_version:
             with open(os.path.join(tmp, "sw.js"), "w", encoding="utf-8") as f:
                 f.write(f'const CACHE = "{sw_version}";\n')
-        res = subprocess.run([sys.executable, CONVERTER, os.path.join(tmp, "field"), "--out", tmp],
+        res = subprocess.run([sys.executable, CONVERTER, os.path.join(tmp, "field"), "--out", tmp, *extra],
                              capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(res.returncode, 0, res.stderr)
         with open(os.path.join(tmp, "data", "places.json"), encoding="utf-8") as f:
@@ -147,6 +150,43 @@ class ConverterTest(unittest.TestCase):
         self.assertIn("Place A <-> Near Place: 56 m apart, no route at all", out)
         self.assertNotIn("Far Place <->", out)
         self.assertNotIn("<-> Far Place", out)
+
+    def test_fixes_merge_a_duplicate_and_join_two_walks(self):
+        # Two people saved the same building under different names, so their walks never met.
+        a = [place("main_gate", "Main Gate", 7.4968, 4.5223), place("student_union_building", "Student union building", 7.51795, 4.52138, "main_gate", "Administration", aliases="SUB")]
+        b = [place("sub", "SUB", 7.51801, 4.52135, "", "Food & Shops", aliases="Captain Cook"), place("moremi_hall", "Moremi Hall", 7.52032, 4.51865, "sub", "Hostels")]
+        phones = [("aaaa", "2026-10-22T09:00:00Z", a, [["main_gate", "student_union_building"]]), ("bbbb", "2026-10-22T10:00:00Z", b, [["sub", "moremi_hall"]])]
+        places, paths, out = self.run_converter(phones)
+        self.assertIn("Not joined to the Main Gate paths", out)
+        places, paths, out = self.run_converter(phones, fixes={"same_place": [{"keep": "student_union_building", "merge": "sub"}]})
+        self.assertNotIn("sub", places)
+        self.assertIn(frozenset(("student_union_building", "moremi_hall")), paths)  # Damilare's path now starts at the kept place
+        self.assertNotIn("Not joined", out)
+        self.assertEqual(places["student_union_building"]["lat"], 7.51795)  # the kept entry's position stays
+        self.assertEqual(places["student_union_building"]["aliases"], ["SUB", "Captain Cook"])  # no "SUB" twice
+        self.assertIn("Applied 1 fix(es)", out)
+
+    def test_fixes_change_name_category_nicknames_and_verified(self):
+        items = [place("main_gate", "Main Gate", 7.512, 4.520), place("phe", "DEPARTMENT OF KINESIOLOGY", 7.5177, 4.5215, "main_gate", "Lecture Theatres", aliases="PHE, Sports dept", unsure=True)]
+        fixes = {"change": {"phe": {"name": "Department of Kinesiology", "category": "Faculties", "aliases": ["PHE"], "verified": True}}}
+        places, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "phe"]])], fixes=fixes)
+        p = places["phe"]
+        self.assertEqual((p["name"], p["category"], p["aliases"], p["verified"]), ("Department of Kinesiology", "Faculties", ["PHE"], True))
+        self.assertNotIn("marked 'not sure'", out)
+
+    def test_fixes_remove_a_test_entry_and_report_unknown_ids(self):
+        items = [place("main_gate", "Main Gate", 7.512, 4.520), place("my_test", "My Test", 7.513, 4.521, "main_gate")]
+        fixes = {"remove": ["my_test"], "change": {"no_such_place": {"name": "X"}}, "same_place": [{"keep": "main_gate", "merge": "ghost"}]}
+        places, paths, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "my_test"]])], fixes=fixes)
+        self.assertNotIn("my_test", places)
+        self.assertEqual(paths, set())
+        self.assertIn("'no_such_place' (to change) is not in any field file", out)
+        self.assertIn("'ghost' (to merge) is not in any field file", out)
+
+    def test_list_option_prints_every_place_id(self):
+        items = [place("main_gate", "Main Gate", 7.512, 4.520), place("moremi_hall", "Moremi Hall", 7.513, 4.521, "main_gate", "Hostels")]
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "moremi_hall"]])], extra=["--list"])
+        self.assertIn("moremi_hall | Moremi Hall | Hostels", out)
 
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]

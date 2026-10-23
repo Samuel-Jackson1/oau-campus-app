@@ -6,9 +6,13 @@
 # then merges all phones together. If a place appears twice, the newest save wins, but every path walked to or from it is kept.
 # NOTE: data/places.json is rebuilt from the field files every time. Fix mistakes on the phone and re-send, not by editing places.json.
 # At the end it also prints "Shortcuts to walk": close places whose walking route is missing or far too long. Send that list to Field Data.
+# Back End corrections go in field-fixes.json (in the --out folder): merge duplicate places, fix names, categories and nicknames,
+# remove test entries. They are applied on every run, so they survive new field files. Add --list to print every place's id.
 import base64, datetime, glob, heapq, json, math, os, re, sys
 args = sys.argv[1:]; out = "."
 if "--out" in args: i = args.index("--out"); out = args[i + 1]; del args[i:i + 2]
+show_list = "--list" in args
+if show_list: args.remove("--list")
 files = []
 for a in args:
     files += sorted(glob.glob(os.path.join(a, "*.json")) + glob.glob(os.path.join(a, "*.txt"))) if os.path.isdir(a) else sorted(glob.glob(a))
@@ -41,6 +45,36 @@ for at, f, d, dev in sorted(newest.values(), key=lambda x: x[0]):
     # Paths: every walk from every phone counts. Newer Collector files carry a "links" list; older ones only have "linkTo" on each item.
     pairs = d["links"] if "links" in d else [[it["linkTo"], it["id"]] for it in d["items"] if it["linkTo"]]
     links += [(fix(a), fix(b)) for a, b in pairs]
+# Back End fixes. Order: merge duplicates, then remove, then change details (so changes can use the kept id).
+fixes_path = os.path.join(out, "field-fixes.json")
+if os.path.exists(fixes_path):
+    with open(fixes_path, encoding="utf-8-sig") as fh: fixes = json.load(fh)
+    split = lambda s: [a.strip() for a in (s or "").split(",") if a.strip()]
+    redirect = lambda old, new: [tuple(new if x == old else x for x in pair) for pair in links]
+    done = 0
+    for rule in fixes.get("same_place", []):
+        keep, drop = rule["keep"], rule["merge"]
+        if drop not in items: problems.append(f"field-fixes.json: '{drop}' (to merge) is not in any field file"); continue
+        gone = items.pop(drop)
+        if keep not in items: items[keep] = dict(gone, id=keep)
+        else:  # keep the better entry's position and photo; its nicknames gain the other entry's name and nicknames
+            k = items[keep]; nicknames, seen_n = [], {k["name"].lower()}
+            for n in split(k.get("aliases")) + [gone["name"]] + split(gone.get("aliases")):
+                if n.lower() not in seen_n: nicknames.append(n); seen_n.add(n.lower())
+            k["aliases"] = ", ".join(nicknames)
+        links = redirect(drop, keep); done += 1
+    for pid in fixes.get("remove", []):
+        if items.pop(pid, None) is None: problems.append(f"field-fixes.json: '{pid}' (to remove) is not in any field file"); continue
+        links = [pair for pair in links if pid not in pair]; done += 1
+    for pid, ch in fixes.get("change", {}).items():
+        if pid not in items: problems.append(f"field-fixes.json: '{pid}' (to change) is not in any field file"); continue
+        it = items[pid]
+        for key in ("name", "category", "landmark", "description"):
+            if key in ch: it[key] = ch[key]
+        if "aliases" in ch: it["aliases"] = ", ".join(ch["aliases"])
+        if "verified" in ch: it["unsure"] = not ch["verified"]
+        done += 1
+    print(f"Applied {done} fix(es) from field-fixes.json")
 os.makedirs(os.path.join(out, "data"), exist_ok=True); os.makedirs(os.path.join(out, "images", "places"), exist_ok=True)
 places = []
 for pid, it in items.items():
@@ -125,3 +159,7 @@ if shortcuts:
     print("Walk between each pair once with 'I walked here from' ticked, saving a Bend at every corner:")
     for m, a, b, r in sorted(shortcuts):
         print(f"  {a} <-> {b}: {round(m)} m apart, " + ("no route at all" if r is None else f"route now {round(r)} m"))
+if show_list:  # the ids to use in field-fixes.json
+    print("\nEvery place (id | name | category):")
+    for p in sorted(shown, key=lambda p: p["name"].lower()):
+        print(f"  {p['id']} | {p['name']} | {p.get('category', '')}")

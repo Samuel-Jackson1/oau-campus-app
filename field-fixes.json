@@ -1,9 +1,15 @@
 {
   "_help": "Back End fixes, applied on every 'npm run convert'. Use ids from 'npm run convert -- --list'. same_place: the two entries are one place (keep's position and photo stay; merge's paths and names move to keep). remove: drop an entry and its paths. change: set name, category, aliases (list), landmark, description or verified. See README.txt.",
 
+  "_notes": [
+    "faculty_of_technology is the Faculty of Technology BUILDING (Samuel, 23 Oct). Ezekiel had saved the lecture theatre under the same name, so his entry was replaced.",
+    "The lecture theatre must be re-saved as 'Faculty of Technology Lecture Theatre' (nicknames: Chemengine, Chem Engine; old name Chemical Engineering Lecture Theatre)."
+  ],
+
   "same_place": [
     { "keep": "student_union_building", "merge": "sub" },
-    { "keep": "oau_second_bus_stop", "merge": "second_bustop" }
+    { "keep": "oau_second_bus_stop", "merge": "second_bustop" },
+    { "keep": "nacoss_library", "merge": "nacoss" }
   ],
 
   "remove": [],
@@ -14,11 +20,11 @@
     "department_of_kinesiology_health_education_and_recreation": { "name": "Department of Kinesiology, Health Education and Recreation", "category": "Faculties", "aliases": ["PHE"] },
     "hezekiah_oluwasanmi_library": { "name": "Hezekiah Oluwasanmi Library", "category": "Libraries" },
     "faculty_of_pharmacy": { "name": "Faculty of Pharmacy", "category": "Faculties" },
-    "nacoss_library": { "name": "NACOSS Library", "aliases": [] },
+    "nacoss_library": { "name": "NACOSS Library", "aliases": ["NACOSS"] },
+    "college_of_heath_sciences": { "name": "College of Health Sciences" },
     "moremi_hall": { "name": "Moremi Hall" },
     "health_sciences_lecture_theatre": { "name": "Health Sciences Lecture Theatre" },
     "faculty_of_computing_science_and_engineering": { "name": "Faculty of Computing Science and Engineering" },
-    "faculty_of_technology": { "name": "Faculty of Technology Lecture Theatre", "aliases": ["Chemengine", "Chem Engine", "Chemical Engineering Lecture Theatre"] },
     "bustop": { "name": "Bus Stop" }
   }
 }

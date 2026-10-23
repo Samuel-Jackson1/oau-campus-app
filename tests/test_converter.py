@@ -222,6 +222,17 @@ class ConverterTest(unittest.TestCase):
         self.assertIn(frozenset(("a", "far")), paths)
         self.assertIn("only walked paths reach them: Far Place", out)
 
+    def test_twins_listed_and_small_detours_ignored(self):
+        # "Shop" 7 m from the library: maybe the same building. B is 30 m from the library, but the only route
+        # (via Mid) is about 63 m: more than double, yet only ~33 m extra, too small to be worth a walk.
+        items = [place("lib", "Library", 7.5120, 4.5200), place("shop", "Shop", 7.51206, 4.5200, "lib"),
+                 place("b", "Place B", 7.51227, 4.5200), place("mid", "Mid", 7.51213, 4.52025, "lib")]
+        links = [["lib", "mid"], ["mid", "b"]]
+        _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, links)])
+        self.assertIn("Possibly the same place (1)", out)
+        self.assertIn("Library <-> Shop: 7 m apart", out)
+        self.assertNotIn("Library <-> Place B", out)
+
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "bank"]])])

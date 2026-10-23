@@ -18,13 +18,24 @@ def metres(a, b):
     return 2 * 6371000 * math.asin(math.sqrt(h))
 
 STOP = {"of", "the", "and", "oau", "building", "block", "university"}
+# Words found in many names prove nothing on their own ("Walkway" is not "Social Science Walkway").
+GENERIC = {"hall", "walkway", "office", "centre", "center", "room", "lecture", "theatre", "faculty", "department",
+           "road", "junction", "bus", "stop", "park", "library", "college", "station", "lab", "laboratory", "area",
+           "first", "second", "third", "main", "new", "old", "to"}
 def words(s):
     return [w for w in re.sub(r"[^a-z0-9 ]", " ", s.lower()).split() if w not in STOP]
+def distinctive(s):
+    return {w for w in words(s) if w not in GENERIC and len(w) > 1 and not w.isdigit()}
+def seq(a, b):
+    return difflib.SequenceMatcher(None, " ".join(words(a)), " ".join(words(b))).ratio()
 def similar(a, b):
-    wa, wb = words(a), words(b)
-    if not wa or not wb: return 0.0
-    overlap = len(set(wa) & set(wb)) / min(len(set(wa)), len(set(wb)))
-    return max(overlap, difflib.SequenceMatcher(None, " ".join(wa), " ".join(wb)).ratio())
+    """(score, coverage): score >= 0.65 means a likely match; coverage breaks ties (how much of BOTH names is shared)."""
+    if not words(a) or not words(b): return (0.0, 0.0)
+    da, db, s = distinctive(a), distinctive(b), seq(a, b)
+    if not da or not db or not (da & db):                       # only common words, or no distinctive word in common
+        return (s, s) if s >= 0.85 else (0.0, 0.0)              # must then match almost exactly (HSLT vs HSLTA passes)
+    shared = len(da & db)
+    return (max(shared / min(len(da), len(db)), s), shared / max(len(da), len(db)))
 
 places = [p for p in json.load(open(PLACES, encoding="utf-8")) if not p.get("hidden")]
 osm = []
@@ -42,8 +53,9 @@ for p in sorted(places, key=lambda p: p["name"].lower()):
     names = [p["name"]] + p.get("aliases", [])
     # Rank by: best similarity over name and nicknames, then similarity of the official name, then nearest.
     # (A nickname like "Moremi" matches "Moremi Car Park" as well as "Moremi Hall"; the official name breaks the tie.)
-    ranked = [((max(similar(n, o["name"]) for n in names), similar(p["name"], o["name"]), -metres(pos, o["pos"])), o)
-              for o in osm if metres(pos, o["pos"]) <= 400]
+    limit = 400 if distinctive(p["name"]) else 100            # "Walkway" alone only counts if it is very close
+    ranked = [((*max(similar(n, o["name"]) for n in names), seq(p["name"], o["name"]), -metres(pos, o["pos"])), o)
+              for o in osm if metres(pos, o["pos"]) <= limit]
     key, o = max(ranked, key=lambda x: x[0], default=((0,), None))
     score = key[0]
     if o is None or score < 0.65:

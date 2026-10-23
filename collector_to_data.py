@@ -167,9 +167,11 @@ for g in groups:
     if not named: continue   # a separate bit of road or a lone bend with no place on it does not matter
     if len(g) == 1: problems.append(f"{named[0]}: no path to any other place")
     else: problems.append("Not joined to the " + ("Main Gate" if "main_gate" in main else "main") + " paths: " + ", ".join(named) + ". Walk from one of them to a place that is joined, with 'I walked here from' ticked")
-# Shortcuts to walk: two places close together whose walking route (along saved paths only) is missing or more than DETOUR times
-# the straight line. It never adds paths itself: only someone on the ground knows if a real path exists (no fence, building or gutter).
-NEAR_M, DETOUR = 200, 2
+# Shortcuts to walk: two places close together whose walking route is missing, or more than DETOUR times the straight line
+# AND at least EXTRA_M longer (a 40 m detour is not worth a walk). It never adds paths itself: only someone on the ground
+# knows if a real path exists (no fence, building or gutter).
+# Places under SAME_M apart with different names are listed apart: they may be one building saved twice.
+NEAR_M, DETOUR, EXTRA_M, SAME_M = 200, 2, 80, 15
 byid = {p["id"]: p for p in places}
 def route_m(src):  # walking distance from src to every place it can reach, like the app's route finder (Dijkstra)
     dist, heap = {src: 0.0}, [(0.0, src)]
@@ -181,15 +183,16 @@ def route_m(src):  # walking distance from src to every place it can reach, like
             if nd < dist.get(y, math.inf): dist[y] = nd; heapq.heappush(heap, (nd, y))
     return dist
 shown = [p for p in places if not p.get("hidden")]
-shortcuts = []
+shortcuts, maybe_same = [], []
 for i, a in enumerate(shown):
     dist = None
     for b in shown[i + 1:]:
         m = metres(a, b)
         if m > NEAR_M: continue
+        if m < SAME_M: maybe_same.append((m, a["name"], b["name"])); continue
         dist = dist or route_m(a["id"])
         r = dist.get(b["id"])
-        if r is None or r > DETOUR * m: shortcuts.append((m, a["name"], b["name"], r))
+        if r is None or (r > DETOUR * m and r - m >= EXTRA_M): shortcuts.append((m, a["name"], b["name"], r))
 # One place per line: still readable, but small enough for weak phones even with thousands of road points.
 with open(os.path.join(out, "data", "places.json"), "w", encoding="utf-8") as fh:
     fh.write("[\n" + ",\n".join(json.dumps(p, ensure_ascii=False, separators=(",", ":")) for p in places) + "\n]\n")
@@ -205,6 +208,9 @@ if os.path.exists(sw):
         with open(sw, "w", encoding="utf-8", newline="\n") as fh: fh.write(s.replace(m.group(0), f'const CACHE = "{ver}";', 1))
         print("Raised the version in sw.js to", ver, "so phones fetch the new data")
 print("\n".join(["Fix these:"] + problems) if problems else "No problems found.")
+if maybe_same:
+    print(f"\nPossibly the same place ({len(maybe_same)}): under {SAME_M} m apart with different names. If one place, add a same_place fix:")
+    for m, a, b in sorted(maybe_same): print(f"  {a} <-> {b}: {round(m)} m apart")
 if shortcuts:
     print(f"\nShortcuts to walk ({len(shortcuts)}): these places are close, but the app has no sensible walking route between them.")
     print("Walk between each pair once with 'I walked here from' ticked, saving a Bend at every corner:")

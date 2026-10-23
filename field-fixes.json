@@ -18,7 +18,7 @@
     "moremi_hall": { "name": "Moremi Hall" },
     "health_sciences_lecture_theatre": { "name": "Health Sciences Lecture Theatre" },
     "faculty_of_computing_science_and_engineering": { "name": "Faculty of Computing Science and Engineering" },
-    "faculty_of_technology": { "name": "Faculty of Technology Lecture Theatre" },
+    "faculty_of_technology": { "name": "Faculty of Technology Lecture Theatre", "aliases": ["Chemengine", "Chem Engine", "Chemical Engineering Lecture Theatre"] },
     "bustop": { "name": "Bus Stop" }
   }
 }

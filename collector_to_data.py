@@ -2,8 +2,10 @@
 # Put ALL the received field-*.txt files (older Collector versions sent field-*.json; both work) in one folder (example: field-files), then run from the app folder:
 #     python collector_to_data.py field-files --out .
 # Writes data/places.json, data/paths.json and images/places/*, raises the version in sw.js, and lists anything to fix.
-# Drop EVERY file you receive into the folder. For each phone the program uses only its NEWEST file (a file already holds everything that phone saved),
-# then merges all phones together. If a place appears twice, the newest save wins, but every path walked to or from it is kept.
+# Drop EVERY file you receive into the folder (give a second file from the same person a new name, e.g. "... 2.txt").
+# ALL files are combined, oldest first, so a phone whose saved list was cleared between sends loses nothing.
+# If a place appears twice, the newest save wins, but every path walked to or from it is kept.
+# A place deleted on purpose must be removed with a "remove" fix in field-fixes.json (older files still contain it).
 # NOTE: data/places.json is rebuilt from the field files every time. Fix mistakes on the phone and re-send, not by editing places.json.
 # At the end it also prints "Shortcuts to walk": close places whose walking route is missing or far too long. Send that list to Field Data.
 # Back End corrections go in field-fixes.json (in the --out folder): merge duplicate places, fix names, categories and nicknames,
@@ -33,12 +35,7 @@ for f in files:
         print("Skipping", os.path.basename(f), "- not a Field Collector file:", e); continue
     loaded.append((d.get("device") or os.path.basename(f), d.get("exportedAt") or datetime.datetime.fromtimestamp(os.path.getmtime(f)).isoformat(), f, d))
 if not loaded: sys.exit("None of the files is a Field Collector file, so nothing was changed.")
-newest = {}
-for dev, at, f, d in loaded:
-    if dev not in newest or at > newest[dev][0]: newest[dev] = (at, f, d, dev)
-for dev, at, f, d in loaded:
-    if newest[dev][1] != f: print("Ignoring older file from the same phone:", os.path.basename(f))
-for at, f, d, dev in sorted(newest.values(), key=lambda x: x[0]):
+for dev, at, f, d in sorted(loaded, key=lambda x: x[1]):
     print("Using", os.path.basename(f), "-", len(d["items"]), "items")
     # Older Collector files call corners "bend_1", "bend_2"... on EVERY phone. Add this phone's code so two phones' corners never merge.
     rename = {it["id"]: f"bend_{dev}_{it['id'][5:]}" for it in d["items"] if it.get("kind") == "Bend" and re.fullmatch(r"bend_\d+", it["id"])}

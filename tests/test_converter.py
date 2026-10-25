@@ -78,13 +78,18 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(places["main_gate"]["lat"], 7.5121)  # newest save wins for the position
         self.assertIn("No problems found.", out)
 
-    def test_only_the_newest_file_from_each_phone_is_used(self):
-        old = [place("main_gate", "Main Gate", 7.512, 4.520), place("wrong_place", "Wrong Place", 7.513, 4.521, "main_gate")]
-        new = [place("main_gate", "Main Gate", 7.512, 4.520)]
-        places, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", old, [["main_gate", "wrong_place"]]),
-                                            ("aaaa", "2026-10-22T11:00:00Z", new, [])])
-        self.assertNotIn("wrong_place", places)
-        self.assertIn("Ignoring older file", out)
+    def test_files_from_the_same_phone_are_combined(self):
+        # The phone's list was cleared between sends: the second file only has new places.
+        old = [place("main_gate", "Main Gate", 7.512, 4.520), place("faculty", "Faculty", 7.513, 4.521, "main_gate", "Faculties")]
+        new = [place("main_gate", "Main Gate", 7.5121, 4.5201), place("library", "Library", 7.514, 4.522, "main_gate", "Libraries")]
+        phones = [("aaaa", "2026-10-22T09:00:00Z", old, [["main_gate", "faculty"]]), ("aaaa", "2026-10-22T11:00:00Z", new, [["main_gate", "library"]])]
+        places, paths, _ = self.run_converter(phones)
+        self.assertEqual(set(places), {"main_gate", "faculty", "library"})          # nothing lost
+        self.assertEqual(places["main_gate"]["lat"], 7.5121)                        # newest save wins
+        self.assertEqual(paths, {frozenset(("main_gate", "faculty")), frozenset(("main_gate", "library"))})
+        # A place deleted on purpose is removed with a fix.
+        places, paths, _ = self.run_converter(phones, fixes={"remove": ["faculty"]})
+        self.assertNotIn("faculty", places)
 
     def test_islands_are_reported(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520), place("bus_stop", "Bus Stop", 7.513, 4.5215, "main_gate"),

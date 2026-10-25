@@ -3,20 +3,23 @@
 
   "_notes": [
     "faculty_of_technology is the Faculty of Technology BUILDING (Samuel, 23 Oct). Ezekiel had saved the lecture theatre under the same name, so his entry was replaced.",
-    "The lecture theatre must be re-saved as 'Faculty of Technology Lecture Theatre' (nicknames: Chemengine, Chem Engine; old name Chemical Engineering Lecture Theatre)."
+    "The lecture theatre was re-saved by Samuel on 23 Oct as faculty_of_technology_lecture_theatre (nicknames: Chemengine, Chem Engine; old name Chemical Engineering Lecture Theatre).",
+    "intecu (Samuel, 23 Oct) and intercu_computer_station (older save) are the same INTECU building; the newer save's position is kept."
   ],
 
   "same_place": [
     { "keep": "student_union_building", "merge": "sub" },
     { "keep": "oau_second_bus_stop", "merge": "second_bustop" },
-    { "keep": "nacoss_library", "merge": "nacoss" }
+    { "keep": "nacoss_library", "merge": "nacoss" },
+    { "keep": "intecu", "merge": "intercu_computer_station" },
+    { "keep": "colllege_of_health_sciences", "merge": "college_of_heath_sciences" }
   ],
 
   "remove": [],
 
   "_not_same_help": "Pairs under 15 m apart that the team confirmed are DIFFERENT places, so the converter stops asking about them.",
   "not_same": [
-    ["intercu_computer_station", "ict_postgraduate_research_laboratory"],
+    ["intecu", "ict_postgraduate_research_laboratory"],
     ["oak_park_researcher_s_lodge", "oau_ict_driven_knowledge_park_incubation_centre"],
     ["nacoss_library", "shop"],
     ["part_advisor_office", "dean_office_of_the_faculty_of_computing_science_and_engineering"],
@@ -26,7 +29,12 @@
   ],
 
   "change": {
-    "intercu_computer_station": { "name": "INTECU", "aliases": ["Intecu computer station", "Intercu"] },
+    "intecu": { "name": "INTECU", "aliases": ["Intecu computer station", "Intercu"] },
+    "ict_postgraduate_research_laboratory": { "name": "ICT Postgraduate Research Laboratory" },
+    "faculty_of_technology_lecture_theatre": { "name": "Faculty of Technology Lecture Theatre", "category": "Lecture Theatres", "aliases": ["Chemengine", "Chem Engine", "Chemical Engineering Lecture Theatre"], "landmark": "Department of Chemical Engineering" },
+    "road_4": { "name": "Road 4", "aliases": ["Road to DSA"], "waypoint": true },
+    "motion_ground": { "name": "Motion Ground", "category": "Sports" },
+    "sport_complex": { "name": "Sports Complex", "category": "Sports", "aliases": ["Sport Complex"] },
     "hod_of_computer_engineering": { "name": "HOD Office, Computer Engineering", "aliases": ["HOD office for Computer Engineering"], "description": "Office of the Head of Department, Computer Engineering" },
     "part_advisor_office": { "name": "Part Adviser's Office", "aliases": ["Part Advisor Office"], "description": "An office on the first floor inside the Incubation Centre building" },
     "student_union_building": { "name": "Student Union Building", "category": "Administration", "aliases": ["SUB", "Captain Cook"] },
@@ -35,7 +43,7 @@
     "hezekiah_oluwasanmi_library": { "name": "Hezekiah Oluwasanmi Library", "category": "Libraries" },
     "faculty_of_pharmacy": { "name": "Faculty of Pharmacy", "category": "Faculties" },
     "nacoss_library": { "name": "NACOSS Library", "aliases": ["NACOSS"], "landmark": "Near the Faculty of Technology, beside the shop" },
-    "college_of_heath_sciences": { "name": "College of Health Sciences" },
+    "colllege_of_health_sciences": { "name": "College of Health Sciences", "landmark": "Road 2" },
     "moremi_hall": { "name": "Moremi Hall" },
     "health_sciences_lecture_theatre": { "name": "Health Sciences Lecture Theatre" },
     "faculty_of_computing_science_and_engineering": { "name": "Faculty of Computing Science and Engineering", "landmark": "Near NACOSS Library and Seminar Room A and B" },

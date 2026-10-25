@@ -5,17 +5,17 @@ const store = {get: k => { try { return localStorage.getItem(k); } catch (e) { r
 window.addEventListener("error", e => { const b = document.getElementById("status"); if (b) b.textContent = "Error: " + e.message + ". Please reload."; });
 const S = {
   en: {find:"Find a place", sos:"Emergency", here:"Use my location", where:"Where are you now?", listen:"Listen", live:"Direction arrow",
-    turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This screen does not alert anyone. It helps you call and shows what to do.",
+    turn:"Turn your phone", search:"Search a place...", map:"See map", note:"This screen does not alert anyone. It helps you call and shows what to do.",
     nopath:"No walking route saved yet. Landmark:", pending:"Advice not yet confirmed.", tbc:"Number to be confirmed", arrived:"You have arrived",
-    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark"},
+    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark", tagline:"Find your way around OAU", tagsub:"Places, step-by-step directions and emergency help. Works without data.", recent:"Recent", clear:"Clear", tfind:"Find", tsafe:"Stay safe"},
   yo: {find:"Wá ibì kan", sos:"Pàjáwìrì", here:"Lo ibi tí mo wà", where:"Níbo ni o wà báyìí?", listen:"Gbọ́", live:"Ọfà ìtọ́sọ́nà",
     turn:"Yí fóònù rẹ", search:"Wá orúkọ ibì kan...", map:"Wo àwòrán ilẹ̀", note:"Èyí kò ní ránṣẹ́ sí ẹnikẹ́ni. Ó ń ràn ọ́ lọ́wọ́ láti pe ìrànwọ́, ó sì fi ohun tí o máa ṣe hàn ọ́.",
     nopath:"A kò tíì fi ọ̀nà pamọ́. Àmì ibi:", pending:"A kò tíì jẹ́rìí ìmọ̀ràn yìí.", tbc:"A ṣì ń jẹ́rìí nọ́ńbà náà", arrived:"O ti dé",
-    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn"},
+    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn", tagline:"Wá ọ̀nà rẹ ní OAU", tagsub:"Àwọn ibi, ìtọ́sọ́nà ní ìgbésẹ̀ kọ̀ọ̀kan, àti ìrànwọ́ pàjáwìrì. Ó ń ṣiṣẹ́ láì lo dátà.", recent:"Àwọn tí o wá láìpẹ́", clear:"Pa rẹ́", tfind:"Wá", tsafe:"Ààbò"},
   pcm: {find:"Find place", sos:"Emergency", here:"Use where I dey now", where:"Where you dey now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This one no dey call anybody. E go help you call and show wetin to do.",
     nopath:"We never save road yet. Landmark:", pending:"Dem never confirm this advice.", tbc:"Dem never confirm the number", arrived:"You don reach",
-    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark"}
+    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark", tagline:"Find your way for OAU", tagsub:"Places, direction step by step, and help for emergency. E dey work without data.", recent:"Places you find before", clear:"Clear am", tfind:"Find", tsafe:"Stay safe"}
 };
 const CAT = {Libraries:{yo:"Ibi ìkàwé",pcm:"Library"}, "Essential Services":{yo:"Àwọn iṣẹ́ pàtàkì",pcm:"Important services"}, Gates:{yo:"Ẹnu ọ̀nà",pcm:"Gate"},
   "Lecture Theatres":{yo:"Gbọ̀ngàn ìkẹ́kọ̀ọ́",pcm:"Lecture hall"}, Faculties:{yo:"Ẹ̀ka ẹ̀kọ́",pcm:"Faculty"}, Administration:{yo:"Ọ́fíìsì ìṣàkóso",pcm:"Admin"},
@@ -33,7 +33,7 @@ function applyTheme() {
 }
 applyTheme();
 $("themebtn").onclick = () => { store.set("theme", darkNow() ? "light" : "dark"); applyTheme(); };
-let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = ["home"];
+let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = ["find"];
 let lang = store.get("lang"), session = 0, cur = null, route = null, steps = [], si = 0, seq = [];
 let lm, lg, mb;
 const t = k => (S[lang] || S.en)[k] || S.en[k];
@@ -53,13 +53,40 @@ async function load() {
   [places, paths, emerg, lessons] = await Promise.all(["places", "paths", "emergency", "lessons"].map(data));
   graph = Route.buildGraph(places, paths);
   if (!lang) lang = "en";
-  applyLang(); show(store.get("lang") ? "home" : "lang"); warm();
+  applyLang(); show(store.get("lang") ? "find" : "lang"); warm();
 }
+// Find, Stay safe and Emergency are pages side by side in one "pager": swipe between them or tap the tabs.
+// Swiping does not add to the Back history; the history just remembers which page you were on.
+const PAGES = ["find", "lessons", "emergency"];
+let page = "find";
 function show(id, back) {
-  if (!back && hist[hist.length - 1] !== id) hist.push(id);
-  document.querySelectorAll(".screen").forEach(s => { s.hidden = s.id !== id; });
-  $("back").hidden = id === "home" || id === "lang";
+  if (id === "home") id = "find";
+  const pg = PAGES.includes(id), top = hist[hist.length - 1], was = !$("pager").hidden;
+  if (!back) { if (pg && PAGES.includes(top)) hist[hist.length - 1] = id; else if (top !== id) hist.push(id); }
+  const scr = pg ? "pager" : id;
+  document.querySelectorAll(".screen").forEach(s => { s.hidden = s.id !== scr; });
+  document.body.dataset.screen = scr;
+  $("back").hidden = pg || id === "lang";
+  $("lclose").hidden = !store.get("lang");
+  document.querySelectorAll(".lrow button").forEach(b => b.setAttribute("aria-pressed", !!store.get("lang") && b.dataset.lang === lang));
+  if (pg) goPage(id, was); else document.querySelector("main").scrollTop = 0;
 }
+function goPage(id, smooth) {
+  page = id; tabs();
+  const el = $("pages");
+  el.scrollTo({left: PAGES.indexOf(id) * el.clientWidth, behavior: smooth ? "smooth" : "auto"});
+}
+function tabs() {
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.page === page ? "page" : "false"));
+  $("tabs").dataset.on = page;
+}
+$("pages").addEventListener("scroll", () => {
+  const el = $("pages"), x = el.scrollLeft / (el.clientWidth || 1), id = PAGES[Math.round(x)];
+  $("tabs").style.setProperty("--p", Math.max(0, Math.min(2, x)));
+  if (id && id !== page) { page = id; if (PAGES.includes(hist[hist.length - 1])) hist[hist.length - 1] = id; tabs(); }
+}, {passive: true});
+addEventListener("resize", () => { if (!$("pager").hidden) goPage(page, false); });
+document.querySelectorAll("#tabs button").forEach(b => { b.onclick = () => show(b.dataset.page); });
 function applyLang() {
   document.documentElement.lang = lang === "pcm" ? "en" : lang;
   document.querySelectorAll("[data-t]").forEach(e => { e.innerHTML = (e.dataset.i ? icon("ic", I(e.dataset.i)) : "") + t(e.dataset.t); });
@@ -76,8 +103,20 @@ function cats() {
   $("cats").innerHTML = cs.map(c => '<button data-c="' + c + '">' + icon("mk", M(c)) + "<b>" + ct(c) + "</b></button>").join("");
   $("cats").querySelectorAll("button").forEach(b => { b.onclick = () => { cat = b.dataset.c; list(); }; });
 }
+// Recent places: the last 6 places someone chose, newest first, kept on this phone only.
+const CLOCK = '<svg viewBox="0 0 24 24" width="16" height="16"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></g></svg>';
+const recent = () => { try { return JSON.parse(store.get("recent")) || []; } catch (e) { return []; } };
+const remember = id => store.set("recent", JSON.stringify([id].concat(recent().filter(x => x !== id)).slice(0, 6)));
+function recents(on) {
+  const ok = new Set(listed().map(p => p.id)), r = recent().filter(id => ok.has(id));
+  $("recent").hidden = on || !r.length;
+  $("recent").querySelector("b").innerHTML = CLOCK + t("recent");
+  $("rchips").innerHTML = r.map(id => '<button data-id="' + id + '">' + icon("mk", M(graph.byId[id].category)) + "<span>" + nameOf(id) + "</span></button>").join("");
+  $("rchips").querySelectorAll("button").forEach(b => { b.onclick = () => pick(b.dataset.id); });
+}
 function list() {
   const q = $("q").value.trim().toLowerCase(), on = cat || q || all;
+  recents(!!on);
   $("cats").hidden = !!on; $("list").hidden = !on; $("catpill").hidden = !cat;
   $("catpill").innerHTML = cat ? icon("mk", M(cat)) + ct(cat) + " " + I("x") : "";
   $("all").innerHTML = I(all ? "layout-grid" : "list"); $("all").setAttribute("aria-pressed", all);
@@ -85,7 +124,7 @@ function list() {
     (!q || [p.name].concat(p.aliases || []).some(x => x.toLowerCase().includes(q)))).sort((x, y) => x.name.localeCompare(y.name)).map(card).join("");
   $("list").querySelectorAll("button").forEach(b => { b.onclick = () => pick(b.dataset.id); });
 }
-function pick(id) { placeId = id; startHead(); show("start"); }
+function pick(id) { remember(id); placeId = id; startHead(); show("start"); }
 function startHead() {
   const p = graph.byId[placeId];
   $("sico").innerHTML = M(p.category); $("sname").textContent = p.name; $("slm").textContent = tr(p.landmark); $("spic").innerHTML = pic(p);
@@ -187,10 +226,15 @@ function slide() {
   $("lprev").innerHTML = I("arrow-left"); $("lnext").innerHTML = I("arrow-right"); $("lprev").disabled = li === 0; $("lnext").disabled = li === n - 1;
 }
 document.querySelectorAll("[data-go]").forEach(b => { b.onclick = () => show(b.dataset.go); });
-document.querySelectorAll("#lang button").forEach(b => { b.onclick = () => { lang = b.dataset.lang; store.set("lang", lang); applyLang(); show("home"); warm(); }; });
+document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => { lang = b.dataset.lang; store.set("lang", lang); applyLang(); hist = []; show("find"); warm(); }; });
+$("lclose").onclick = () => $("back").onclick();
+// Landing page: the 3D shapes lean a little towards your finger (or as you tilt the phone).
+const lean = (x, y) => { const l = $("lang"); l.style.setProperty("--px", x.toFixed(2)); l.style.setProperty("--py", y.toFixed(2)); };
+$("lang").addEventListener("pointermove", e => lean(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5));
+addEventListener("deviceorientation", e => { if (!$("lang").hidden && e.gamma != null) lean(Math.max(-1, Math.min(1, e.gamma / 30)) / 2, Math.max(-1, Math.min(1, (e.beta - 40) / 30)) / 2); });
 $("langbtn").onclick = () => show("lang");
 $("back").onclick = () => { hist.pop(); show(hist[hist.length - 1] || "home", true); };
-$("q").oninput = list; $("catpill").onclick = () => { cat = ""; all = false; list(); }; $("all").onclick = () => { all = !all; cat = ""; list(); };
+$("q").oninput = list; $("rclear").onclick = () => { store.set("recent", "[]"); list(); }; $("catpill").onclick = () => { cat = ""; all = false; list(); }; $("all").onclick = () => { all = !all; cat = ""; list(); };
 $("prev").onclick = () => { si = Math.max(0, si - 1); renderStep(true); };
 $("next").onclick = () => { si++; renderStep(true); };
 const step = d => { li = Math.min(topic.steps.length - 1, Math.max(0, li + d)); slide(); };

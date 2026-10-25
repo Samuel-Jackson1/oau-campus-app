@@ -16,6 +16,17 @@ Directory with nicknames, browse by category, place photo slot and landmark, one
 - Light/dark switch (v16) in the header: follows the phone until tapped, then remembered.
 - Focus for the presentation: Main Gate to the Faculty of Computing Science and Engineering. Full campus later.
 
+## 3D look (v20)
+- Landing page (first open, and the language button): floating 3D spheres say hello in each language (tap one to choose),
+  with the same three languages in a readable row underneath. Pure CSS, no 3D library, so it stays light and works offline.
+- Find, Stay safe and Emergency are now side-by-side pages: swipe left/right or tap the raised tab bar. In Chrome the pages
+  turn like the sides of a cube while swiping; other browsers simply slide. Emergency is always one tap away in the tab bar.
+- The search box has a travelling yellow edge and a pulsing dot to show it is live.
+- Recent places: the last 6 places chosen, newest first, saved on the phone only (localStorage "recent"), with a Clear button.
+- The Yoruba and Pidgin greetings ("Ẹ káàbọ̀!", "How far?") and the new words are drafts like the rest.
+- Converter: ALL field files are combined (oldest first, newest save of a place wins), so a phone whose list was cleared
+  between sends loses nothing. A place deleted on purpose needs a "remove" fix.
+
 ## NOT in this build (Tier 2 and 3 are parked)
 Voice and audio clips, live arrow or tracking, text/share/online alerts, responder dashboard, room finder, fresher mode, favourites, closed-path rule, campus notices. Do not add these in Phase 1.
 

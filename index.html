@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000a5c">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="vendor/fonts.css"><link rel="stylesheet" href="style.css"><title>OAU Navigator</title></head>
+<link rel="stylesheet" href="vendor/leaflet.css"><link rel="preload" href="vendor/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="vendor/fonts.css"></noscript><link rel="stylesheet" href="style.css"><title>OAU Navigator</title></head>
 <body>
 <header><button id="back" hidden aria-label="Back"></button><span class="crest"><img src="icons/oau-crest.webp" alt="OAU crest" width="34" height="31"></span><h1><span>OAU</span> <span>Navigator</span></h1><button id="themebtn" role="switch" aria-checked="false"><span class="knob"></span><i class="tsun"></i><i class="tmoon"></i></button><button id="sosbtn" aria-label="Emergency"><b>SOS</b></button><button id="langbtn" aria-label="Language"></button></header>
 <div id="devbar" hidden>DEV: sample data in use. Replace data/*.json, photos and audio, then this bar disappears. See DEV_NOTES.md</div>
@@ -69,5 +69,5 @@
 
 </main>
 <div id="viewer" hidden role="dialog" aria-label="Photo"><img alt=""><button id="vclose" aria-label="Close">&times;</button></div>
-<script src="vendor/leaflet.js"></script><script src="vendor/icons.js"></script><script src="category-icons.js"></script><script src="route.js"></script><script src="app.js"></script>
+<script defer src="vendor/leaflet.js"></script><script defer src="vendor/icons.js"></script><script defer src="category-icons.js"></script><script defer src="route.js"></script><script defer src="app.js"></script>
 </body></html>

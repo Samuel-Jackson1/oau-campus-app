@@ -417,3 +417,53 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .bigturn{display:grid;place-items:center;aspect-ratio:16/9;margin:0 0 .6rem;border-radius:22px;background:var(--soft);color:var(--green)}.bigturn svg{width:40%;height:auto;max-height:70%;stroke-width:2.4}
 :root[data-theme="dark"] .bigturn{color:#f8c843}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bigturn{color:#f8c843}}
+
+/* ===== v24: SOS everywhere, illustrated safety cards, a map that follows and turns with you ===== */
+#sosbtn{flex:none;display:grid;place-items:center;width:46px;height:46px;border:2px solid #fff;border-radius:50%;color:#fff;
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.35),rgba(255,255,255,0) 40%),#d32f2f;box-shadow:0 3px 10px rgba(211,47,47,.55)}
+#sosbtn b{font-size:.78rem;letter-spacing:.02em}
+.lbrand #themebtn{margin-left:auto;background:rgba(255,255,255,.12)}
+.qwrap{position:relative}.qwrap input{padding-right:3rem}
+#wqx{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:50%;background:var(--card);color:var(--ink);font-size:1.5rem;line-height:1}
+/* decks */
+.deck{margin:.6rem 0}
+.dtrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.dtrack::-webkit-scrollbar{display:none}
+.dtrack>*{flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
+.dnav{display:flex;align-items:center;gap:.6rem;margin-top:.6rem}
+.dnav button{flex:none;width:56px;min-height:52px;margin:0;padding:0;display:grid;place-items:center;border-radius:999px}
+.dnav svg{width:26px;height:26px;margin:0}
+.ddots{flex:1;display:flex;gap:.4rem;justify-content:center}
+.ddots i{width:10px;height:10px;border-radius:50%;background:var(--line);transition:background .2s}.ddots i.on{background:var(--green)}
+:root[data-theme="dark"] .ddots i.on{background:#f8c843}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ddots i.on{background:#f8c843}}
+.lcard{padding:0 .2rem;text-align:center}
+.art{position:relative;display:grid;place-items:center;aspect-ratio:4/3;margin:0 0 .8rem;border-radius:26px;overflow:hidden;
+  background:radial-gradient(circle at 50% 38%,#ffffff 0,var(--soft) 55%,color-mix(in srgb,var(--soft) 70%,var(--green)) 100%)}
+.art::after{content:"";position:absolute;left:18%;right:18%;bottom:12%;height:9%;border-radius:50%;background:rgba(0,0,0,.14);filter:blur(6px)}
+.art img{position:relative;z-index:1;width:56%;height:auto;filter:drop-shadow(0 12px 14px rgba(0,0,0,.25))}
+.art img.a1{position:absolute;width:30%;right:9%;bottom:11%}
+.art img.a0:only-child{width:60%}
+:root[data-theme="dark"] .art{background:radial-gradient(circle at 50% 38%,#3a427a 0,#1f2550 60%,#141838 100%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .art{background:radial-gradient(circle at 50% 38%,#3a427a 0,#1f2550 60%,#141838 100%)}}
+.lcard .lt{font-size:1.3rem;font-weight:700;line-height:1.35;margin:0 0 .3rem}
+.lnum{color:var(--muted);font-weight:700}
+.tart{width:64px;height:64px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+#ecats .tart{width:48px;height:48px}
+.dh{margin:1.2rem 0 .2rem}
+/* map: calm ways, one big "You are here" */
+#mapwrap{position:relative;overflow:hidden;height:min(58vh,440px);margin-top:1rem;border-radius:22px;background:var(--card2)}
+#map{position:absolute;inset:0;height:auto;margin:0;border-radius:0}
+#mapwrap.turn #map{inset:auto;left:50%;top:50%;width:var(--d);height:var(--d);margin:calc(var(--d) / -2) 0 0 calc(var(--d) / -2);will-change:transform}
+#mapwrap.turn .pin{rotate:var(--mr)}
+#mapwrap.turn .you em{display:none}
+.mroad{stroke:#cfd3e2;stroke-width:4}
+:root[data-theme="dark"] .mroad{stroke:#3a3d52}
+.mdot{fill-opacity:.75;stroke-width:1}
+.you{width:28px;height:28px}
+.you i{border-width:4px}
+.you em{top:32px;font-size:.78rem;padding:2px 9px}
+#youtag{position:absolute;left:50%;top:calc(50% + 24px);transform:translateX(-50%);z-index:500;pointer-events:none;font-weight:800;font-size:.8rem;color:#fff;background:#1a73e8;
+  padding:3px 10px;border-radius:999px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.cards li{content-visibility:auto;contain-intrinsic-size:auto 80px}
+.call{display:flex;align-items:center;gap:.8rem}.call span{display:block}.call small{display:block;font-size:.85rem;opacity:.9;font-weight:600}.call b{display:block;font-size:1.25rem;letter-spacing:.02em}.call svg{flex:none;width:26px;height:26px;margin:0}

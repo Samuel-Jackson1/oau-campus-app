@@ -57,6 +57,7 @@
     "oak_park_researcher_s_lodge": { "name": "OAK Park Researcher's Lodge", "category": "Hostels" },
     "oau_ict_driven_knowledge_park_incubation_centre": { "name": "OAU ICT-Driven Knowledge Park Incubation Centre", "aliases": ["Incubation Centre"] },
     "postgraduate_college": { "name": "Postgraduate College" },
-    "ict": { "name": "ICT Centre", "aliases": ["ICT", "CBT Centre"] }
+    "ict": { "name": "ICT Centre", "aliases": ["ICT", "CBT Centre"] },
+    "banking_area": { "landmark": "CTLW" }
   }
 }

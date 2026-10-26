@@ -48,6 +48,22 @@ Directory with nicknames, browse by category, place photo slot and landmark, one
   beam that turns with the phone's compass (no data needed; iPhones ask once for motion permission).
 - Freshers trail (data/freshers.json, draft) is built but switched OFF (FRESHERS = false in app.js) until the team
   checks the list and tips.
+
+## Demo v23-v24 (branch demo-v23, not shipped yet)
+- After the welcome page: a big "Where are you now?" page (GPS button, or tap a photo of a place you can see).
+  Find then shows "You are at ... Change" and asks "Where do you want to go?". Picking a place opens the directions
+  straight away. Back goes all the way to the welcome page. The SWEP line is gone from the welcome page.
+- Directions are swipeable cards: "You are here" (photo), one card per turn (landmark photo, or a big arrow when
+  there is no landmark) with the walk to the next turn, then "You have arrived".
+- Map: roads and footpaths drawn alike, small place dots, gold route, arrows along the current step, a small
+  Start flag, one big "You are here". The round button = follow me: the map keeps you centred and turns with the
+  phone's compass (smoothed every frame). Touching the map stops following.
+- A red SOS button in the header on every screen; the light/dark switch moved to the welcome page.
+- Safety: data/lessons.json rewritten for a Nigerian campus (no lifts; hostel cooking, candles, mosquito coils;
+  fire service numbers), each step a swipeable card with 3D pictures from Microsoft Fluent Emoji (MIT, icons/art,
+  see CREDITS.txt). The Emergency page shows the call buttons, then the same cards under "What to do".
+  Status: first version, being checked with the OAU Fire Service / Health Centre / Security.
+- Fire Service numbers 0816 221 4241 and 0807 521 1840 come from the OAU Fire Service guidance (item c).
 - Converter: ALL field files are combined (oldest first, newest save of a place wins), so a phone whose list was cleared
   between sends loses nothing. A place deleted on purpose needs a "remove" fix.
 

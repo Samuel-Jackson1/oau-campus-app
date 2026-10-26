@@ -7,15 +7,15 @@ const S = {
   en: {find:"Find a place", sos:"Emergency", here:"Use my location", where:"Where are you now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search a place...", map:"See map", note:"This screen does not alert anyone. It helps you call and shows what to do.",
     nopath:"No walking route saved yet. Landmark:", pending:"Advice not yet confirmed.", tbc:"Number to be confirmed", arrived:"You have arrived",
-    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark", tagline:"Find your way around OAU", tagsub:"Places, step-by-step directions and emergency help. Works without data.", recent:"Recent", clear:"Clear", tfind:"Find", tsafe:"Stay safe", aka:"Also called", closest:"No exact match. Closest places:", share:"Share this place", copied:"Link copied", longwalk:"Long walk. Carry water, and take a bus or keke if one is going your way.", noroute:"No route yet", fresh:"New to OAU? Freshers trail", freshsub:"The first places to find, in order", found:"found", go:"Go", fdraft:"Draft list and tips. The team must check them.", wheresub:"Let your phone find you, or tap a place you can see.", seeplace:"Or tap a place you can see", skip:"Skip for now", whereto:"Where do you want to go?", youat:"You are at", change:"Change", setwhere:"Tap to say where you are", you:"You", startpin:"Start", herecard:"You are here", walkfor:"Walk", tleft:"Turn left", tright:"Turn right", tstraight:"Go straight on", stepn:"Step", finding:"Finding you...", nearby:"Near", going:"Going to", gpsnote:"Works without data", typename:"Type a name, or scroll", locdenied:"Location is off for this app. Turn it on in your browser settings, or pick where you are from the list.", loctimeout:"GPS is taking too long. Step outside or try again."},
+    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"First version. Being checked with", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark", tagline:"Find your way around OAU", tagsub:"Places, step-by-step directions and emergency help. Works without data.", recent:"Recent", clear:"Clear", tfind:"Find", tsafe:"Stay safe", aka:"Also called", closest:"No exact match. Closest places:", share:"Share this place", copied:"Link copied", longwalk:"Long walk. Carry water, and take a bus or keke if one is going your way.", noroute:"No route yet", fresh:"New to OAU? Freshers trail", freshsub:"The first places to find, in order", found:"found", go:"Go", fdraft:"Draft list and tips. The team must check them.", wheresub:"Let your phone find you, or tap a place you can see.", seeplace:"Or tap a place you can see", skip:"Skip for now", whereto:"Where do you want to go?", youat:"You are at", change:"Change", setwhere:"Tap to say where you are", you:"You", startpin:"Start", herecard:"You are here", whattodo:"What to do", follow:"Follow me", walkfor:"Walk", tleft:"Turn left", tright:"Turn right", tstraight:"Go straight on", stepn:"Step", finding:"Finding you...", nearby:"Near", going:"Going to", gpsnote:"Works without data", typename:"Type a name, or scroll", locdenied:"Location is off for this app. Turn it on in your browser settings, or pick where you are from the list.", loctimeout:"GPS is taking too long. Step outside or try again."},
   yo: {find:"Wá ibì kan", sos:"Pàjáwìrì", here:"Lo ibi tí mo wà", where:"Níbo ni o wà báyìí?", listen:"Gbọ́", live:"Ọfà ìtọ́sọ́nà",
     turn:"Yí fóònù rẹ", search:"Wá orúkọ ibì kan...", map:"Wo àwòrán ilẹ̀", note:"Èyí kò ní ránṣẹ́ sí ẹnikẹ́ni. Ó ń ràn ọ́ lọ́wọ́ láti pe ìrànwọ́, ó sì fi ohun tí o máa ṣe hàn ọ́.",
     nopath:"A kò tíì fi ọ̀nà pamọ́. Àmì ibi:", pending:"A kò tíì jẹ́rìí ìmọ̀ràn yìí.", tbc:"A ṣì ń jẹ́rìí nọ́ńbà náà", arrived:"O ti dé",
-    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn", tagline:"Wá ọ̀nà rẹ ní OAU", tagsub:"Àwọn ibi, ìtọ́sọ́nà ní ìgbésẹ̀ kọ̀ọ̀kan, àti ìrànwọ́ pàjáwìrì. Ó ń ṣiṣẹ́ láì lo dátà.", recent:"Àwọn tí o wá láìpẹ́", clear:"Pa rẹ́", tfind:"Wá", tsafe:"Ààbò", aka:"A tún ń pè é ní", closest:"Kò sí èyí tó bá a mu gan-an. Àwọn tó súnmọ́ ọ:", share:"Pín ibí yìí", copied:"A ti da ìjápọ̀ kọ", longwalk:"Ìrìn jíjìn ni. Gbé omi dání, kí o sì wọ bọ́ọ̀sì tàbí kẹ̀kẹ́ tó bá ń lọ sí ọ̀nà rẹ.", noroute:"Kò sí ọ̀nà síbẹ̀", fresh:"Ṣé o ṣẹ̀ṣẹ̀ dé OAU? Ìtọ́sọ́nà akẹ́kọ̀ọ́ tuntun", freshsub:"Àwọn ibi àkọ́kọ́ tí o máa wá, ní ìtẹ̀léra", found:"ti rí", go:"Lọ", fdraft:"Àkọ́kọ́ ni àtòjọ àti ìmọ̀ràn yìí. Ẹgbẹ́ gbọ́dọ̀ yẹ̀ wọ́n wò.", wheresub:"Jẹ́ kí fóònù rẹ wá ọ, tàbí tẹ ibi tí o ń rí.", seeplace:"Tàbí tẹ ibi tí o ń rí", skip:"Fi sílẹ̀ ná", whereto:"Níbo ni o fẹ́ lọ?", youat:"O wà ní", change:"Yí i padà", setwhere:"Tẹ ibí láti sọ ibi tí o wà", you:"Ìwọ", startpin:"Ìbẹ̀rẹ̀", herecard:"O wà níbí", walkfor:"Rìn", tleft:"Yà sí òsì", tright:"Yà sí ọ̀tún", tstraight:"Máa lọ tààrà", stepn:"Ìgbésẹ̀", finding:"À ń wá ọ...", nearby:"Nítòsí", going:"Ò ń lọ sí", gpsnote:"Ó ń ṣiṣẹ́ láì lo dátà", typename:"Kọ orúkọ kan, tàbí yí i sí ìsàlẹ̀", locdenied:"Ibi tí o wà ti di títì fún ohun èlò yìí. Tan án nínú ètò aṣàwákiri rẹ, tàbí yan ibi tí o wà nínú àtòjọ.", loctimeout:"GPS ń pẹ́ jù. Jáde síta tàbí gbìyànjú lẹ́ẹ̀kan sí i."},
+    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Ẹ̀dà àkọ́kọ́. À ń yẹ̀ ẹ́ wò pẹ̀lú", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn", tagline:"Wá ọ̀nà rẹ ní OAU", tagsub:"Àwọn ibi, ìtọ́sọ́nà ní ìgbésẹ̀ kọ̀ọ̀kan, àti ìrànwọ́ pàjáwìrì. Ó ń ṣiṣẹ́ láì lo dátà.", recent:"Àwọn tí o wá láìpẹ́", clear:"Pa rẹ́", tfind:"Wá", tsafe:"Ààbò", aka:"A tún ń pè é ní", closest:"Kò sí èyí tó bá a mu gan-an. Àwọn tó súnmọ́ ọ:", share:"Pín ibí yìí", copied:"A ti da ìjápọ̀ kọ", longwalk:"Ìrìn jíjìn ni. Gbé omi dání, kí o sì wọ bọ́ọ̀sì tàbí kẹ̀kẹ́ tó bá ń lọ sí ọ̀nà rẹ.", noroute:"Kò sí ọ̀nà síbẹ̀", fresh:"Ṣé o ṣẹ̀ṣẹ̀ dé OAU? Ìtọ́sọ́nà akẹ́kọ̀ọ́ tuntun", freshsub:"Àwọn ibi àkọ́kọ́ tí o máa wá, ní ìtẹ̀léra", found:"ti rí", go:"Lọ", fdraft:"Àkọ́kọ́ ni àtòjọ àti ìmọ̀ràn yìí. Ẹgbẹ́ gbọ́dọ̀ yẹ̀ wọ́n wò.", wheresub:"Jẹ́ kí fóònù rẹ wá ọ, tàbí tẹ ibi tí o ń rí.", seeplace:"Tàbí tẹ ibi tí o ń rí", skip:"Fi sílẹ̀ ná", whereto:"Níbo ni o fẹ́ lọ?", youat:"O wà ní", change:"Yí i padà", setwhere:"Tẹ ibí láti sọ ibi tí o wà", you:"Ìwọ", startpin:"Ìbẹ̀rẹ̀", herecard:"O wà níbí", whattodo:"Ohun tí o máa ṣe", follow:"Tẹ̀lé mi", walkfor:"Rìn", tleft:"Yà sí òsì", tright:"Yà sí ọ̀tún", tstraight:"Máa lọ tààrà", stepn:"Ìgbésẹ̀", finding:"À ń wá ọ...", nearby:"Nítòsí", going:"Ò ń lọ sí", gpsnote:"Ó ń ṣiṣẹ́ láì lo dátà", typename:"Kọ orúkọ kan, tàbí yí i sí ìsàlẹ̀", locdenied:"Ibi tí o wà ti di títì fún ohun èlò yìí. Tan án nínú ètò aṣàwákiri rẹ, tàbí yan ibi tí o wà nínú àtòjọ.", loctimeout:"GPS ń pẹ́ jù. Jáde síta tàbí gbìyànjú lẹ́ẹ̀kan sí i."},
   pcm: {find:"Find place", sos:"Emergency", here:"Use where I dey now", where:"Where you dey now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This one no dey call anybody. E go help you call and show wetin to do.",
     nopath:"We never save road yet. Landmark:", pending:"Dem never confirm this advice.", tbc:"Dem never confirm the number", arrived:"You don reach",
-    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark", tagline:"Find your way for OAU", tagsub:"Places, direction step by step, and help for emergency. E dey work without data.", recent:"Places you find before", clear:"Clear am", tfind:"Find", tsafe:"Stay safe", aka:"Dem dey also call am", closest:"No exact match. Places wey near am:", share:"Share this place", copied:"Link don copy", longwalk:"Na long waka. Carry water, and enter bus or keke if one dey go your side.", noroute:"No road yet", fresh:"You just come OAU? Freshers trail", freshsub:"First places to find, one by one", found:"don find", go:"Go", fdraft:"Draft list and tips. The team go check am.", wheresub:"Make your phone find you, or tap place wey you dey see.", seeplace:"Or tap place wey you dey see", skip:"Leave am for now", whereto:"Where you wan go?", youat:"You dey for", change:"Change am", setwhere:"Tap here to talk where you dey", you:"You", startpin:"Start", herecard:"You dey here", walkfor:"Waka", tleft:"Turn left", tright:"Turn right", tstraight:"Waka straight", stepn:"Step", finding:"We dey find you...", nearby:"Near", going:"You dey go", gpsnote:"E dey work without data", typename:"Write name, or scroll", locdenied:"Location dey off for this app. On am for your browser settings, or pick where you dey from the list.", loctimeout:"GPS dey take too long. Comot go outside or try again."}
+    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"First version. We dey check am with", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark", tagline:"Find your way for OAU", tagsub:"Places, direction step by step, and help for emergency. E dey work without data.", recent:"Places you find before", clear:"Clear am", tfind:"Find", tsafe:"Stay safe", aka:"Dem dey also call am", closest:"No exact match. Places wey near am:", share:"Share this place", copied:"Link don copy", longwalk:"Na long waka. Carry water, and enter bus or keke if one dey go your side.", noroute:"No road yet", fresh:"You just come OAU? Freshers trail", freshsub:"First places to find, one by one", found:"don find", go:"Go", fdraft:"Draft list and tips. The team go check am.", wheresub:"Make your phone find you, or tap place wey you dey see.", seeplace:"Or tap place wey you dey see", skip:"Leave am for now", whereto:"Where you wan go?", youat:"You dey for", change:"Change am", setwhere:"Tap here to talk where you dey", you:"You", startpin:"Start", herecard:"You dey here", whattodo:"Wetin to do", follow:"Follow me", walkfor:"Waka", tleft:"Turn left", tright:"Turn right", tstraight:"Waka straight", stepn:"Step", finding:"We dey find you...", nearby:"Near", going:"You dey go", gpsnote:"E dey work without data", typename:"Write name, or scroll", locdenied:"Location dey off for this app. On am for your browser settings, or pick where you dey from the list.", loctimeout:"GPS dey take too long. Comot go outside or try again."}
 };
 const CAT = {Libraries:{yo:"Ibi ìkàwé",pcm:"Library"}, "Essential Services":{yo:"Àwọn iṣẹ́ pàtàkì",pcm:"Important services"}, Gates:{yo:"Ẹnu ọ̀nà",pcm:"Gate"},
   "Lecture Theatres":{yo:"Gbọ̀ngàn ìkẹ́kọ̀ọ́",pcm:"Lecture hall"}, Faculties:{yo:"Ẹ̀ka ẹ̀kọ́",pcm:"Faculty"}, Administration:{yo:"Ọ́fíìsì ìṣàkóso",pcm:"Admin"},
@@ -47,7 +47,7 @@ const listed = () => shown().filter(p => !p.waypoint);
 const nameOf = id => graph.byId[id].name;
 const icon = (cls, svg) => '<i class="' + cls + '">' + svg + "</i>";
 const pic = p => p.photo ? '<img src="' + p.photo + '" alt="" width="640" height="360">' : '<div class="ph">' + I("camera") + "<span>" + t("photo") + "</span>" + (p.sample ? '<small class="dev">DEV: add real photo</small>' : "") + "</div>";
-const card = (p, extra) => '<li><button data-id="' + p.id + '">' + (p.photo ? '<img class="th" src="' + p.photo + '" alt="" loading="lazy" width="64" height="64">' : icon("mk", M(p.category))) +
+const card = (p, extra) => '<li><button data-id="' + p.id + '">' + (p.photo ? '<img class="th" src="' + p.photo + '" alt="" loading="lazy" decoding="async" width="64" height="64">' : icon("mk", M(p.category))) +
   "<div><b>" + p.name + "</b><span>" + tr(p.landmark) + "</span>" + (extra || "") + "</div></button></li>";
 // Walking distance and time. 75 m a minute is an easy walking pace (4.5 km/h).
 const WALK = 75;
@@ -219,6 +219,7 @@ function whereScreen(forDest) { pendingDest = forDest; $("wq").value = ""; $("gp
 // Photos come first in the list, because someone new to OAU knows what a building looks like, not what it is called.
 function wlist() {
   const g = pendingDest && placeId ? graph.byId[placeId] : null, d = g ? Route.distancesFrom(graph, placeId) : {}, q = norm($("wq").value);
+  $("wqx").hidden = !$("wq").value;
   $("going").hidden = !g; $("going").innerHTML = g ? t("going") + ": <b>" + g.name + "</b>" : "";
   $("gps").innerHTML = I("locate-fixed") + "<span><b>" + t("here") + "</b><small>" + t("gpsnote") + "</small></span>";
   $("wlist").innerHTML = shown().filter(p => !g || p.id !== g.id)
@@ -255,7 +256,7 @@ function startNav(from) {
   route = Route.shortestPath(graph, from, placeId);
   steps = route ? Route.directions(graph, route.ids) : []; si = 0;
   startNavSummary(); show("nav"); buildCards(); map(route && route.ids); setStep(0, false);
-  if (fromGps) startWatch();   // you used GPS to start, so the map shows you moving straight away
+  if (fromGps) { startWatch(); setFollow(true); }   // you used GPS to start, so the map follows you straight away
 }
 // Total distance and time at the top of the directions, and a warning for walks of 10 minutes or more.
 function startNavSummary() {
@@ -307,12 +308,12 @@ function map(ids) {
     const kx = Math.cos(lat0 * Math.PI / 180);
     proj = p => [(p.lat - lat0) * 1e5, (p.lng - lng0) * kx * 1e5];
     const roads = [], foot = [];
-    paths.forEach(([a, b]) => { const A = graph.byId[a], B = graph.byId[b]; (A.osm || B.osm ? roads : foot).push([proj(A), proj(B)]); });
+    // Roads and walked footpaths look the same (both are just "ways"), so the map stays calm; places are small dots.
+    paths.forEach(([a, b]) => { const A = graph.byId[a], B = graph.byId[b]; roads.push([proj(A), proj(B)]); });
     L.polyline(roads, {className: "mroad", interactive: false}).addTo(lm);
-    L.polyline(foot, {className: "mfoot", interactive: false}).addTo(lm);
-    shown().forEach(p => L.circleMarker(proj(p), {radius: 5, className: "mdot k-" + slug(p.category || ""), interactive: false}).addTo(lm));
+    listed().forEach(p => L.circleMarker(proj(p), {radius: 3.5, className: "mdot k-" + slug(p.category || ""), interactive: false}).addTo(lm));
     lg = L.layerGroup().addTo(lm);
-    lm.on("dragstart", () => { follow = false; $("locate").setAttribute("aria-pressed", "false"); });
+    $("mapwrap").addEventListener("pointerdown", e => { if (follow && !e.target.closest("#locate")) setFollow(false); });
   }
   lg.clearLayers(); mb = null; if (!ids) return;
   const pts = ids.map(i => graph.byId[i]);
@@ -367,7 +368,7 @@ function askCompass() {
 }
 function stopWatch() {
   if (watch !== null) navigator.geolocation.clearWatch(watch);
-  watch = null; follow = false; $("locate").setAttribute("aria-pressed", "false");
+  watch = null; if (follow) setFollow(false);
   removeEventListener("deviceorientationabsolute", onTurn); removeEventListener("deviceorientation", onTurn);
   if (youM) { youM.remove(); accC.remove(); youM = accC = null; }
   rot = null;
@@ -377,11 +378,11 @@ function onPos(pos) {
   const p = proj({lat: pos.coords.latitude, lng: pos.coords.longitude});
   if (!youM) {
     accC = L.circle(p, {radius: 1, className: "me-acc", interactive: false}).addTo(lm);
-    youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><s></s><i></i><em>' + t("you") + "</em></div>"})}).addTo(lm);
+    youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><s></s><i></i><em>' + t("herecard") + "</em></div>"})}).addTo(lm);
   }
   youM.setLatLng(p); accC.setLatLng(p); accC.setRadius(pos.coords.accuracy / M_PER_UNIT);
   if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
-  if (follow) lm.panTo(p);
+  if (follow) lm.panTo(p, {animate: true, duration: 0.6, easeLinearity: 1});
 }
 // The compass: Android gives "deviceorientationabsolute", iPhones give webkitCompassHeading. Both work with no data.
 // The turn of the screen (phone held sideways) is added, and the beam always turns the short way round.
@@ -392,34 +393,57 @@ function onTurn(e) {
   const sa = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
   face((h + sa) % 360);
 }
+// The beam (and, in follow mode, the whole map) turns smoothly: every screen frame it moves a quarter of the way
+// to the compass reading, so it never jumps and never lags behind.
+let shownRot = 0, spinRaf = 0;
 function face(h) {
   rot = rot === null ? h : rot + ((h - rot % 360 + 540) % 360) - 180;
-  if (turnRaf) return;
-  turnRaf = requestAnimationFrame(() => {
-    turnRaf = 0;
-    const el = youM && youM.getElement() && youM.getElement().querySelector(".you");
-    if (el) { el.classList.add("dir"); el.style.setProperty("--h", rot.toFixed(1) + "deg"); }
-  });
+  if (!spinRaf) spinRaf = requestAnimationFrame(spin);
+}
+function spin() {
+  spinRaf = 0;
+  shownRot += (rot - shownRot) * 0.25;
+  if (Math.abs(rot - shownRot) > 0.1) spinRaf = requestAnimationFrame(spin); else shownRot = rot;
+  const el = youM && youM.getElement() && youM.getElement().querySelector(".you");
+  if (el) { el.classList.add("dir"); el.style.setProperty("--h", shownRot.toFixed(1) + "deg"); }
+  if (follow) { $("map").style.transform = "rotate(" + (-shownRot).toFixed(1) + "deg)"; $("map").style.setProperty("--mr", shownRot.toFixed(1) + "deg"); }
+}
+// Follow mode: the map keeps you in the middle and turns so the way you face is always "up".
+// Touching the map hands control back to you (the map stops turning and you can drag it again).
+function setFollow(on) {
+  follow = on; const w = $("mapwrap");
+  $("locate").setAttribute("aria-pressed", on); $("locate").innerHTML = I(on ? "navigation" : "locate-fixed");
+  if (on) { const r = w.getBoundingClientRect(); w.style.setProperty("--d", Math.ceil(Math.hypot(r.width, r.height)) + "px"); }
+  w.classList.toggle("turn", on); $("youtag").hidden = !on; $("youtag").textContent = t("herecard");
+  if (!on) { $("map").style.transform = ""; $("map").style.removeProperty("--mr"); }
+  if (!lm) return;
+  on ? lm.dragging.disable() : lm.dragging.enable();
+  lm.invalidateSize({pan: false});
+  if (on && youM) lm.setView(youM.getLatLng(), Math.max(lm.getZoom(), 1.5), {animate: false});
+  if (on && rot !== null) spin();
 }
 function fit() { if (lm && mb) { lm.invalidateSize(); if (lm.getSize().x) lm.fitBounds(mb); } }
 function ecats() {
   const cs = emerg.categories; if (!cs.length) return; ecat = ecat || cs[0].id;
-  $("ecats").innerHTML = cs.map(c => '<button data-c="' + c.id + '" aria-pressed="' + (c.id === ecat) + '">' + I(EICO[c.id]) + "<b>" + tr(c.label) + "</b></button>").join("");
+  const les = c => lessons.find(l => l.id === c.lesson);
+  $("ecats").innerHTML = cs.map(c => '<button data-c="' + c.id + '" aria-pressed="' + (c.id === ecat) + '">' + (les(c) ? '<img class="tart" src="icons/art/' + les(c).art + '.webp" alt="" width="56" height="56" decoding="async">' : I(EICO[c.id])) + "<b>" + tr(c.label) + "</b></button>").join("");
   $("ecats").querySelectorAll("button").forEach(b => { b.onclick = () => { ecat = b.dataset.c; ecats(); }; });
-  const c = cs.find(x => x.id === ecat), g = c.guidance;
+  const c = cs.find(x => x.id === ecat), l = les(c);
   $("ebody").innerHTML = c.contacts.map(k => k.number
-    ? '<a class="call" href="tel:' + k.number.replace(/[^\d+]/g, "") + '">' + I("phone") + " " + tr(k.label) + ": " + k.number + "</a>"
+    ? '<a class="call" href="tel:' + k.number.replace(/[^\d+]/g, "") + '">' + I("phone") + "<span><small>" + tr(k.label) + "</small><b>" + k.number + "</b></span></a>"
     : '<span class="tbc">' + tr(k.label) + " (" + t("tbc") + ")</span>").join("") + (c.say ? '<p class="say">' + tr(c.say) + "</p>" : "") +
     '<button id="wai" class="secondary">' + icon("ic", I("map-pin")) + t("wai") + '</button><p id="waimsg"></p>' +
-    (g.reviewed && g.steps.length ? "<ol>" + g.steps.map(s => "<li>" + tr(s) + "</li>").join("") + "</ol>" : '<p class="tbc">' + t("pending") + "</p>");
+    (l ? '<h3 class="dh">' + t("whattodo") + '</h3><div id="edeck" class="deck"></div><p class="note ctr">' + t("draft") + " " + l.reviewer + ".</p>" : "");
   $("wai").onclick = whereAmI;
+  if (l) deck($("edeck"), lcards(l));
 }
 // Saves the photos on the phone so they work offline.
 async function warm() {
   if (!("serviceWorker" in navigator) || window.__DATA) return;
   $("status").innerHTML = icon("ic", I("circle-check")) + t("saving");
   await navigator.serviceWorker.ready;
-  await Promise.allSettled(shown().filter(p => p.photo).map(p => fetch(p.photo)));
+  const arts = new Set(lessons.flatMap(l => [l.art].concat(...l.steps.map(s => s.art || []))));
+  await Promise.allSettled(shown().filter(p => p.photo).map(p => fetch(p.photo)).concat([...arts].map(n => fetch("icons/art/" + n + ".webp"))));
   $("status").innerHTML = icon("ic", I("circle-check")) + t("ready");
 }
 // "Where am I?": nearest place by GPS, or pick from a list if GPS fails.
@@ -436,21 +460,36 @@ function whereAmI() {
     best ? say(best) : pick();
   }, pick, {timeout: 8000, maximumAge: 30000});
 }
-// Safety lessons: one step per slide, big picture, previous/next buttons.
-function topics() {
-  $("topics").innerHTML = lessons.map(l => '<button data-id="' + l.id + '">' + I(l.icon) + "<b>" + tr(l.title) + "</b></button>").join("");
-  $("topics").querySelectorAll("button").forEach(b => { b.onclick = () => { topic = lessons.find(l => l.id === b.dataset.id); li = 0; show("slides"); slide(); }; });
+// A deck: cards side by side. Swipe, or tap the arrows; the dots show how far you are. A half swipe is finished
+// for you, and while the cards glide after a tap, the in-between positions are ignored (no jumping dots).
+function deck(box, cards) {
+  box.innerHTML = '<div class="dtrack">' + cards.join("") + '</div><div class="dnav"><button class="dprev secondary" aria-label="Previous">' + I("arrow-left") +
+    '</button><div class="ddots">' + cards.map(() => "<i></i>").join("") + '</div><button class="dnext secondary" aria-label="Next">' + I("arrow-right") + "</button></div>";
+  const tr = box.firstChild, dots = box.querySelectorAll(".ddots i"), prev = box.querySelector(".dprev"), next = box.querySelector(".dnext");
+  let at = 0, target = null, raf = 0, settle = 0;
+  const mark = k => { at = k; dots.forEach((d, j) => d.classList.toggle("on", j <= k)); prev.disabled = k === 0; next.disabled = k === cards.length - 1; };
+  const go = k => { k = Math.max(0, Math.min(cards.length - 1, k)); target = k; mark(k); tr.scrollTo({left: k * tr.clientWidth, behavior: "smooth"}); };
+  tr.addEventListener("touchstart", () => { target = null; }, {passive: true});
+  tr.addEventListener("scroll", () => {
+    if (!raf) raf = requestAnimationFrame(() => { raf = 0; const k = Math.round(tr.scrollLeft / (tr.clientWidth || 1));
+      if (target !== null) { if (Math.abs(tr.scrollLeft - target * tr.clientWidth) < 2) target = null; return; }
+      if (k !== at) mark(k); });
+    clearTimeout(settle); settle = setTimeout(() => { const w = tr.clientWidth, x = tr.scrollLeft / (w || 1); if (w && Math.abs(x - Math.round(x)) > 0.01) tr.scrollTo({left: Math.round(x) * w, behavior: "smooth"}); }, 160);
+  }, {passive: true});
+  prev.onclick = () => go(at - 1); next.onclick = () => go(at + 1);
+  mark(0);
 }
-function renderSlides() {
-  const s = topic.steps[li];
-  $("embc").innerHTML = '<div class="embla__slide"><div class="lbig"><div class="lico">' + I(s.icon) + '</div></div><p class="lt">' + tr(s.text) + "</p></div>";
+// The 3D pictures (Microsoft Fluent Emoji, MIT licence), saved in icons/art so they work offline.
+const art = names => '<div class="art">' + (names || []).map((n, i) => '<img class="a' + i + '" src="icons/art/' + n + '.webp" alt="" width="192" height="192" decoding="async">').join("") + "</div>";
+const lcards = l => l.steps.map((s, i) => '<article class="lcard">' + art(s.art) + '<p class="lt">' + tr(s.text) + '</p><small class="lnum">' + (i + 1) + " / " + l.steps.length + "</small></article>");
+// Safety lessons: one illustrated card per step, swipeable.
+function topics() {
+  $("topics").innerHTML = lessons.map(l => '<button data-id="' + l.id + '"><img class="tart" src="icons/art/' + l.art + '.webp" alt="" width="72" height="72" decoding="async"><b>' + tr(l.title) + "</b></button>").join("");
+  $("topics").querySelectorAll("button").forEach(b => { b.onclick = () => { topic = lessons.find(l => l.id === b.dataset.id); show("slides"); slide(); }; });
 }
 function slide() {
-  renderSlides();
-  const n = topic.steps.length;
-  $("ltitle").textContent = tr(topic.title); $("lcount").textContent = (li + 1) + " / " + n; $("ldraft").textContent = t("draft");
-  $("ldots").innerHTML = topic.steps.map((_, i) => '<i class="' + (i <= li ? "on" : "") + '"></i>').join("");
-  $("lprev").innerHTML = I("arrow-left"); $("lnext").innerHTML = I("arrow-right"); $("lprev").disabled = li === 0; $("lnext").disabled = li === n - 1;
+  $("ltitle").textContent = tr(topic.title); deck($("ldeck"), lcards(topic));
+  $("ldraft").textContent = t("draft") + " " + topic.reviewer + ".";
 }
 document.querySelectorAll("[data-go]").forEach(b => { b.onclick = () => show(b.dataset.go); });
 document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => {
@@ -479,6 +518,8 @@ $("q").oninput = list;
 $("q").onkeydown = e => { if (e.key === "Enter") { const b = $("list").querySelector("button"); if (b) b.click(); } };   // Enter opens the first result
 $("qx").onclick = () => { $("q").value = ""; list(); $("q").focus(); };
 $("wq").oninput = wlist;
+$("wqx").onclick = () => { $("wq").value = ""; wlist(); $("wq").focus(); };
+$("sosbtn").onclick = () => show("emergency");
 $("gps").onclick = gpsFind;
 $("wskip").onclick = () => show("find");
 $("fromcard").onclick = () => whereScreen(false);
@@ -493,13 +534,10 @@ $("scards").addEventListener("scroll", () => {
     if (i !== si) setStep(i, false); });
   clearTimeout(csettle); csettle = setTimeout(() => { const el = $("scards"), w = el.clientWidth, x = el.scrollLeft / (w || 1); if (w && Math.abs(x - Math.round(x)) > 0.01) el.scrollTo({left: Math.round(x) * w, behavior: "smooth"}); }, 160);
 }, {passive: true});
-const step = d => { li = Math.min(topic.steps.length - 1, Math.max(0, li + d)); slide(); };
-$("lprev").onclick = () => step(-1); $("lnext").onclick = () => step(1);
 $("mapbox").ontoggle = () => requestAnimationFrame(fit);
 $("locate").onclick = () => {
   if (watch === null) { askCompass(); startWatch(); }
-  follow = !follow || !youM; $("locate").setAttribute("aria-pressed", follow);
-  if (follow && youM) lm.setView(youM.getLatLng(), Math.max(lm.getZoom(), 1));
+  setFollow(!follow);
 };
 document.querySelectorAll("[data-ico]").forEach(e => { e.innerHTML = I(e.dataset.ico); });
 $("back").innerHTML = I("arrow-left"); $("locate").innerHTML = I("locate-fixed"); $("locate").setAttribute("aria-label", t("here"));

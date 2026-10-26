@@ -510,3 +510,28 @@ h1 span:first-child{font-size:clamp(.85rem,4vw,1.05rem)}h1 span:last-child{font-
 #themebtn svg{width:calc(var(--hb) * .4);height:calc(var(--hb) * .4)}
 #themebtn .knob{width:calc(var(--hb) * .8 - 8px);height:calc(var(--hb) * .8 - 8px)}
 #themebtn[aria-checked="true"] .knob{transform:translateX(calc(var(--hb) * .75))}
+
+/* ===== v26: lively "You are here", language code, clear live location ===== */
+/* language button: globe + EN / YO / PCM in one pill */
+#langbtn{width:auto;min-width:var(--hb);padding:0 calc(var(--hb) * .22);display:flex;align-items:center;gap:3px;border-radius:999px}
+#langbtn .lc{font-size:calc(var(--hb) * .3);font-weight:800;letter-spacing:.02em}
+#langbtn svg{width:calc(var(--hb) * .42);height:calc(var(--hb) * .42)}
+/* "You are here": a bright pill that gently breathes and glows, with a little pointer, so it is seen at once */
+.you em,#youtag,.pin.start em{background:linear-gradient(180deg,#2f8bff,#1458d6);color:#fff;font-weight:800;border:2px solid #fff;border-radius:999px;
+  box-shadow:0 0 0 0 rgba(26,115,232,.55),0 3px 10px rgba(0,0,0,.35);animation:herepulse 1.8s ease-in-out infinite}
+.you em::before,#youtag::before{content:"";position:absolute;left:50%;top:-7px;margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom:7px solid #fff}
+@keyframes herepulse{0%,100%{box-shadow:0 0 0 0 rgba(26,115,232,.55),0 3px 10px rgba(0,0,0,.35);scale:1}50%{box-shadow:0 0 0 9px rgba(26,115,232,0),0 3px 10px rgba(0,0,0,.35);scale:1.06}}
+.pin.start span{animation:hop 1.8s ease-in-out infinite}
+@keyframes hop{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.you i{width:28px;height:28px;background:#1a73e8}
+/* the dashed way from you to the first step */
+.mlink{stroke:#1a73e8;stroke-width:4;stroke-dasharray:2 9;stroke-linecap:round;fill:none}
+/* far-away note on the map */
+#mapnote{position:absolute;left:10px;right:10px;top:10px;z-index:600;margin:0;padding:.55rem .8rem;border-radius:14px;background:rgba(255,244,214,.97);color:#5c3d00;font-size:.82rem;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+/* "Show me" / "Following you": a labelled pill, easy to see and tap */
+#locate{left:50%;right:auto;transform:translateX(-50%);width:auto;height:46px;padding:0 1.1rem;display:flex;align-items:center;gap:.45rem;border-radius:999px;
+  background:#1a73e8;color:#fff;font-weight:800;font-size:.9rem;box-shadow:0 6px 16px rgba(26,115,232,.45)}
+#locate svg{width:22px;height:22px}
+#locate[aria-pressed="true"]{background:#0b8a4f;box-shadow:0 6px 16px rgba(11,138,79,.45)}
+@media (prefers-reduced-motion:reduce){.you em,#youtag,.pin.start em,.pin.start span{animation:none}}
+#locate{white-space:nowrap}

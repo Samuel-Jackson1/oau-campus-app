@@ -33,7 +33,7 @@ function applyTheme() {
 }
 applyTheme();
 $("themebtn").onclick = () => { store.set("theme", darkNow() ? "light" : "dark"); applyTheme(); };
-let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = ["find"];
+let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = [];
 let lang = store.get("lang"), session = 0, cur = null, route = null, steps = [], si = 0, seq = [];
 let lm, lg, mb;
 const t = k => (S[lang] || S.en)[k] || S.en[k];
@@ -57,12 +57,21 @@ async function load() {
 }
 // Find, Stay safe and Emergency are pages side by side in one "pager": swipe between them or tap the tabs.
 // Swiping does not add to the Back history; the history just remembers which page you were on.
+// Every new screen is also added to the browser's history, so the phone's own Back button goes back one screen
+// (it only leaves the app from the first screen).
 const PAGES = ["find", "lessons", "emergency"];
 let page = "find";
-function show(id, back) {
+function show(id, back, replace) {
   if (id === "home") id = "find";
   const pg = PAGES.includes(id), top = hist[hist.length - 1], was = !$("pager").hidden;
-  if (!back) { if (pg && PAGES.includes(top)) hist[hist.length - 1] = id; else if (top !== id) hist.push(id); }
+  if (!back) {
+    if (pg && PAGES.includes(top)) hist[hist.length - 1] = id;
+    else if (top !== id) {
+      if (replace && hist.length) hist[hist.length - 1] = id;
+      else { if (hist.length) history.pushState({n: hist.length + 1}, ""); hist.push(id); }
+    }
+  }
+  if (id !== "nav") stopWatch();
   const scr = pg ? "pager" : id;
   document.querySelectorAll(".screen").forEach(s => { s.hidden = s.id !== scr; });
   document.body.dataset.screen = scr;
@@ -73,19 +82,34 @@ function show(id, back) {
 }
 function goPage(id, smooth) {
   page = id; tabs();
-  const el = $("pages");
-  el.scrollTo({left: PAGES.indexOf(id) * el.clientWidth, behavior: smooth ? "smooth" : "auto"});
+  const el = $("pages"), go = () => el.scrollTo({left: PAGES.indexOf(id) * el.clientWidth, behavior: smooth ? "smooth" : "auto"});
+  go(); if (!smooth) requestAnimationFrame(go);   // again after the pager is drawn, in case the browser moved it
 }
+// The browser must not put the pages back where they were before a reload; the app decides which page shows.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 function tabs() {
   document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.page === page ? "page" : "false"));
   $("tabs").dataset.on = page;
 }
-$("pages").addEventListener("scroll", () => {
+// While swiping: move the tab pill with the finger (once per screen frame), and when the finger lifts, make sure the
+// pages land exactly on one page. Some phones stop a swipe half way; this finishes it.
+let raf = 0, settle = 0, touching = false, lastW = innerWidth;
+function onPages() {
+  raf = 0;
   const el = $("pages"), x = el.scrollLeft / (el.clientWidth || 1), id = PAGES[Math.round(x)];
   $("tabs").style.setProperty("--p", Math.max(0, Math.min(2, x)));
   if (id && id !== page) { page = id; if (PAGES.includes(hist[hist.length - 1])) hist[hist.length - 1] = id; tabs(); }
-}, {passive: true});
-addEventListener("resize", () => { if (!$("pager").hidden) goPage(page, false); });
+}
+function land() {
+  const el = $("pages"), w = el.clientWidth, x = el.scrollLeft / (w || 1), i = Math.round(x);
+  if (!touching && w && Math.abs(x - i) > 0.01) el.scrollTo({left: i * w, behavior: "smooth"});
+}
+$("pages").addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(onPages); clearTimeout(settle); settle = setTimeout(land, 150); }, {passive: true});
+$("pages").addEventListener("scrollend", land);
+$("pages").addEventListener("touchstart", () => { touching = true; }, {passive: true});
+$("pages").addEventListener("touchend", () => { touching = false; clearTimeout(settle); settle = setTimeout(land, 150); }, {passive: true});
+// Phones fire "resize" when the address bar slides away while scrolling; only a real width change needs a re-snap.
+addEventListener("resize", () => { if (innerWidth !== lastW) { lastW = innerWidth; if (!$("pager").hidden) goPage(page, false); } });
 document.querySelectorAll("#tabs button").forEach(b => { b.onclick = () => show(b.dataset.page); });
 function applyLang() {
   document.documentElement.lang = lang === "pcm" ? "en" : lang;
@@ -147,10 +171,11 @@ function renderStep(say) {
   $("stepText").innerHTML = done ? "<b>" + t("arrived") + "</b>"
     : (graph.byId[s.to].kind === "landmark" ? '<small class="lm">' + t("lookfor") + "</small>" : "") + (s.near ? '<small class="lm">' + t("at") + " " + nameOf(s.near) + "</small>" : "") + "<small>" + t(s.turn) + '</small><span class="dest">' + icon("mk", M(graph.byId[s.to].category)) + "<b>" + nameOf(s.to) + "</b></span><small>" + s.meters + " m</small>";
   seq = done ? [{key: "arrive", text: t("arrived")}] : [{key: s.turn, text: t(s.turn)}, {key: s.to, text: nameOf(s.to)}];
+  hiStep();
 }
 // The map is drawn from our own data, so it works offline: OpenStreetMap roads in grey, footpaths the Field team
 // walked as green dashes, every place as a small dot, then the route on top with pins at both ends and at turn landmarks.
-let proj;
+let proj, stepLine;
 function map(ids) {
   if (!lm) {
     lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 4, zoomSnap: 0.25, attributionControl: false});
@@ -164,15 +189,62 @@ function map(ids) {
     L.polyline(foot, {className: "mfoot", interactive: false}).addTo(lm);
     shown().forEach(p => L.circleMarker(proj(p), {radius: 4, className: "mdot", interactive: false}).addTo(lm));
     lg = L.layerGroup().addTo(lm);
+    lm.on("dragstart", () => { follow = false; $("locate").setAttribute("aria-pressed", "false"); });
   }
   lg.clearLayers(); mb = null; if (!ids) return;
   const pts = ids.map(i => graph.byId[i]);
   L.polyline(pts.map(proj), {className: "mroute", interactive: false}).addTo(lg);
+  stepLine = L.polyline([], {className: "mstep", interactive: false}).addTo(lg);
   const pin = (p, cls, ico) => L.marker(proj(p), {icon: L.divIcon({className: "", iconSize: null, html: '<div class="pin' + cls + '"><span>' + ico + "</span><em>" + p.name + "</em></div>"})}).addTo(lg);
   [...new Set(steps.map(s => s.near).filter(Boolean))].forEach(id => pin(graph.byId[id], " on", M(graph.byId[id].category)));
   pin(pts[0], "", I("footprints"));
   pin(pts[pts.length - 1], " focus", M(pts[pts.length - 1].category));
-  mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit();
+  mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit(); hiStep(true);
+}
+// The step you are on is drawn on top of the route as moving dots, and the map shows that part of the walk
+// (unless the map is following your GPS).
+function hiStep(first) {
+  if (!lm || !stepLine || !route) return;
+  const s = steps[si];
+  if (!s) { stepLine.setLatLngs([]); return; }
+  const seg = route.ids.slice(s.from, s.end + 1).map(i => proj(graph.byId[i]));
+  stepLine.setLatLngs(seg);
+  if (!first && !follow && $("mapbox").open && lm.getSize().x) lm.fitBounds(L.latLngBounds(seg).pad(0.4), {maxZoom: 1.5});
+}
+// "You" on the map: a blue dot that moves with your GPS, an arrow for the way you face, and a pale circle for
+// how accurate the GPS is. It starts when you tap the button on the map (or chose "Use my location"), stops when
+// you leave the directions, and your position never leaves the phone.
+let watch = null, youM = null, accC = null, follow = false;
+const M_PER_UNIT = 111320 / 1e5;   // the map works in units of 1/100000 of a degree, about 1.1 m
+function startWatch() {
+  if (watch !== null || !navigator.geolocation) return;
+  watch = navigator.geolocation.watchPosition(onPos, () => { $("status").textContent = t("nolocation"); stopWatch(); }, {enableHighAccuracy: true, maximumAge: 5000, timeout: 20000});
+  addEventListener("deviceorientationabsolute", onTurn); addEventListener("deviceorientation", onTurn);
+}
+function stopWatch() {
+  if (watch !== null) navigator.geolocation.clearWatch(watch);
+  watch = null; follow = false; $("locate").setAttribute("aria-pressed", "false");
+  removeEventListener("deviceorientationabsolute", onTurn); removeEventListener("deviceorientation", onTurn);
+  if (youM) { youM.remove(); accC.remove(); youM = accC = null; }
+}
+function onPos(pos) {
+  if (!lm) return;
+  const p = proj({lat: pos.coords.latitude, lng: pos.coords.longitude});
+  if (!youM) {
+    accC = L.circle(p, {radius: 1, className: "me-acc", interactive: false}).addTo(lm);
+    youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><b></b><i></i></div>'})}).addTo(lm);
+  }
+  youM.setLatLng(p); accC.setLatLng(p); accC.setRadius(pos.coords.accuracy / M_PER_UNIT);
+  if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
+  if (follow) lm.panTo(p);
+}
+function onTurn(e) {
+  const h = e.webkitCompassHeading != null ? e.webkitCompassHeading : (e.absolute && e.alpha != null ? 360 - e.alpha : null);
+  if (h != null) face(h);
+}
+function face(h) {
+  const el = youM && youM.getElement() && youM.getElement().querySelector(".you");
+  if (el) { el.classList.add("dir"); el.style.setProperty("--h", Math.round(h) + "deg"); }
 }
 function fit() { if (lm && mb) { lm.invalidateSize(); if (lm.getSize().x) lm.fitBounds(mb); } }
 function ecats() {
@@ -226,29 +298,48 @@ function slide() {
   $("lprev").innerHTML = I("arrow-left"); $("lnext").innerHTML = I("arrow-right"); $("lprev").disabled = li === 0; $("lnext").disabled = li === n - 1;
 }
 document.querySelectorAll("[data-go]").forEach(b => { b.onclick = () => show(b.dataset.go); });
-document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => { lang = b.dataset.lang; store.set("lang", lang); applyLang(); hist = []; show("find"); warm(); }; });
-$("lclose").onclick = () => $("back").onclick();
+document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => {
+  lang = b.dataset.lang; store.set("lang", lang); applyLang(); warm();
+  if (hist.length > 1) history.back(); else show("find", false, true);   // opened from the header: just go back
+}; });
+$("lclose").onclick = () => history.back();
 // Landing page: the 3D shapes lean a little towards your finger (or as you tilt the phone).
 const lean = (x, y) => { const l = $("lang"); l.style.setProperty("--px", x.toFixed(2)); l.style.setProperty("--py", y.toFixed(2)); };
 $("lang").addEventListener("pointermove", e => lean(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5));
 addEventListener("deviceorientation", e => { if (!$("lang").hidden && e.gamma != null) lean(Math.max(-1, Math.min(1, e.gamma / 30)) / 2, Math.max(-1, Math.min(1, (e.beta - 40) / 30)) / 2); });
 $("langbtn").onclick = () => show("lang");
-$("back").onclick = () => { hist.pop(); show(hist[hist.length - 1] || "home", true); };
+$("back").onclick = () => history.back();
+addEventListener("popstate", () => {
+  if (!$("viewer").hidden) { $("viewer").hidden = true; return; }
+  if (hist.length > 1) { hist.pop(); show(hist[hist.length - 1], true); }
+});
+// Tap a place photo to see it full screen; tap again, the X, or the phone's Back button to close it.
+document.addEventListener("click", e => {
+  const img = e.target.closest(".pic img");
+  if (!img) return;
+  $("viewer").querySelector("img").src = img.src; $("viewer").hidden = false; history.pushState({photo: 1}, "");
+});
+$("viewer").onclick = () => history.back();
 $("q").oninput = list; $("rclear").onclick = () => { store.set("recent", "[]"); list(); }; $("catpill").onclick = () => { cat = ""; all = false; list(); }; $("all").onclick = () => { all = !all; cat = ""; list(); };
 $("prev").onclick = () => { si = Math.max(0, si - 1); renderStep(true); };
 $("next").onclick = () => { si++; renderStep(true); };
 const step = d => { li = Math.min(topic.steps.length - 1, Math.max(0, li + d)); slide(); };
 $("lprev").onclick = () => step(-1); $("lnext").onclick = () => step(1);
 $("mapbox").ontoggle = () => requestAnimationFrame(fit);
+$("locate").onclick = () => {
+  if (watch === null) startWatch();
+  follow = !follow || !youM; $("locate").setAttribute("aria-pressed", follow);
+  if (follow && youM) lm.setView(youM.getLatLng(), Math.max(lm.getZoom(), 1));
+};
 $("here").onclick = () => {
   if (!navigator.geolocation) return;
   navigator.geolocation.getCurrentPosition(pos => {
     const m = {lat: pos.coords.latitude, lng: pos.coords.longitude}; let best = null, bd = Infinity;
     shown().filter(p => p.id !== placeId).forEach(p => { const d = Route.haversine(m, p); if (d < bd) { bd = d; best = p; } });
-    if (best) startNav(best.id);
+    if (best) { startNav(best.id); startWatch(); }
   }, () => { $("status").textContent = t("nolocation"); });
 };
 document.querySelectorAll("[data-ico]").forEach(e => { e.innerHTML = I(e.dataset.ico); });
-$("back").innerHTML = I("arrow-left");
+$("back").innerHTML = I("arrow-left"); $("locate").innerHTML = I("locate-fixed"); $("locate").setAttribute("aria-label", t("here"));
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 load();

@@ -2,13 +2,13 @@
 // RULE: every time you change ANY file, change the number below (v1 -> v2 -> v3).
 // That tells phones to throw away the old saved copy and fetch the new one. (Pages, code and data are also checked
 // online first on every open, so updates show up quickly; photos are only refreshed when this number changes.)
-const CACHE = "oau-navigator-v20";
+const CACHE = "oau-navigator-v21";
 
 const CORE = [
   "./", "index.html", "style.css", "route.js", "app.js", "manifest.webmanifest",
   "data/places.json", "data/paths.json", "data/emergency.json", "data/lessons.json", "collect.html",
   "icons/icon-192.png", "icons/icon-512.png",
-  "vendor/leaflet.js", "vendor/leaflet.css", "vendor/fonts.css", "vendor/icons.js", "category-icons.js"
+  "vendor/leaflet.js", "vendor/leaflet.css", "vendor/fonts.css", "vendor/icons.js", "category-icons.js", "icons/oau-crest.webp"
 ];
 
 // GitHub Pages lets browsers keep files for 10 minutes, so every download here says "reload" / "no-cache":

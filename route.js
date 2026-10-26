@@ -106,7 +106,7 @@
         j++;
         m += haversine(graph.byId[ids[j - 1]], graph.byId[ids[j]]);
       }
-      const step = { turn, to: ids[j], meters: Math.round(m) };
+      const step = { turn, to: ids[j], meters: Math.round(m), from: i, end: j };   // from/end: where the step sits in ids (the map draws it)
       const near = named(ids[i]) ? null : landmarkAt(ids[i], ids[j]);
       if (near && near !== ids[0]) step.near = near;
       steps.push(step);

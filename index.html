@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#004429">
+<meta name="theme-color" content="#000a5c">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png">
 <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="vendor/fonts.css"><link rel="stylesheet" href="style.css"><title>OAU Navigator</title></head>
 <body>
-<header><button id="back" hidden aria-label="Back"></button><h1>OAU Navigator</h1><button id="themebtn" aria-label="Light or dark"></button><button id="langbtn" aria-label="Language"></button></header>
+<header><button id="back" hidden aria-label="Back"></button><span class="crest"><img src="icons/oau-crest.webp" alt="OAU crest" width="34" height="31"></span><h1><span>OAU</span> <span>Navigator</span></h1><button id="themebtn" aria-label="Light or dark"></button><button id="langbtn" aria-label="Language"></button></header>
 <div id="devbar" hidden>DEV: sample data in use. Replace data/*.json, photos and audio, then this bar disappears. See DEV_NOTES.md</div>
 <noscript><p style="padding:1rem;font-size:1.1rem">This app needs JavaScript. Please open the file or link in your phone browser (Chrome or Safari), not in a chat or file preview.</p></noscript>
 <p id="status" role="status"></p>
 <main>
 <section id="lang" class="screen" hidden>
 <div class="land">
-<div class="lbrand"><img src="icons/icon-192.png" alt="" width="36" height="36"><b>OAU Navigator</b><button id="lclose" hidden aria-label="Close">&times;</button></div>
+<div class="lbrand"><span class="crest"><img src="icons/oau-crest.webp" alt="OAU crest" width="34" height="31"></span><b class="stack"><span>OAU</span> <span>Navigator</span></b><button id="lclose" hidden aria-label="Close">&times;</button></div>
 <div class="orbs">
 <div class="stage" aria-hidden="true"><i class="orb ring"></i><i class="orb pin3d"><i></i></i><i class="orb cube"></i></div>
 <button class="blob g" data-lang="en"><span>Welcome!</span><small>English</small></button>
@@ -23,6 +23,7 @@
 <p class="lsub" data-t="tagsub"></p>
 <div class="lrow" role="group" aria-label="Language"><button data-lang="en">English</button><button data-lang="yo">Yorùbá</button><button data-lang="pcm">Pidgin</button></div>
 <p id="firstopen" class="lnote" data-t="firstopen"></p>
+<p class="lcredit">A SWEP 200 student project, Obafemi Awolowo University, Ile-Ife</p>
 </div>
 </section>
 <section id="pager" class="screen" hidden>
@@ -51,12 +52,13 @@
 <div id="npic" class="pic"></div><div id="stepText"></div>
 <p class="meta ctr" style="font-size:.8rem">Routes follow roads from OpenStreetMap &middot; &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></p>
 <div class="row3"><button id="prev" class="secondary" aria-label="Previous"></button><button id="next" class="secondary" aria-label="Next"></button></div>
-<details id="mapbox"><summary id="mapbtn"></summary><div id="map" role="region" aria-label="Map"></div></details>
+<details id="mapbox" open><summary id="mapbtn"></summary><div id="mapwrap"><div id="map" role="region" aria-label="Map"></div><button id="locate" aria-pressed="false"></button></div></details>
 </section>
 
 <section id="slides" class="screen" hidden><h2 id="ltitle" class="ctr"></h2><div id="ldots"></div><div id="embc"></div><p id="lcount" class="meta ctr"></p>
 <div class="row3"><button id="lprev" class="secondary" aria-label="Previous"></button><button id="lnext" class="secondary" aria-label="Next"></button></div><p id="ldraft" class="tbc"></p></section>
 
 </main>
+<div id="viewer" hidden role="dialog" aria-label="Photo"><img alt=""><button id="vclose" aria-label="Close">&times;</button></div>
 <script src="vendor/leaflet.js"></script><script src="vendor/icons.js"></script><script src="category-icons.js"></script><script src="route.js"></script><script src="app.js"></script>
 </body></html>

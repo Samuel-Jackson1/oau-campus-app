@@ -24,6 +24,21 @@ Directory with nicknames, browse by category, place photo slot and landmark, one
 - The search box has a travelling yellow edge and a pulsing dot to show it is live.
 - Recent places: the last 6 places chosen, newest first, saved on the phone only (localStorage "recent"), with a Clear button.
 - The Yoruba and Pidgin greetings ("Ẹ káàbọ̀!", "How far?") and the new words are drafts like the rest.
+
+## OAU look, live map, Back button (v21)
+- Colours: OAU navy and gold, measured from the crest (icons/oau-crest.webp, transparent, shown in a white circle in
+  the header and on the welcome page). Title on two lines: "OAU" over "Navigator". The welcome page says it is a
+  SWEP 200 student project, so nobody takes it for an official university app. Ask the supervisor before showing
+  the crest publicly.
+- Map (open by default on the directions screen): the whole route in gold, the step you are on as moving dots on top,
+  and the map zooms to that step when you press next/previous. The round button on the map shows "you": a blue dot
+  that follows the phone's GPS (watchPosition), an arrow for the direction you face (GPS heading while walking, or
+  the compass on Android), and a pale accuracy circle. It stops when you leave the directions screen.
+- Phone Back button: every new screen is added to the browser history, so Back goes to the previous screen instead
+  of closing the app. Swiping between Find / Stay safe / Emergency does not add to it.
+- Swiping: a swipe that stops half way is finished automatically; the address bar sliding away no longer jumps the
+  pages; the page turn is lighter (no fading).
+- Tap a place photo (start screen or directions) to see it full screen; Back or tap to close.
 - Converter: ALL field files are combined (oldest first, newest save of a place wins), so a phone whose list was cleared
   between sends loses nothing. A place deleted on purpose needs a "remove" fix.
 

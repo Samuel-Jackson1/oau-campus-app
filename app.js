@@ -223,7 +223,7 @@ function whereScreen(forDest) { pendingDest = forDest; $("wq").value = ""; $("gp
 function wlist() {
   const g = pendingDest && placeId ? graph.byId[placeId] : null, d = g ? Route.distancesFrom(graph, placeId) : {}, q = norm($("wq").value);
   $("wqx").hidden = !$("wq").value;
-  $("going").hidden = !g; $("going").innerHTML = g ? t("going") + ": <b>" + g.name + "</b>" : "";
+  $("going").hidden = !g; $("going").innerHTML = g ? '<small class="tag go">' + t("going") + "</small><b>" + g.name + "</b>" : "";
   $("gps").innerHTML = I("locate-fixed") + "<span><b>" + t("here") + "</b><small>" + t("gpsnote") + "</small></span>";
   $("wlist").innerHTML = shown().filter(p => !g || p.id !== g.id)
     .filter(p => !q || [p.name].concat(p.aliases || []).some(x => norm(x).includes(q)))
@@ -236,7 +236,7 @@ function setFrom(id, gps) {
   if (pendingDest && placeId && placeId !== id) { pendingDest = false; startNav(id); } else show("find");
 }
 function fromCard() {
-  $("fromcard").innerHTML = icon("mk", I("locate-fixed")) + "<span><small>" + t("youat") + "</small><b>" +
+  $("fromcard").innerHTML = icon("mk", I("locate-fixed")) + '<span><small class="tag here">' + t("youat") + "</small><b>" +
     (fromId ? (fromGps ? t("nearby") + " " : "") + nameOf(fromId) : t("setwhere")) + "</b></span><em>" + t("change") + "</em>";
 }
 function gpsFind() {
@@ -264,7 +264,7 @@ function startNav(from) {
 // Total distance and time at the top of the directions, and a warning for walks of 10 minutes or more.
 function startNavSummary() {
   const g = graph.byId[placeId];
-  $("summary").innerHTML = '<div class="sumrow">' + icon("mk", M(g.category)) + "<span><small>" + t("going") + "</small><b>" + g.name + "</b>" +
+  $("summary").innerHTML = '<div class="sumrow">' + icon("mk", M(g.category)) + "<span>" + '<small class="tag go">' + t("going") + "</small><b>" + g.name + "</b>" +
     (route ? '<em class="far">' + away(route.meters) + "</em>" : "") + '</span><button id="share" aria-label="' + t("share") + '">' + SHARE + "</button></div>" +
     (route && route.meters / WALK >= 10 ? '<small class="warn">' + I("flame") + t("longwalk") + "</small>" : "");
   $("share").onclick = sharePlace;
@@ -283,12 +283,12 @@ function buildCards() {
     return '<small class="leg">' + t("walkfor") + " " + away(m) + "</small>"; };
   // "Turn left towards X" only when X is a place on the way; when X is where you are going, just "Turn left".
   const what = s => s.to === placeId ? "<b>" + t("t" + s.turn) + "</b>" : "<small>" + t(s.turn) + "</small><b>" + nameOf(s.to) + "</b>";
-  const one = (ico, label, p, text) => '<article class="scard"><div class="shead"><span class="sico">' + I(ico) + "</span><small>" + label + "</small></div>" + (p ? '<div class="pic">' + pic(p) + "</div>" : '<div class="bigturn">' + I(ico) + "</div>") + '<div class="stext">' + text + "</div></article>";
+  const one = (ico, label, p, text, tag) => '<article class="scard"><div class="shead"><span class="sico">' + I(ico) + '</span><small class="' + (tag ? "tag " + tag : "") + '">' + label + "</small></div>" + (p ? '<div class="pic">' + pic(p) + "</div>" : '<div class="bigturn">' + I(ico) + "</div>") + '<div class="stext">' + text + "</div></article>";
   $("scards").innerHTML = steps.map((s, i) => i === 0
-    ? one("footprints", t("herecard"), start, "<b>" + start.name + "</b>" + leg(0))
+    ? one("footprints", t("herecard"), start, "<b>" + start.name + "</b>" + leg(0), "here")
     : one(s.turn, t("stepn") + " " + i, s.near ? graph.byId[s.near] : null,   // a photo only when there is a landmark to see at the turn
         (s.near ? '<small class="lm">' + t("at") + " " + nameOf(s.near) + "</small>" : "") + what(s) + leg(i))
-  ).join("") + one("flag", t("arrived"), end, "<b>" + end.name + "</b><small>" + tr(end.landmark) + "</small>");
+  ).join("") + one("flag", t("arrived"), end, "<b>" + end.name + "</b><small>" + tr(end.landmark) + "</small>", "done");
   $("scards").scrollLeft = 0;
 }
 function setStep(i, scroll) {

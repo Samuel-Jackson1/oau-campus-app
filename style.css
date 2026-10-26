@@ -535,3 +535,18 @@ h1 span:first-child{font-size:clamp(.85rem,4vw,1.05rem)}h1 span:last-child{font-
 #locate[aria-pressed="true"]{background:#0b8a4f;box-shadow:0 6px 16px rgba(11,138,79,.45)}
 @media (prefers-reduced-motion:reduce){.you em,#youtag,.pin.start em,.pin.start span{animation:none}}
 #locate{white-space:nowrap}
+
+/* ===== v26b: "You are here", "You are at" and "Going to" as bright labels that cannot be missed ===== */
+.tag{display:inline-flex;align-items:center;gap:7px;width:max-content;max-width:100%;margin:0 0 5px;padding:4px 12px 4px 10px;border-radius:999px;
+  font-size:.78rem!important;font-weight:800;letter-spacing:.06em;text-transform:uppercase;line-height:1.3;color:#fff!important;opacity:1!important}
+.tag::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:currentColor;animation:tagblink 1.4s ease-in-out infinite}
+@keyframes tagblink{50%{opacity:.25}}
+.tag.here{background:linear-gradient(180deg,#2f8bff,#1458d6);animation:herepulse 1.8s ease-in-out infinite}
+.tag.go{background:linear-gradient(180deg,#ffd75e,#e0a100);color:#1a1300!important;box-shadow:0 3px 10px rgba(224,161,0,.35)}
+.tag.done{background:linear-gradient(180deg,#19a463,#0b8a4f)}
+.shead .tag{font-size:1rem!important;padding:7px 16px 7px 13px}
+.sumrow b,.fromcard b{font-size:1.15rem;line-height:1.25}
+.going{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin:0 0 .8rem;padding:.75rem 1rem;border-radius:18px;
+  background:linear-gradient(180deg,var(--card),var(--card2) 160%);color:var(--ink);box-shadow:inset 0 1.5px 0 var(--hi),inset 0 -3px 0 var(--lo),0 10px 20px -14px var(--drop)}
+.going b{font-size:1.15rem}
+@media (prefers-reduced-motion:reduce){.tag,.tag::before{animation:none}}

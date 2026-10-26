@@ -29,8 +29,9 @@ const darkNow = () => document.documentElement.dataset.theme ? document.document
 function applyTheme() {
   const th = store.get("theme");
   if (th) document.documentElement.dataset.theme = th; else delete document.documentElement.dataset.theme;
-  $("themebtn").innerHTML = darkNow() ? SUN : MOON;
+  $("themebtn").setAttribute("aria-checked", darkNow());   // the knob slides to the sun (light) or the moon (dark)
 }
+$("themebtn").querySelector(".tsun").innerHTML = SUN; $("themebtn").querySelector(".tmoon").innerHTML = MOON;
 applyTheme();
 $("themebtn").onclick = () => { store.set("theme", darkNow() ? "light" : "dark"); applyTheme(); };
 let places = [], paths = [], emerg = {categories: []}, lessons = [], fresh = {steps: []}, topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = [];
@@ -299,7 +300,7 @@ function setStep(i, scroll) {
 }
 // The map is drawn from our own data, so it works offline: OpenStreetMap roads in grey, footpaths the Field team
 // walked as green dashes, every place as a small dot, then the route on top with pins at both ends and at turn landmarks.
-let proj, stepLine, arrows, nearPin;
+let proj, stepLine, arrows, nearPin, startPin;
 function map(ids) {
   if (!lm) {
     lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 4, zoomSnap: 0.25, attributionControl: false});
@@ -313,6 +314,7 @@ function map(ids) {
     L.polyline(roads, {className: "mroad", interactive: false}).addTo(lm);
     listed().forEach(p => L.circleMarker(proj(p), {radius: 3.5, className: "mdot k-" + slug(p.category || ""), interactive: false}).addTo(lm));
     lg = L.layerGroup().addTo(lm);
+    lm.on("zoomend", () => hiStep(true));
     $("mapwrap").addEventListener("pointerdown", e => { if (follow && !e.target.closest("#locate")) setFollow(false); });
   }
   lg.clearLayers(); mb = null; if (!ids) return;
@@ -320,7 +322,7 @@ function map(ids) {
   L.polyline(pts.map(proj), {className: "mroute", interactive: false}).addTo(lg);
   stepLine = L.polyline([], {className: "mstep", interactive: false}).addTo(lg);
   arrows = L.layerGroup().addTo(lg); nearPin = null;
-  pin(pts[0], " start", I("flag"), t("startpin"));
+  startPin = pin(pts[0], " start", '<img src="icons/art/stand.webp" alt="" width="40" height="40">', t("herecard"));
   pin(pts[pts.length - 1], " focus", M(pts[pts.length - 1].category), pts[pts.length - 1].name);
   mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit(); hiStep(true);
 }
@@ -329,11 +331,12 @@ function map(ids) {
 const pin = (p, cls, ico, label) => L.marker(proj(p), {interactive: false, icon: L.divIcon({className: "", iconSize: null, html: '<div class="pin' + cls + '"><span>' + ico + "</span><em>" + label + "</em></div>"})}).addTo(lg);
 // Arrows every 30 m along the step you are on, pointing the way to walk.
 const ARROW = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3l7 9h-4.5v9h-5v-9H5z" fill="#fff" stroke="#0d1b8e" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+// The gap between arrows grows when you zoom out (about one arrow per 70 screen pixels), so they never pile up.
 function arrowsOn(seg) {
-  arrows.clearLayers(); let left = 12;
+  arrows.clearLayers(); const gap = Math.max(30 / M_PER_UNIT, 70 / Math.pow(2, lm.getZoom())); let left = gap / 2;
   for (let k = 1; k < seg.length; k++) {
     const [y1, x1] = seg[k - 1], [y2, x2] = seg[k], len = Math.hypot(x2 - x1, y2 - y1), deg = Math.atan2(x2 - x1, y2 - y1) * 180 / Math.PI;
-    for (; left < len; left += 30 / M_PER_UNIT) {
+    for (; left < len; left += gap) {
       const f = left / len;
       L.marker([y1 + (y2 - y1) * f, x1 + (x2 - x1) * f], {interactive: false, icon: L.divIcon({className: "", iconSize: null, html: '<i class="arr" style="transform:translate(-50%,-50%) rotate(' + deg.toFixed(0) + 'deg)">' + ARROW + "</i>"})}).addTo(arrows);
     }
@@ -380,6 +383,7 @@ function onPos(pos) {
     accC = L.circle(p, {radius: 1, className: "me-acc", interactive: false}).addTo(lm);
     youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><s></s><i></i><em>' + t("herecard") + "</em></div>"})}).addTo(lm);
   }
+  if (startPin) { startPin.remove(); startPin = null; }   // the live blue dot is now "you"; one "You are here" only
   youM.setLatLng(p); accC.setLatLng(p); accC.setRadius(pos.coords.accuracy / M_PER_UNIT);
   if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
   if (follow) lm.panTo(p, {animate: true, duration: 0.6, easeLinearity: 1});
@@ -433,7 +437,7 @@ function ecats() {
     ? '<a class="call" href="tel:' + k.number.replace(/[^\d+]/g, "") + '">' + I("phone") + "<span><small>" + tr(k.label) + "</small><b>" + k.number + "</b></span></a>"
     : '<span class="tbc">' + tr(k.label) + " (" + t("tbc") + ")</span>").join("") + (c.say ? '<p class="say">' + tr(c.say) + "</p>" : "") +
     '<button id="wai" class="secondary">' + icon("ic", I("map-pin")) + t("wai") + '</button><p id="waimsg"></p>' +
-    (l ? '<h3 class="dh">' + t("whattodo") + '</h3><div id="edeck" class="deck"></div><p class="note ctr">' + t("draft") + " " + l.reviewer + ".</p>" : "");
+    (l ? '<h3 class="dh">' + t("whattodo") + '</h3><div id="edeck" class="deck"></div>' : "");
   $("wai").onclick = whereAmI;
   if (l) deck($("edeck"), lcards(l));
 }
@@ -489,7 +493,7 @@ function topics() {
 }
 function slide() {
   $("ltitle").textContent = tr(topic.title); deck($("ldeck"), lcards(topic));
-  $("ldraft").textContent = t("draft") + " " + topic.reviewer + ".";
+
 }
 document.querySelectorAll("[data-go]").forEach(b => { b.onclick = () => show(b.dataset.go); });
 document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => {

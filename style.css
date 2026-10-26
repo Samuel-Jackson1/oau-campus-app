@@ -467,3 +467,32 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
   padding:3px 10px;border-radius:999px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .cards li{content-visibility:auto;contain-intrinsic-size:auto 80px}
 .call{display:flex;align-items:center;gap:.8rem}.call span{display:block}.call small{display:block;font-size:.85rem;opacity:.9;font-weight:600}.call b{display:block;font-size:1.25rem;letter-spacing:.02em}.call svg{flex:none;width:26px;height:26px;margin:0}
+
+/* ===== v25 ===== */
+/* X sits exactly in the middle of the "type a name" box */
+.qwrap{margin-bottom:.4rem}.qwrap .plainq{margin:0}
+/* header: smaller pieces so the light/dark switch fits in the middle */
+header{gap:.45rem;padding:.55rem .7rem}
+header .crest{width:40px;height:40px}header .crest img{width:31px}
+h1 span:first-child{font-size:1rem}h1 span:last-child{font-size:.85rem}
+#back,#langbtn{min-width:40px;min-height:40px;width:40px;height:40px}
+#sosbtn{width:42px;height:42px}#sosbtn b{font-size:.72rem}
+#themebtn{position:relative;flex:none;margin:0 auto;display:flex;align-items:center;justify-content:space-between;width:66px;height:34px;min-width:0;min-height:0;padding:0 7px;
+  border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.14);color:#fff}
+#themebtn i{position:relative;z-index:1;display:grid;place-items:center;transition:color .25s}
+#themebtn svg{width:17px;height:17px}
+#themebtn .knob{position:absolute;left:3px;top:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+#themebtn[aria-checked="false"] .tsun{color:#b8890f}
+#themebtn[aria-checked="true"] .knob{transform:translateX(32px);background:#f8c843}
+#themebtn[aria-checked="true"] .tmoon{color:#0f1018}
+@media (max-width:430px){header{gap:.35rem}}
+/* the start of the route: a person in a white circle, labelled "You are here" */
+.pin.start span{width:40px;height:40px;background:#fff;border:3px solid #1a73e8;overflow:hidden}
+.pin.start span img{width:30px;height:30px}
+.pin.start em{background:#1a73e8;color:#fff}
+/* pictures: shown no bigger than their sharp size (256 px pictures, 2x screens) */
+.art img{width:auto;height:62%;max-width:150px;max-height:150px}
+.art img.a1{width:auto;height:30%;max-height:76px}
+.art img.a0:only-child{height:66%;max-height:160px}
+.tart{image-rendering:auto}
+header h1{flex:none}

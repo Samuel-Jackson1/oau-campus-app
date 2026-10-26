@@ -363,3 +363,57 @@ h1 span:last-child,.stack span:last-child{font-size:1rem}
 @media (prefers-reduced-motion:reduce){.pin.focus span{animation:none}}
 /* Narrow phones: the language button shows only the globe, so the header fits (back, crest, title, theme, language) */
 @media (max-width:430px){#langbtn .lt{display:none}#langbtn{min-width:44px;justify-content:center;padding:0}header{gap:.5rem;padding:.6rem .8rem}}
+
+/* ===== v23: "Where are you now?", step cards, clearer map ===== */
+.screen#where{padding-top:1.4rem}
+.bigq{font-size:1.8rem;line-height:1.15;margin:.2rem 0 .3rem}
+.going{margin:0 0 .6rem;padding:.5rem .9rem;border-radius:999px;background:var(--soft);color:var(--on-soft);font-size:.9rem;display:inline-block}
+.gpsbtn{display:flex;align-items:center;gap:.9rem;width:100%;margin:1rem 0 .3rem;padding:1.1rem 1.2rem;border:0;border-radius:24px;color:#fff;text-align:left;
+  background:radial-gradient(circle at 30% 0,rgba(255,255,255,.25),rgba(255,255,255,0) 60%),linear-gradient(180deg,#2a3bb8,var(--green));
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),0 16px 26px -14px rgba(13,27,142,.8)}
+.gpsbtn svg{flex:none;width:34px;height:34px}.gpsbtn b,.gpsbtn small{display:block}.gpsbtn b{font-size:1.2rem}.gpsbtn small{opacity:.85;font-size:.85rem}
+#gpsmsg{min-height:1.2em}
+.seeh{margin:1.2rem 0 .5rem;font-size:1rem;color:var(--muted)}
+.plainq{min-height:48px;margin-bottom:.4rem}
+.linkbtn{display:block;margin:1rem auto;min-height:44px;border:0;background:none;color:var(--muted);text-decoration:underline;font-weight:600}
+.cards .th{flex:none;width:56px;height:56px;border-radius:14px;object-fit:cover;box-shadow:0 4px 10px -4px rgba(0,0,0,.4)}
+.fromcard{display:flex;align-items:center;gap:.8rem;width:100%;margin:0 0 .6rem;padding:.6rem .9rem .6rem .6rem;border:0;border-radius:20px;color:var(--ink);text-align:left;
+  background:linear-gradient(180deg,var(--card),var(--card2) 160%);box-shadow:inset 0 1.5px 0 var(--hi),inset 0 -3px 0 var(--lo),0 10px 20px -14px var(--drop)}
+.fromcard span{flex:1;min-width:0}.fromcard small,.fromcard b{display:block}.fromcard small{font-size:.75rem;color:var(--muted)}
+.fromcard em{font-style:normal;font-weight:700;font-size:.85rem;color:var(--green)}
+:root[data-theme="dark"] .fromcard em{color:#f8c843}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fromcard em{color:#f8c843}}
+/* search: our own X to clear (the browser's own one is hidden so there is only one) */
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+#qx{position:absolute;right:.5rem;z-index:1;width:40px;height:40px;border:0;border-radius:50%;background:var(--card2);color:var(--ink);font-size:1.5rem;line-height:1}
+.beam.typed .live{display:none}
+/* directions: one card per step */
+.sumrow{display:flex;align-items:center;gap:.7rem;text-align:left;padding:.5rem .6rem;border-radius:18px;background:var(--card)}
+.sumrow span{flex:1;min-width:0}.sumrow small,.sumrow b{display:block}.sumrow small{font-size:.75rem;color:var(--muted)}
+#share{flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--card2);color:var(--ink)}
+#share svg{margin:0}
+#scards{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;margin:.8rem -.2rem 0}
+#scards::-webkit-scrollbar{display:none}
+.scard{flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always;padding:0 .2rem}
+.scard>*{margin:0}
+.shead{display:flex;align-items:center;gap:.7rem;padding:.2rem 0 .6rem}
+.sico{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;color:#fff;
+  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.35),rgba(255,255,255,0) 30%),radial-gradient(circle at 50% 55%,#2a3bb8,var(--green) 55%,#000845)}
+.sico svg{width:30px;height:30px}
+.shead small{font-size:1rem;font-weight:800;color:var(--ink)}
+.scard .pic{margin:0 0 .6rem}
+.stext{text-align:center;font-size:1.25rem;line-height:1.3}.stext small,.stext b{display:block}.stext small{font-size:.95rem;color:var(--muted)}
+.stext .lm{color:var(--green)}
+#dots{margin:.6rem 0}
+/* map: one "You", a small "Start" flag, arrows along the step */
+.pin.start span{width:30px;height:30px;background:#fff;color:var(--green);border:2px solid var(--green)}
+.pin.start span svg{width:16px;height:16px}
+.arr{position:absolute;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.arr svg{display:block}
+.you em{position:absolute;left:50%;top:26px;transform:translateX(-50%);font-style:normal;font-weight:800;font-size:.72rem;color:#fff;background:#1a73e8;
+  padding:1px 7px;border-radius:999px;border:2px solid #fff;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.say{margin:.4rem 0 .8rem;padding:.7rem .9rem;border-radius:14px;background:var(--soft);color:var(--on-soft);font-weight:600}
+.stext .leg{margin-top:.3rem;font-weight:700;color:var(--ink)}
+.bigturn{display:grid;place-items:center;aspect-ratio:16/9;margin:0 0 .6rem;border-radius:22px;background:var(--soft);color:var(--green)}.bigturn svg{width:40%;height:auto;max-height:70%;stroke-width:2.4}
+:root[data-theme="dark"] .bigturn{color:#f8c843}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bigturn{color:#f8c843}}

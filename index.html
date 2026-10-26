@@ -12,7 +12,7 @@
 <main>
 <section id="lang" class="screen" hidden>
 <div class="land">
-<div class="lbrand"><span class="crest"><img src="icons/oau-crest.webp" alt="OAU crest" width="34" height="31"></span><b class="stack"><span>OAU</span> <span>Navigator</span></b><button id="lclose" hidden aria-label="Close">&times;</button></div>
+<div class="lbrand"><span class="crest"><img src="icons/oau-crest.webp" alt="OAU crest" width="34" height="31"></span><b class="stack"><span>OAU</span> <span>Navigator</span></b></div>
 <div class="orbs">
 <div class="stage" aria-hidden="true"><i class="orb ring"></i><i class="orb pin3d"><i></i></i><i class="orb cube"></i></div>
 <button class="blob g" data-lang="en"><span>Welcome!</span><small>English</small></button>
@@ -23,13 +23,25 @@
 <p class="lsub" data-t="tagsub"></p>
 <div class="lrow" role="group" aria-label="Language"><button data-lang="en">English</button><button data-lang="yo">Yorùbá</button><button data-lang="pcm">Pidgin</button></div>
 <p id="firstopen" class="lnote" data-t="firstopen"></p>
-<p class="lcredit">A SWEP 200 student project, Obafemi Awolowo University, Ile-Ife</p>
 </div>
+</section>
+<section id="where" class="screen" hidden>
+<p id="going" class="going" hidden></p>
+<h2 class="bigq" data-t="where"></h2>
+<p class="meta" data-t="wheresub"></p>
+<button id="gps" class="gpsbtn"></button>
+<p id="gpsmsg" class="meta ctr" role="status"></p>
+<h3 class="seeh" data-t="seeplace"></h3>
+<input id="wq" class="plainq" type="search" autocomplete="off" enterkeyhint="search">
+<ul id="wlist" class="cards"></ul>
+<button id="wskip" class="linkbtn" data-t="skip"></button>
 </section>
 <section id="pager" class="screen" hidden>
 <div id="pages">
 <section id="find" class="page">
-<div id="qrow"><div class="beam"><i class="ic" data-ico="map-pin"></i><input id="q" type="search" autocomplete="off" enterkeyhint="search"><i class="live" aria-hidden="true"></i></div><button id="all" aria-pressed="false"></button></div>
+<button id="fromcard" class="fromcard"></button>
+<h2 class="ptitle" data-t="whereto"></h2>
+<div id="qrow"><div class="beam"><i class="ic" data-ico="map-pin"></i><input id="q" type="search" autocomplete="off" enterkeyhint="search"><i class="live" aria-hidden="true"></i><button id="qx" type="button" hidden>&times;</button></div></div>
 <button id="freshcard" class="fresh"></button>
 <div id="recent" hidden><div class="rhead"><b data-t="recent"></b><button id="rclear" data-t="clear"></button></div><div id="rchips"></div></div><button id="catpill" hidden></button>
 <div id="cats" class="grid"></div><p id="closest" class="meta" hidden></p><ul id="list" class="cards" hidden></ul>
@@ -42,20 +54,13 @@
 <nav id="tabs"><button data-page="find"><i data-ico="map-pin"></i><b data-t="tfind"></b></button><button data-page="lessons"><i data-ico="shield-check"></i><b data-t="tsafe"></b></button><button data-page="emergency" class="sos"><i data-ico="siren"></i><b data-t="sos"></b></button></nav>
 </section>
 
-<section id="start" class="screen" hidden>
-<div class="dest"><i class="mk" id="sico"></i><b id="sname"></b></div><div id="spic" class="pic"></div><p id="slm" class="meta ctr"></p>
-<button id="share" class="secondary"></button>
-<button id="here" class="secondary" data-t="here" data-i="locate-fixed"></button>
-<h2 data-t="where"></h2><ul id="starts" class="cards"></ul>
-</section>
 <section id="nav" class="screen" hidden>
 <div id="summary"></div>
+<div id="scards"></div>
 <div id="dots"></div>
-<div id="big"><div id="bigico"></div></div>
-<div id="npic" class="pic"></div><div id="stepText"></div>
-<p class="meta ctr" style="font-size:.8rem">Routes follow roads from OpenStreetMap &middot; &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></p>
 <div class="row3"><button id="prev" class="secondary" aria-label="Previous"></button><button id="next" class="secondary" aria-label="Next"></button></div>
 <details id="mapbox" open><summary id="mapbtn"></summary><div id="mapwrap"><div id="map" role="region" aria-label="Map"></div><button id="locate" aria-pressed="false"></button></div></details>
+<p class="meta ctr" style="font-size:.8rem">Routes follow roads from OpenStreetMap &middot; &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></p>
 </section>
 
 <section id="freshers" class="screen" hidden><h2 data-t="fresh"></h2><p class="meta" data-t="freshsub"></p><div id="fprog"><i></i></div><p id="fcount" class="meta"></p>

@@ -66,6 +66,8 @@ async function load() {
   applyLang();
   if (store.get("lang")) { hist = ["lang"]; show("find"); } else show("lang");   // the welcome page sits underneath, one Back away
   warm();
+  // Decode the pictures on the side pages while the phone is idle, so the first swipe is as smooth as the rest.
+  (window.requestIdleCallback || (f => setTimeout(f, 300)))(() => document.querySelectorAll("#pages img").forEach(i => { if (i.decode) i.decode().catch(() => {}); }));
   if (shared && store.get("lang")) { pick(shared); shared = null; }
 }
 let shared = null;

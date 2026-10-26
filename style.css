@@ -496,3 +496,17 @@ h1 span:first-child{font-size:1rem}h1 span:last-child{font-size:.85rem}
 .art img.a0:only-child{height:66%;max-height:160px}
 .tart{image-rendering:auto}
 header h1{flex:none}
+
+/* ===== v26 header: one row that fits any phone; every piece scales with the screen width (--hb = button size) ===== */
+header{--hb:clamp(34px,10.4vw,42px);flex-wrap:nowrap;align-items:center;gap:clamp(4px,1.6vw,10px);padding:.5rem clamp(8px,2.6vw,16px);overflow:hidden}
+header>*{flex:none}
+#back,#langbtn,#sosbtn{width:var(--hb);height:var(--hb);min-width:0;min-height:0;padding:0;display:grid;place-items:center}
+#langbtn .lt{display:none}
+#back svg,#langbtn svg{width:calc(var(--hb) * .5);height:calc(var(--hb) * .5);margin:0}
+#sosbtn b{font-size:calc(var(--hb) * .28)}
+header .crest{width:var(--hb);height:var(--hb)}header .crest img{width:calc(var(--hb) * .78)}
+h1 span:first-child{font-size:clamp(.85rem,4vw,1.05rem)}h1 span:last-child{font-size:clamp(.72rem,3.4vw,.9rem)}
+#themebtn{margin:0 auto;width:calc(var(--hb) * 1.55);height:calc(var(--hb) * .8);padding:0 5px}
+#themebtn svg{width:calc(var(--hb) * .4);height:calc(var(--hb) * .4)}
+#themebtn .knob{width:calc(var(--hb) * .8 - 8px);height:calc(var(--hb) * .8 - 8px)}
+#themebtn[aria-checked="true"] .knob{transform:translateX(calc(var(--hb) * .75))}

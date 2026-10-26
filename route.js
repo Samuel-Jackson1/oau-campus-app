@@ -39,6 +39,21 @@
   // with thousands of road points from OpenStreetMap.
   function shortestPath(graph, from, to) {
     if (!graph.adj[from] || !graph.adj[to]) return null;
+    const { dist, prev } = dijkstra(graph, from, to);
+    if (dist[to] === undefined) return null;
+    const ids = [to];
+    while (ids[0] !== from) ids.unshift(prev[ids[0]]);
+    return { ids, meters: Math.round(dist[to]) };
+  }
+
+  // Walking distance (metres) from one place to every place it can reach, in one go.
+  // The start screen uses it to show "1.2 km · 16 min" next to every possible starting point.
+  function distancesFrom(graph, from) {
+    return graph.adj[from] ? dijkstra(graph, from, null).dist : {};
+  }
+
+  // The search itself. With a "to", it stops as soon as that place is reached; without one, it measures everything.
+  function dijkstra(graph, from, to) {
     const dist = { [from]: 0 }, prev = {}, done = {};
     const heap = [[0, from]];
     const push = item => {
@@ -67,17 +82,14 @@
     while (heap.length) {
       const [d, u] = pop();
       if (done[u]) continue;
-      if (u === to) break;
+      if (to !== null && u === to) break;
       done[u] = true;
       for (const e of graph.adj[u]) {
         const nd = d + e.d;
         if (!(e.to in dist) || nd < dist[e.to]) { dist[e.to] = nd; prev[e.to] = u; push([nd, e.to]); }
       }
     }
-    if (dist[to] === undefined) return null;
-    const ids = [to];
-    while (ids[0] !== from) ids.unshift(prev[ids[0]]);
-    return { ids, meters: Math.round(dist[to]) };
+    return { dist, prev };
   }
 
   // -180..180 difference between two bearings (positive = turning right)
@@ -121,7 +133,7 @@
     return steps;
   }
 
-  const api = { haversine, bearing, buildGraph, shortestPath, directions };
+  const api = { haversine, bearing, buildGraph, shortestPath, distancesFrom, directions };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Route = api;
 })(typeof self !== "undefined" ? self : this);

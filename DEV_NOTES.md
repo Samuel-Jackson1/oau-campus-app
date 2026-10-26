@@ -39,6 +39,15 @@ Directory with nicknames, browse by category, place photo slot and landmark, one
 - Swiping: a swipe that stops half way is finished automatically; the address bar sliding away no longer jumps the
   pages; the page turn is lighter (no fading).
 - Tap a place photo (start screen or directions) to see it full screen; Back or tap to close.
+
+## NaviLag ideas (v22)
+- Walking distance and time (75 m a minute) on every start choice and at the top of the directions; a long-walk
+  warning from 10 minutes. Search ignores accents and punctuation, forgives small typos, and says which nickname
+  matched; Enter opens the first result. "Share this place" sends a ?place=<id> link that opens that place.
+- Map dots and category tiles share one colour per category; the destination pin pulses. The "you" dot has a blue
+  beam that turns with the phone's compass (no data needed; iPhones ask once for motion permission).
+- Freshers trail (data/freshers.json, draft) is built but switched OFF (FRESHERS = false in app.js) until the team
+  checks the list and tips.
 - Converter: ALL field files are combined (oldest first, newest save of a place wins), so a phone whose list was cleared
   between sends loses nothing. A place deleted on purpose needs a "remove" fix.
 

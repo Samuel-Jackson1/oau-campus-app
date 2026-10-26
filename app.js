@@ -7,15 +7,15 @@ const S = {
   en: {find:"Find a place", sos:"Emergency", here:"Use my location", where:"Where are you now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search a place...", map:"See map", note:"This screen does not alert anyone. It helps you call and shows what to do.",
     nopath:"No walking route saved yet. Landmark:", pending:"Advice not yet confirmed.", tbc:"Number to be confirmed", arrived:"You have arrived",
-    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark", tagline:"Find your way around OAU", tagsub:"Places, step-by-step directions and emergency help. Works without data.", recent:"Recent", clear:"Clear", tfind:"Find", tsafe:"Stay safe"},
+    start:"Start by walking to", straight:"Go straight to", left:"Turn left towards", right:"Turn right towards", langname:"English", wai:"Where am I?", near:"You are near:", pickhere:"Pick where you are: ", allplaces:"Show all places", lessons:"Stay safe: what to do", draft:"Draft. Not yet checked by the responsible office.", firstopen:"Turn on mobile data once. The app saves itself, then works without data.", saving:"Saving for offline use...", ready:"Ready to use without data", share:"Share my location", text:"Text with my location", online:"Send alert online", needdata:"Turn on mobile data to use this.", notyet:"Online alert is not set up yet. Please call or text.", lookfor:"Look for it on your way", photo:"Photo goes here", walk:"Demo walk", nolocation:"Could not find your location.", at:"At", theme:"Light or dark", tagline:"Find your way around OAU", tagsub:"Places, step-by-step directions and emergency help. Works without data.", recent:"Recent", clear:"Clear", tfind:"Find", tsafe:"Stay safe", aka:"Also called", closest:"No exact match. Closest places:", share:"Share this place", copied:"Link copied", longwalk:"Long walk. Carry water, and take a bus or keke if one is going your way.", noroute:"No route yet", fresh:"New to OAU? Freshers trail", freshsub:"The first places to find, in order", found:"found", go:"Go", fdraft:"Draft list and tips. The team must check them.", locdenied:"Location is off for this app. Turn it on in your browser settings, or pick where you are from the list.", loctimeout:"GPS is taking too long. Step outside or try again."},
   yo: {find:"Wá ibì kan", sos:"Pàjáwìrì", here:"Lo ibi tí mo wà", where:"Níbo ni o wà báyìí?", listen:"Gbọ́", live:"Ọfà ìtọ́sọ́nà",
     turn:"Yí fóònù rẹ", search:"Wá orúkọ ibì kan...", map:"Wo àwòrán ilẹ̀", note:"Èyí kò ní ránṣẹ́ sí ẹnikẹ́ni. Ó ń ràn ọ́ lọ́wọ́ láti pe ìrànwọ́, ó sì fi ohun tí o máa ṣe hàn ọ́.",
     nopath:"A kò tíì fi ọ̀nà pamọ́. Àmì ibi:", pending:"A kò tíì jẹ́rìí ìmọ̀ràn yìí.", tbc:"A ṣì ń jẹ́rìí nọ́ńbà náà", arrived:"O ti dé",
-    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn", tagline:"Wá ọ̀nà rẹ ní OAU", tagsub:"Àwọn ibi, ìtọ́sọ́nà ní ìgbésẹ̀ kọ̀ọ̀kan, àti ìrànwọ́ pàjáwìrì. Ó ń ṣiṣẹ́ láì lo dátà.", recent:"Àwọn tí o wá láìpẹ́", clear:"Pa rẹ́", tfind:"Wá", tsafe:"Ààbò"},
+    start:"Bẹ̀rẹ̀ nípa rírìn lọ sí", straight:"Máa lọ tààrà sí", left:"Yà sí òsì sí", right:"Yà sí ọ̀tún sí", langname:"Yorùbá", wai:"Níbo ni mo wà?", near:"O wà nítòsí:", pickhere:"Yan ibi tí o wà: ", allplaces:"Fi gbogbo ibi hàn", lessons:"Dúró láìséwu: ohun tí o máa ṣe", draft:"Àkọ́kọ́. Ọ́fíìsì tó yẹ kò tíì yẹ̀ ẹ́ wò.", firstopen:"Tan dátà alágbèéká rẹ lẹ́ẹ̀kan. Ohun èlò yìí yóò fi ara rẹ̀ pamọ́, yóò sì ṣiṣẹ́ láì lo dátà.", saving:"Ń fipamọ́ fún lílò láì lo dátà...", ready:"Ó ti ṣetán láti lò láì lo dátà", share:"Pín ibi tí mo wà", text:"Fi ọ̀rọ̀ ránṣẹ́ pẹ̀lú ibi tí mo wà", online:"Fi ìkìlọ̀ ránṣẹ́ lórí íntánẹ́ẹ̀tì", needdata:"Tan dátà alágbèéká rẹ láti lo èyí.", notyet:"A kò tíì ṣètò èyí. Jọ̀wọ́ pè tàbí fi ọ̀rọ̀ ránṣẹ́.", lookfor:"Wá a lójú ọ̀nà rẹ", photo:"Fọ́tò máa wà níbí", walk:"Ìrìn àyẹ̀wò", nolocation:"A kò rí ibi tí o wà.", at:"Ní", theme:"Ìmọ́lẹ̀ tàbí òkùnkùn", tagline:"Wá ọ̀nà rẹ ní OAU", tagsub:"Àwọn ibi, ìtọ́sọ́nà ní ìgbésẹ̀ kọ̀ọ̀kan, àti ìrànwọ́ pàjáwìrì. Ó ń ṣiṣẹ́ láì lo dátà.", recent:"Àwọn tí o wá láìpẹ́", clear:"Pa rẹ́", tfind:"Wá", tsafe:"Ààbò", aka:"A tún ń pè é ní", closest:"Kò sí èyí tó bá a mu gan-an. Àwọn tó súnmọ́ ọ:", share:"Pín ibí yìí", copied:"A ti da ìjápọ̀ kọ", longwalk:"Ìrìn jíjìn ni. Gbé omi dání, kí o sì wọ bọ́ọ̀sì tàbí kẹ̀kẹ́ tó bá ń lọ sí ọ̀nà rẹ.", noroute:"Kò sí ọ̀nà síbẹ̀", fresh:"Ṣé o ṣẹ̀ṣẹ̀ dé OAU? Ìtọ́sọ́nà akẹ́kọ̀ọ́ tuntun", freshsub:"Àwọn ibi àkọ́kọ́ tí o máa wá, ní ìtẹ̀léra", found:"ti rí", go:"Lọ", fdraft:"Àkọ́kọ́ ni àtòjọ àti ìmọ̀ràn yìí. Ẹgbẹ́ gbọ́dọ̀ yẹ̀ wọ́n wò.", locdenied:"Ibi tí o wà ti di títì fún ohun èlò yìí. Tan án nínú ètò aṣàwákiri rẹ, tàbí yan ibi tí o wà nínú àtòjọ.", loctimeout:"GPS ń pẹ́ jù. Jáde síta tàbí gbìyànjú lẹ́ẹ̀kan sí i."},
   pcm: {find:"Find place", sos:"Emergency", here:"Use where I dey now", where:"Where you dey now?", listen:"Listen", live:"Direction arrow",
     turn:"Turn your phone", search:"Search name of place...", map:"See map", note:"This one no dey call anybody. E go help you call and show wetin to do.",
     nopath:"We never save road yet. Landmark:", pending:"Dem never confirm this advice.", tbc:"Dem never confirm the number", arrived:"You don reach",
-    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark", tagline:"Find your way for OAU", tagsub:"Places, direction step by step, and help for emergency. E dey work without data.", recent:"Places you find before", clear:"Clear am", tfind:"Find", tsafe:"Stay safe"}
+    start:"Start dey waka go", straight:"Waka straight go", left:"Turn left go", right:"Turn right go", langname:"Pidgin", wai:"Where I dey?", near:"You dey near:", pickhere:"Pick where you dey: ", allplaces:"Show all places", lessons:"Stay safe: wetin to do", draft:"Draft. The correct office never check am yet.", firstopen:"Turn on your data one time. The app go save itself, then e go work without data.", saving:"E dey save for offline...", ready:"E don ready, no need data", share:"Share where I dey", text:"Text with where I dey", online:"Send alert for internet", needdata:"Turn on your data to use this one.", notyet:"This one never ready. Abeg call or text.", lookfor:"Look am for your way", photo:"Photo go dey here", walk:"Test waka", nolocation:"We no fit see where you dey.", at:"For", theme:"Light or dark", tagline:"Find your way for OAU", tagsub:"Places, direction step by step, and help for emergency. E dey work without data.", recent:"Places you find before", clear:"Clear am", tfind:"Find", tsafe:"Stay safe", aka:"Dem dey also call am", closest:"No exact match. Places wey near am:", share:"Share this place", copied:"Link don copy", longwalk:"Na long waka. Carry water, and enter bus or keke if one dey go your side.", noroute:"No road yet", fresh:"You just come OAU? Freshers trail", freshsub:"First places to find, one by one", found:"don find", go:"Go", fdraft:"Draft list and tips. The team go check am.", locdenied:"Location dey off for this app. On am for your browser settings, or pick where you dey from the list.", loctimeout:"GPS dey take too long. Comot go outside or try again."}
 };
 const CAT = {Libraries:{yo:"Ibi ìkàwé",pcm:"Library"}, "Essential Services":{yo:"Àwọn iṣẹ́ pàtàkì",pcm:"Important services"}, Gates:{yo:"Ẹnu ọ̀nà",pcm:"Gate"},
   "Lecture Theatres":{yo:"Gbọ̀ngàn ìkẹ́kọ̀ọ́",pcm:"Lecture hall"}, Faculties:{yo:"Ẹ̀ka ẹ̀kọ́",pcm:"Faculty"}, Administration:{yo:"Ọ́fíìsì ìṣàkóso",pcm:"Admin"},
@@ -33,7 +33,7 @@ function applyTheme() {
 }
 applyTheme();
 $("themebtn").onclick = () => { store.set("theme", darkNow() ? "light" : "dark"); applyTheme(); };
-let places = [], paths = [], emerg = {categories: []}, lessons = [], topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = [];
+let places = [], paths = [], emerg = {categories: []}, lessons = [], fresh = {steps: []}, topic = null, li = 0, all = false, graph, placeId = null, cat = "", ecat = null, hist = [];
 let lang = store.get("lang"), session = 0, cur = null, route = null, steps = [], si = 0, seq = [];
 let lm, lg, mb;
 const t = k => (S[lang] || S.en)[k] || S.en[k];
@@ -47,14 +47,24 @@ const listed = () => shown().filter(p => !p.waypoint);
 const nameOf = id => graph.byId[id].name;
 const icon = (cls, svg) => '<i class="' + cls + '">' + svg + "</i>";
 const pic = p => p.photo ? '<img src="' + p.photo + '" alt="" width="640" height="360">' : '<div class="ph">' + I("camera") + "<span>" + t("photo") + "</span>" + (p.sample ? '<small class="dev">DEV: add real photo</small>' : "") + "</div>";
-const card = p => '<li><button data-id="' + p.id + '">' + icon("mk", M(p.category)) + "<div><b>" + p.name + "</b><span>" + tr(p.landmark) + "</span></div></button></li>";
+const card = (p, extra) => '<li><button data-id="' + p.id + '">' + icon("mk", M(p.category)) + "<div><b>" + p.name + "</b><span>" + tr(p.landmark) + "</span>" + (extra || "") + "</div></button></li>";
+// Walking distance and time. 75 m a minute is an easy walking pace (4.5 km/h).
+const WALK = 75;
+const away = m => (m < 1000 ? Math.round(m / 10) * 10 + " m" : (m / 1000).toFixed(1) + " km") + " \u00b7 " + Math.max(1, Math.round(m / WALK)) + " min";
+const slug = c => c.toLowerCase().replace(/[^a-z]+/g, "-");
 
 async function load() {
-  [places, paths, emerg, lessons] = await Promise.all(["places", "paths", "emergency", "lessons"].map(data));
+  [places, paths, emerg, lessons, fresh] = await Promise.all(["places", "paths", "emergency", "lessons", "freshers"].map(data));
   graph = Route.buildGraph(places, paths);
   if (!lang) lang = "en";
+  // A shared link (…?place=main_gate) opens that place. The address is tidied so a reload does not open it again.
+  const sp = new URLSearchParams(location.search).get("place");
+  if (sp) history.replaceState(null, "", location.pathname);
+  shared = sp && graph.byId[sp] && listed().includes(graph.byId[sp]) ? sp : null;
   applyLang(); show(store.get("lang") ? "find" : "lang"); warm();
+  if (shared && store.get("lang")) { pick(shared); shared = null; }
 }
+let shared = null;
 // Find, Stay safe and Emergency are pages side by side in one "pager": swipe between them or tap the tabs.
 // Swiping does not add to the Back history; the history just remembers which page you were on.
 // Every new screen is also added to the browser's history, so the phone's own Back button goes back one screen
@@ -115,16 +125,17 @@ function applyLang() {
   document.documentElement.lang = lang === "pcm" ? "en" : lang;
   document.querySelectorAll("[data-t]").forEach(e => { e.innerHTML = (e.dataset.i ? icon("ic", I(e.dataset.i)) : "") + t(e.dataset.t); });
   $("q").placeholder = t("search"); $("all").setAttribute("aria-label", t("allplaces"));
-  $("langbtn").innerHTML = I("globe") + " " + t("langname");
+  $("langbtn").innerHTML = I("globe") + '<span class="lt">' + t("langname") + "</span>"; $("langbtn").setAttribute("aria-label", t("langname"));
   $("themebtn").setAttribute("aria-label", t("theme"));
   $("mapbtn").innerHTML = icon("ic", I("map")) + t("map");
   $("devbar").hidden = !places.some(p => p.sample);
   topics(); if (topic && !$("slides").hidden) slide();
-  cats(); list(); ecats(); if (placeId) startHead(); if (route) renderStep(false);
+  cats(); list(); ecats(); if (placeId) startHead(); if (route) { renderStep(false); startNavSummary(); }
+  if (!$("freshers").hidden) freshList();
 }
 function cats() {
   const cs = [...new Set(listed().map(p => p.category))].sort();
-  $("cats").innerHTML = cs.map(c => '<button data-c="' + c + '">' + icon("mk", M(c)) + "<b>" + ct(c) + "</b></button>").join("");
+  $("cats").innerHTML = cs.map(c => '<button data-c="' + c + '" class="k-' + slug(c) + '">' + icon("mk", M(c)) + "<b>" + ct(c) + "</b></button>").join("");
   $("cats").querySelectorAll("button").forEach(b => { b.onclick = () => { cat = b.dataset.c; list(); }; });
 }
 // Recent places: the last 6 places someone chose, newest first, kept on this phone only.
@@ -138,27 +149,87 @@ function recents(on) {
   $("rchips").innerHTML = r.map(id => '<button data-id="' + id + '">' + icon("mk", M(graph.byId[id].category)) + "<span>" + nameOf(id) + "</span></button>").join("");
   $("rchips").querySelectorAll("button").forEach(b => { b.onclick = () => pick(b.dataset.id); });
 }
+// Search: ignores capitals, accents and punctuation ("hall 3" finds "Hall-3"), and when nothing matches exactly it
+// forgives small typing mistakes ("libary", "jaja hal"). When a nickname matched, the card says so.
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+function typos(a, b) {   // how many letters must change to turn a into b (stops counting above 2)
+  if (Math.abs(a.length - b.length) > 2) return 3;
+  let row = Array.from({length: b.length + 1}, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const next = [i];
+    for (let j = 1; j <= b.length; j++) next[j] = Math.min(row[j] + 1, next[j - 1] + 1, row[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    row = next;
+  }
+  return row[b.length];
+}
+const close = (qw, words) => words.some(w => w.startsWith(qw) || (qw.length >= 4 && typos(qw, w.slice(0, qw.length + 1)) <= (qw.length >= 7 ? 2 : 1)));
 function list() {
-  const q = $("q").value.trim().toLowerCase(), on = cat || q || all;
-  recents(!!on);
+  const q = norm($("q").value), on = cat || q || all;
+  recents(!!on); freshCard(!!on);
   $("cats").hidden = !!on; $("list").hidden = !on; $("catpill").hidden = !cat;
   $("catpill").innerHTML = cat ? icon("mk", M(cat)) + ct(cat) + " " + I("x") : "";
   $("all").innerHTML = I(all ? "layout-grid" : "list"); $("all").setAttribute("aria-pressed", all);
-  $("list").innerHTML = listed().filter(p => (!cat || p.category === cat) &&
-    (!q || [p.name].concat(p.aliases || []).some(x => x.toLowerCase().includes(q)))).sort((x, y) => x.name.localeCompare(y.name)).map(card).join("");
+  const pool = listed().filter(p => !cat || p.category === cat), names = p => [p.name].concat(p.aliases || []);
+  let hits = pool.map(p => ({p, by: q ? names(p).find(x => norm(x).includes(q)) : p.name})).filter(h => h.by);
+  const fuzzy = q && !hits.length;
+  if (fuzzy) {
+    const qws = q.split(" ").filter(w => w.length >= 3);
+    hits = pool.map(p => ({p, by: names(p).find(x => { const ws = norm(x).split(" "); return qws.length && qws.every(qw => close(qw, ws)); })})).filter(h => h.by);
+  }
+  $("closest").hidden = !fuzzy || !hits.length; $("closest").textContent = t("closest");
+  $("list").innerHTML = hits.sort((x, y) => x.p.name.localeCompare(y.p.name))
+    .map(h => card(h.p, h.by !== h.p.name ? '<em class="aka">' + t("aka") + ": " + h.by + "</em>" : "")).join("");
   $("list").querySelectorAll("button").forEach(b => { b.onclick = () => pick(b.dataset.id); });
+}
+// Freshers trail: a short ordered list of first places to find, ticked off on this phone.
+// Switched off until the team has checked the list and tips (set to true to show the card on Find).
+const FRESHERS = false;
+const freshDone = () => { try { return JSON.parse(store.get("fresh")) || []; } catch (e) { return []; } };
+const freshSteps = () => fresh.steps.filter(s => graph.byId[s.place]);
+function freshCard(on) {
+  const n = freshSteps().length, k = freshSteps().filter(s => freshDone().includes(s.place)).length;
+  $("freshcard").hidden = on || !n || !FRESHERS;
+  $("freshcard").innerHTML = icon("mk", I("flag")) + "<span><b>" + t("fresh") + "</b><small>" + k + " / " + n + " " + t("found") + "</small></span>" + I("arrow-right");
+}
+function freshList() {
+  const st = freshSteps(), done = freshDone(), k = st.filter(s => done.includes(s.place)).length;
+  $("fprog").firstChild.style.width = (st.length ? 100 * k / st.length : 0) + "%";
+  $("fcount").textContent = k + " / " + st.length + " " + t("found");
+  $("fsteps").innerHTML = st.map((s, i) => { const p = graph.byId[s.place], ok = done.includes(s.place);
+    return '<li class="' + (ok ? "ok" : "") + '"><button class="tick" data-id="' + p.id + '" aria-pressed="' + ok + '" aria-label="' + p.name + '">' + (ok ? I("circle-check") : "<b>" + (i + 1) + "</b>") + "</button>" +
+      "<div><b>" + p.name + "</b><span>" + tr(s.tip) + '</span></div><button class="go" data-id="' + p.id + '">' + t("go") + "</button></li>"; }).join("");
+  $("fsteps").querySelectorAll(".tick").forEach(b => { b.onclick = () => {
+    const d = freshDone(), id = b.dataset.id;
+    store.set("fresh", JSON.stringify(d.includes(id) ? d.filter(x => x !== id) : d.concat(id))); freshList(); freshCard(false);
+  }; });
+  $("fsteps").querySelectorAll(".go").forEach(b => { b.onclick = () => pick(b.dataset.id); });
 }
 function pick(id) { remember(id); placeId = id; startHead(); show("start"); }
 function startHead() {
   const p = graph.byId[placeId];
   $("sico").innerHTML = M(p.category); $("sname").textContent = p.name; $("slm").textContent = tr(p.landmark); $("spic").innerHTML = pic(p);
-  $("starts").innerHTML = shown().filter(x => x.id !== placeId).map(card).join("");
+  const d = Route.distancesFrom(graph, placeId);
+  $("starts").innerHTML = shown().filter(x => x.id !== placeId)
+    .map(x => card(x, '<em class="far">' + (d[x.id] != null ? away(d[x.id]) : t("noroute")) + "</em>")).join("");
+  $("share").innerHTML = SHARE + t("share");
   $("starts").querySelectorAll("button").forEach(b => { b.onclick = () => startNav(b.dataset.id); });
+}
+// Share a place: the phone's own share menu (WhatsApp, SMS…), or WhatsApp directly on computers without one.
+const SHARE = '<svg class="ic" viewBox="0 0 24 24" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></g></svg>';
+function sharePlace() {
+  const p = graph.byId[placeId], url = location.origin + location.pathname + "?place=" + p.id, text = p.name + " (OAU Navigator)";
+  if (navigator.share) navigator.share({title: p.name, text, url}).catch(() => {});
+  else open("https://wa.me/?text=" + encodeURIComponent(text + " " + url), "_blank", "noopener");
 }
 function startNav(from) {
   route = Route.shortestPath(graph, from, placeId);
   steps = route ? Route.directions(graph, route.ids) : []; si = 0;
+  startNavSummary();
   show("nav"); renderStep(true); map(route && route.ids);
+}
+// Total distance and time at the top of the directions, and a warning for walks of 10 minutes or more.
+function startNavSummary() {
+  $("summary").innerHTML = route ? "<b>" + away(route.meters) + "</b>" + (route.meters / WALK >= 10 ? '<small class="warn">' + I("flame") + t("longwalk") + "</small>" : "") : "";
 }
 function renderStep(say) {
   const n = steps.length, done = si >= n, s = steps[si];
@@ -187,7 +258,7 @@ function map(ids) {
     paths.forEach(([a, b]) => { const A = graph.byId[a], B = graph.byId[b]; (A.osm || B.osm ? roads : foot).push([proj(A), proj(B)]); });
     L.polyline(roads, {className: "mroad", interactive: false}).addTo(lm);
     L.polyline(foot, {className: "mfoot", interactive: false}).addTo(lm);
-    shown().forEach(p => L.circleMarker(proj(p), {radius: 4, className: "mdot", interactive: false}).addTo(lm));
+    shown().forEach(p => L.circleMarker(proj(p), {radius: 5, className: "mdot k-" + slug(p.category || ""), interactive: false}).addTo(lm));
     lg = L.layerGroup().addTo(lm);
     lm.on("dragstart", () => { follow = false; $("locate").setAttribute("aria-pressed", "false"); });
   }
@@ -218,33 +289,50 @@ let watch = null, youM = null, accC = null, follow = false;
 const M_PER_UNIT = 111320 / 1e5;   // the map works in units of 1/100000 of a degree, about 1.1 m
 function startWatch() {
   if (watch !== null || !navigator.geolocation) return;
-  watch = navigator.geolocation.watchPosition(onPos, () => { $("status").textContent = t("nolocation"); stopWatch(); }, {enableHighAccuracy: true, maximumAge: 5000, timeout: 20000});
+  watch = navigator.geolocation.watchPosition(onPos, e => { $("status").textContent = locErr(e); stopWatch(); }, {enableHighAccuracy: true, maximumAge: 5000, timeout: 30000});
   addEventListener("deviceorientationabsolute", onTurn); addEventListener("deviceorientation", onTurn);
+}
+const locErr = e => t(e && e.code === 1 ? "locdenied" : e && e.code === 3 ? "loctimeout" : "nolocation");
+// iPhones only give the compass after asking, and only straight after a tap.
+function askCompass() {
+  const D = window.DeviceOrientationEvent;
+  if (D && typeof D.requestPermission === "function") D.requestPermission().catch(() => {});
 }
 function stopWatch() {
   if (watch !== null) navigator.geolocation.clearWatch(watch);
   watch = null; follow = false; $("locate").setAttribute("aria-pressed", "false");
   removeEventListener("deviceorientationabsolute", onTurn); removeEventListener("deviceorientation", onTurn);
   if (youM) { youM.remove(); accC.remove(); youM = accC = null; }
+  rot = null;
 }
 function onPos(pos) {
   if (!lm) return;
   const p = proj({lat: pos.coords.latitude, lng: pos.coords.longitude});
   if (!youM) {
     accC = L.circle(p, {radius: 1, className: "me-acc", interactive: false}).addTo(lm);
-    youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><b></b><i></i></div>'})}).addTo(lm);
+    youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><s></s><i></i></div>'})}).addTo(lm);
   }
   youM.setLatLng(p); accC.setLatLng(p); accC.setRadius(pos.coords.accuracy / M_PER_UNIT);
   if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
   if (follow) lm.panTo(p);
 }
+// The compass: Android gives "deviceorientationabsolute", iPhones give webkitCompassHeading. Both work with no data.
+// The turn of the screen (phone held sideways) is added, and the beam always turns the short way round.
+let rot = null, turnRaf = 0;
 function onTurn(e) {
   const h = e.webkitCompassHeading != null ? e.webkitCompassHeading : (e.absolute && e.alpha != null ? 360 - e.alpha : null);
-  if (h != null) face(h);
+  if (h == null) return;
+  const sa = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+  face((h + sa) % 360);
 }
 function face(h) {
-  const el = youM && youM.getElement() && youM.getElement().querySelector(".you");
-  if (el) { el.classList.add("dir"); el.style.setProperty("--h", Math.round(h) + "deg"); }
+  rot = rot === null ? h : rot + ((h - rot % 360 + 540) % 360) - 180;
+  if (turnRaf) return;
+  turnRaf = requestAnimationFrame(() => {
+    turnRaf = 0;
+    const el = youM && youM.getElement() && youM.getElement().querySelector(".you");
+    if (el) { el.classList.add("dir"); el.style.setProperty("--h", rot.toFixed(1) + "deg"); }
+  });
 }
 function fit() { if (lm && mb) { lm.invalidateSize(); if (lm.getSize().x) lm.fitBounds(mb); } }
 function ecats() {
@@ -301,6 +389,7 @@ document.querySelectorAll("[data-go]").forEach(b => { b.onclick = () => show(b.d
 document.querySelectorAll("#lang [data-lang]").forEach(b => { b.onclick = () => {
   lang = b.dataset.lang; store.set("lang", lang); applyLang(); warm();
   if (hist.length > 1) history.back(); else show("find", false, true);   // opened from the header: just go back
+  if (shared) { pick(shared); shared = null; }
 }; });
 $("lclose").onclick = () => history.back();
 // Landing page: the 3D shapes lean a little towards your finger (or as you tilt the phone).
@@ -320,24 +409,28 @@ document.addEventListener("click", e => {
   $("viewer").querySelector("img").src = img.src; $("viewer").hidden = false; history.pushState({photo: 1}, "");
 });
 $("viewer").onclick = () => history.back();
-$("q").oninput = list; $("rclear").onclick = () => { store.set("recent", "[]"); list(); }; $("catpill").onclick = () => { cat = ""; all = false; list(); }; $("all").onclick = () => { all = !all; cat = ""; list(); };
+$("q").oninput = list;
+$("q").onkeydown = e => { if (e.key === "Enter") { const b = $("list").querySelector("button"); if (b) b.click(); } };   // Enter opens the first result
+$("share").onclick = sharePlace;
+$("freshcard").onclick = () => { freshList(); show("freshers"); }; $("rclear").onclick = () => { store.set("recent", "[]"); list(); }; $("catpill").onclick = () => { cat = ""; all = false; list(); }; $("all").onclick = () => { all = !all; cat = ""; list(); };
 $("prev").onclick = () => { si = Math.max(0, si - 1); renderStep(true); };
 $("next").onclick = () => { si++; renderStep(true); };
 const step = d => { li = Math.min(topic.steps.length - 1, Math.max(0, li + d)); slide(); };
 $("lprev").onclick = () => step(-1); $("lnext").onclick = () => step(1);
 $("mapbox").ontoggle = () => requestAnimationFrame(fit);
 $("locate").onclick = () => {
-  if (watch === null) startWatch();
+  if (watch === null) { askCompass(); startWatch(); }
   follow = !follow || !youM; $("locate").setAttribute("aria-pressed", follow);
   if (follow && youM) lm.setView(youM.getLatLng(), Math.max(lm.getZoom(), 1));
 };
 $("here").onclick = () => {
   if (!navigator.geolocation) return;
+  askCompass();
   navigator.geolocation.getCurrentPosition(pos => {
     const m = {lat: pos.coords.latitude, lng: pos.coords.longitude}; let best = null, bd = Infinity;
     shown().filter(p => p.id !== placeId).forEach(p => { const d = Route.haversine(m, p); if (d < bd) { bd = d; best = p; } });
     if (best) { startNav(best.id); startWatch(); }
-  }, () => { $("status").textContent = t("nolocation"); });
+  }, e => { $("status").textContent = locErr(e); });
 };
 document.querySelectorAll("[data-ico]").forEach(e => { e.innerHTML = I(e.dataset.ico); });
 $("back").innerHTML = I("arrow-left"); $("locate").innerHTML = I("locate-fixed"); $("locate").setAttribute("aria-label", t("here"));

@@ -30,8 +30,9 @@
 <div id="pages">
 <section id="find" class="page">
 <div id="qrow"><div class="beam"><i class="ic" data-ico="map-pin"></i><input id="q" type="search" autocomplete="off" enterkeyhint="search"><i class="live" aria-hidden="true"></i></div><button id="all" aria-pressed="false"></button></div>
+<button id="freshcard" class="fresh"></button>
 <div id="recent" hidden><div class="rhead"><b data-t="recent"></b><button id="rclear" data-t="clear"></button></div><div id="rchips"></div></div><button id="catpill" hidden></button>
-<div id="cats" class="grid"></div><ul id="list" class="cards" hidden></ul>
+<div id="cats" class="grid"></div><p id="closest" class="meta" hidden></p><ul id="list" class="cards" hidden></ul>
 </section>
 <section id="lessons" class="page"><h2 class="ptitle" data-t="lessons"></h2><div id="topics" class="grid"></div></section>
 <section id="emergency" class="page"><h2 class="ptitle" data-t="sos"></h2>
@@ -43,10 +44,12 @@
 
 <section id="start" class="screen" hidden>
 <div class="dest"><i class="mk" id="sico"></i><b id="sname"></b></div><div id="spic" class="pic"></div><p id="slm" class="meta ctr"></p>
+<button id="share" class="secondary"></button>
 <button id="here" class="secondary" data-t="here" data-i="locate-fixed"></button>
 <h2 data-t="where"></h2><ul id="starts" class="cards"></ul>
 </section>
 <section id="nav" class="screen" hidden>
+<div id="summary"></div>
 <div id="dots"></div>
 <div id="big"><div id="bigico"></div></div>
 <div id="npic" class="pic"></div><div id="stepText"></div>
@@ -55,6 +58,8 @@
 <details id="mapbox" open><summary id="mapbtn"></summary><div id="mapwrap"><div id="map" role="region" aria-label="Map"></div><button id="locate" aria-pressed="false"></button></div></details>
 </section>
 
+<section id="freshers" class="screen" hidden><h2 data-t="fresh"></h2><p class="meta" data-t="freshsub"></p><div id="fprog"><i></i></div><p id="fcount" class="meta"></p>
+<ol id="fsteps"></ol><p class="tbc" data-t="fdraft"></p></section>
 <section id="slides" class="screen" hidden><h2 id="ltitle" class="ctr"></h2><div id="ldots"></div><div id="embc"></div><p id="lcount" class="meta ctr"></p>
 <div class="row3"><button id="lprev" class="secondary" aria-label="Previous"></button><button id="lnext" class="secondary" aria-label="Next"></button></div><p id="ldraft" class="tbc"></p></section>
 

@@ -1,0 +1,13 @@
+{
+  "_help": "Freshers trail: the first places a new student should find, in order. DRAFT: the team must check the order and every tip. Yoruba tips still to be written (the app shows English until then).",
+  "draft": true,
+  "steps": [
+    {"place": "main_gate", "tip": {"en": "A good starting point: most routes in this app begin here.", "pcm": "Na better place to start: most road for this app dey start from here."}},
+    {"place": "oau_admissions_office", "tip": {"en": "Ask here which admission and clearance papers you need.", "pcm": "Ask for here the admission and clearance papers wey you need."}},
+    {"place": "health_centre", "tip": {"en": "Know where it is before you need it. The number is on the Emergency page.", "pcm": "Know where e dey before you need am. The number dey for Emergency page."}},
+    {"place": "hezekiah_oluwasanmi_library", "tip": {"en": "The main library. Ask at the desk how to register.", "pcm": "The main library. Ask for the desk how to register."}},
+    {"place": "student_union_building", "tip": {"en": "Students call it SUB. A common meeting point.", "pcm": "Students dey call am SUB. Na where people dey meet."}},
+    {"place": "university_hall", "tip": {"en": "The University Bookshop.", "pcm": "The University Bookshop."}},
+    {"place": "ict", "tip": {"en": "Also called the CBT Centre.", "pcm": "Dem also dey call am CBT Centre."}}
+  ]
+}

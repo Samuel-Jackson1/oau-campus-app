@@ -28,6 +28,17 @@ test('shortest path picks the shorter of two routes', () => {
   assert.deepEqual(Route.shortestPath(g, 'a', 'c').ids, ['a', 'b', 'c']);
 });
 
+test('distancesFrom gives the same walking distance as shortestPath, for every place at once', () => {
+  const ps = [
+    { id: 'a', lat: 7.5000, lng: 4.5000 }, { id: 'b', lat: 7.5010, lng: 4.5000 },
+    { id: 'far', lat: 7.5005, lng: 4.5100 }, { id: 'c', lat: 7.5020, lng: 4.5000 }, { id: 'alone', lat: 7.6, lng: 4.6 }
+  ];
+  const g = Route.buildGraph(ps, [['a', 'b'], ['b', 'c'], ['a', 'far'], ['far', 'c']]);
+  const d = Route.distancesFrom(g, 'c');
+  assert.equal(Math.round(d.a), Route.shortestPath(g, 'c', 'a').meters);
+  assert.equal(d.alone, undefined);   // no route: no distance
+});
+
 test('shortestPath returns null when there is no route', () => {
   const g = Route.buildGraph([{ id: 'a', lat: 7.5, lng: 4.5 }, { id: 'b', lat: 7.501, lng: 4.5 }], []);
   assert.equal(Route.shortestPath(g, 'a', 'b'), null);
@@ -51,6 +62,15 @@ test('directions turn only at junctions and bends, and name a nearby landmark', 
 
 test('every id in paths.json exists in places.json', () => {
   assert.doesNotThrow(() => Route.buildGraph(places, paths));
+});
+
+test('every freshers trail stop is a place people can see and search for', () => {
+  const fresh = load('freshers');
+  const bad = fresh.steps.filter((s) => {
+    const p = places.find((x) => x.id === s.place);
+    return !p || p.hidden || !p.verified || p.waypoint || !s.tip?.en;
+  }).map((s) => s.place);
+  assert.deepEqual(bad, [], `Fix these freshers stops in data/freshers.json: ${bad.join(', ')}`);
 });
 
 test('every place shown in the app can be reached on foot from the Main Gate', () => {

@@ -30,7 +30,7 @@
 <h2 class="bigq" data-t="where"></h2>
 <p class="meta" data-t="wheresub"></p>
 <button id="gps" class="gpsbtn"></button>
-<p id="gpsmsg" class="meta ctr" role="status"></p>
+<div id="gpsmsg" class="meta ctr" role="status"></div>
 <h3 class="seeh" data-t="seeplace"></h3>
 <div class="qwrap"><input id="wq" class="plainq" type="search" autocomplete="off" enterkeyhint="search"><button id="wqx" type="button" hidden>&times;</button></div>
 <ul id="wlist" class="cards"></ul>
@@ -44,7 +44,7 @@
 <div id="qrow"><div class="beam"><i class="ic" data-ico="map-pin"></i><input id="q" type="search" autocomplete="off" enterkeyhint="search"><i class="live" aria-hidden="true"></i><button id="qx" type="button" hidden>&times;</button></div></div>
 <button id="freshcard" class="fresh"></button>
 <div id="recent" hidden><div class="rhead"><b data-t="recent"></b><button id="rclear" data-t="clear"></button></div><div id="rchips"></div></div><button id="catpill" hidden></button>
-<div id="cats" class="grid"></div><p id="closest" class="meta" hidden></p><ul id="list" class="cards" hidden></ul>
+<div id="home"><h3 class="seeh" data-t="popular"></h3><div id="ptiles" class="ptiles"></div><details id="browse"><summary data-t="browse"></summary><div id="cats" class="grid"></div></details><button class="tipsbtn" data-go="lessons" data-i="shield-check" data-t="tips"></button></div><p id="closest" class="meta" hidden></p><ul id="list" class="cards" hidden></ul>
 </section>
 <section id="lessons" class="page"><h2 class="ptitle" data-t="lessons"></h2><div id="topics" class="grid"></div></section>
 <section id="emergency" class="page"><h2 class="ptitle" data-t="sos"></h2>
@@ -56,6 +56,7 @@
 
 <section id="nav" class="screen" hidden>
 <div id="summary"></div>
+<button id="guidebtn" class="guidebtn" hidden></button>
 <div id="scards"></div>
 <div id="dots"></div>
 <div class="row3"><button id="prev" class="secondary" aria-label="Previous"></button><button id="next" class="secondary" aria-label="Next"></button></div>
@@ -63,6 +64,15 @@
 <p class="meta ctr" style="font-size:.8rem">Routes follow roads from OpenStreetMap &middot; &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></p>
 </section>
 
+<section id="guide" class="screen" hidden>
+<div class="gtop"><small class="tag go" data-t="going"></small><b id="gdest"></b><em id="gleft"></em></div>
+<div id="gdial"><div id="garrow"></div></div>
+<div id="gtext" aria-live="polite"></div>
+<div class="grow"><button id="gvoice" class="secondary"></button><button id="gsim" class="secondary"></button></div>
+<p id="gnote" class="meta ctr" role="status"></p>
+<div id="gpic"></div>
+<button id="gmap" class="linkbtn" data-t="steplist"></button>
+</section>
 <section id="freshers" class="screen" hidden><h2 data-t="fresh"></h2><p class="meta" data-t="freshsub"></p><div id="fprog"><i></i></div><p id="fcount" class="meta"></p>
 <ol id="fsteps"></ol><p class="tbc" data-t="fdraft"></p></section>
 <section id="slides" class="screen" hidden><h2 id="ltitle" class="ctr"></h2><div id="ldeck" class="deck"></div><p id="ldraft" class="note ctr"></p></section>

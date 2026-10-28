@@ -625,3 +625,10 @@ h1 span:first-child{font-size:clamp(.85rem,4vw,1.05rem)}h1 span:last-child{font-
 .grow button svg{width:20px;height:20px;margin:0}
 .grow button[aria-pressed="false"]#gvoice{opacity:.7}
 @media (prefers-reduced-motion:reduce){#garrow{transition:none}}
+
+/* ===== v29: which way to start, from the way you face ===== */
+.facing{display:flex;align-items:center;justify-content:center;gap:.7rem;margin:.6rem auto 0;padding:.6rem 1rem;border-radius:18px;background:#fff4d6;color:#5c3d00;text-align:left;max-width:22rem}
+.facing i{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#f8c843;color:#1a1300;transition:transform .3s ease-out}
+.facing b,.facing small{display:block}.facing b{font-size:1.1rem;color:#5c3d00}.facing small{font-size:.8rem;color:#7a5600}
+.gface{margin:0;padding:.4rem 1rem;border-radius:999px;background:#fff4d6;color:#5c3d00;font-weight:800;font-size:1.15rem}
+@media (prefers-reduced-motion:reduce){.facing i{transition:none}}

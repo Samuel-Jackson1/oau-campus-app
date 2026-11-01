@@ -316,11 +316,11 @@ public class MainActivity extends Activity {
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
                 Place p = new Place();
-                p.id = o.getString("id");
+                p.id = o.optString("id", null);   // names the team knows but nobody has located yet have no id
                 p.name = o.getString("name");
                 p.search = o.optString("search", p.name).toLowerCase(Locale.US);
-                p.lat = o.getDouble("lat");
-                p.lng = o.getDouble("lng");
+                p.lat = o.optDouble("lat", Double.NaN);
+                p.lng = o.optDouble("lng", Double.NaN);
                 places.add(p);
             }
         } catch (Exception bad) {
@@ -382,7 +382,7 @@ public class MainActivity extends Activity {
             for (Place p : sorted) {
                 if (!q.isEmpty() && !p.search.contains(q)) continue;
                 shown.add(p);
-                rows.add(here != null ? p.name + "  ·  " + away(distance(here, p)) : p.name);
+                rows.add(here != null && !Double.isNaN(p.lat) ? p.name + "  ·  " + away(distance(here, p)) : p.name);
             }
             adapter.notifyDataSetChanged();
         };
@@ -579,7 +579,9 @@ public class MainActivity extends Activity {
         }).start();
     }
 
+    /** Places with no position yet sort after the located ones. */
     private static float distance(Location here, Place p) {
+        if (Double.isNaN(p.lat) || Double.isNaN(p.lng)) return Float.MAX_VALUE;
         float[] out = new float[1];
         Location.distanceBetween(here.getLatitude(), here.getLongitude(), p.lat, p.lng, out);
         return out[0];

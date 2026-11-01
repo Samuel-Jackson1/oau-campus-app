@@ -1,0 +1,26 @@
+{
+  "_help": "Extra names for the OAU Walk pick list, from the team (1 Nov). 'same_as' = another name for a place already saved. 'new' = known to the team but with no coordinates yet: the volunteers' picks will locate them. None of these go into the Navigator until the team checks them on the review map. Run tools/make_walker_places.py after editing.",
+  "same_as": {
+    "Health center": "health_centre",
+    "Sub": "student_union_building",
+    "Sport complex": "sport_complex",
+    "Oduduwa": "oduduwa_hall",
+    "Motion ground": "motion_ground",
+    "Library": "hezekiah_oluwasanmi_library",
+    "1k sitter": "1000lt",
+    "White house": "faculty_of_science",
+    "CHEM engine": "faculty_of_technology_lecture_theatre",
+    "College of health science": "colllege_of_health_sciences",
+    "Pharmacy": "faculty_of_pharmacy",
+    "ICT": "ict",
+    "PG": "postgraduate_college",
+    "Banking Area": "banking_area"
+  },
+  "new": [
+    "Ojaja", "New market", "New buka", "ETF", "Anglomoz", "Angola", "Mozambique", "Alumni", "Archi", "Faj",
+    "Yellow house", "Coca cola village", "Akintola", "Amphi", "Senate building", "Faculty of Education",
+    "Faculty of Admin, Social Sciences and Law", "Dramatic art", "Music", "ICAN", "FBLT", "Faculty of Agric",
+    "Aled duduyemi", "ODDM", "DSA", "Spider", "AGE", "BOO A, B and C", "Faculty of Nursing", "EDM",
+    "Local Government", "Sport", "Religious ground"
+  ]
+}

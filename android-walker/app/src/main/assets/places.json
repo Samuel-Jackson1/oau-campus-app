@@ -2,21 +2,61 @@
 {
 "id": "1000lt",
 "name": "1000LT",
-"search": "1000LT 1000 Sitters",
+"search": "1000LT 1000 Sitters 1k sitter",
 "lat": 7.521123,
 "lng": 4.519769
 },
 {
+"name": "AGE",
+"search": "AGE"
+},
+{
+"name": "Akintola",
+"search": "Akintola"
+},
+{
+"name": "Aled duduyemi",
+"search": "Aled duduyemi"
+},
+{
+"name": "Alumni",
+"search": "Alumni"
+},
+{
+"name": "Amphi",
+"search": "Amphi"
+},
+{
+"name": "Anglomoz",
+"search": "Anglomoz"
+},
+{
+"name": "Angola",
+"search": "Angola"
+},
+{
+"name": "Archi",
+"search": "Archi"
+},
+{
 "id": "banking_area",
 "name": "Banking area",
-"search": "Banking area Bank",
+"search": "Banking area Bank Banking Area",
 "lat": 7.514278,
 "lng": 4.522462
 },
 {
+"name": "BOO A, B and C",
+"search": "BOO A, B and C"
+},
+{
+"name": "Coca cola village",
+"search": "Coca cola village"
+},
+{
 "id": "colllege_of_health_sciences",
 "name": "College of Health Sciences",
-"search": "College of Health Sciences College College of heath sciences",
+"search": "College of Health Sciences College College of heath sciences College of health science",
 "lat": 7.517729,
 "lng": 4.524566
 },
@@ -35,11 +75,35 @@
 "lng": 4.521457
 },
 {
+"name": "Dramatic art",
+"search": "Dramatic art"
+},
+{
+"name": "DSA",
+"search": "DSA"
+},
+{
+"name": "EDM",
+"search": "EDM"
+},
+{
+"name": "ETF",
+"search": "ETF"
+},
+{
+"name": "Faculty of Admin, Social Sciences and Law",
+"search": "Faculty of Admin, Social Sciences and Law"
+},
+{
 "id": "faculty_of_administration",
 "name": "Faculty of Administration",
 "search": "Faculty of Administration Admin Faculty",
 "lat": 7.5203,
 "lng": 4.522019
+},
+{
+"name": "Faculty of Agric",
+"search": "Faculty of Agric"
 },
 {
 "id": "faculty_of_computing_science_and_engineering",
@@ -49,16 +113,24 @@
 "lng": 4.528611
 },
 {
+"name": "Faculty of Education",
+"search": "Faculty of Education"
+},
+{
+"name": "Faculty of Nursing",
+"search": "Faculty of Nursing"
+},
+{
 "id": "faculty_of_pharmacy",
 "name": "Faculty of Pharmacy",
-"search": "Faculty of Pharmacy Pharmacy",
+"search": "Faculty of Pharmacy Pharmacy Pharmacy",
 "lat": 7.517342,
 "lng": 4.527196
 },
 {
 "id": "faculty_of_science",
 "name": "Faculty of Science",
-"search": "Faculty of Science White House",
+"search": "Faculty of Science White House White house",
 "lat": 7.519588,
 "lng": 4.521535
 },
@@ -72,9 +144,17 @@
 {
 "id": "faculty_of_technology_lecture_theatre",
 "name": "Faculty of Technology Lecture Theatre",
-"search": "Faculty of Technology Lecture Theatre Chemengine Chem Engine Chemical Engineering Lecture Theatre",
+"search": "Faculty of Technology Lecture Theatre Chemengine Chem Engine Chemical Engineering Lecture Theatre CHEM engine",
 "lat": 7.517975,
 "lng": 4.528123
+},
+{
+"name": "Faj",
+"search": "Faj"
+},
+{
+"name": "FBLT",
+"search": "FBLT"
 },
 {
 "id": "first_bus_stop",
@@ -86,7 +166,7 @@
 {
 "id": "health_centre",
 "name": "Health Centre",
-"search": "Health Centre Health Centre",
+"search": "Health Centre Health Centre Health center",
 "lat": 7.520931,
 "lng": 4.516764
 },
@@ -100,7 +180,7 @@
 {
 "id": "hezekiah_oluwasanmi_library",
 "name": "Hezekiah Oluwasanmi Library",
-"search": "Hezekiah Oluwasanmi Library School library",
+"search": "Hezekiah Oluwasanmi Library School library Library",
 "lat": 7.518682,
 "lng": 4.522841
 },
@@ -112,9 +192,13 @@
 "lng": 4.530279
 },
 {
+"name": "ICAN",
+"search": "ICAN"
+},
+{
 "id": "ict",
 "name": "ICT Centre",
-"search": "ICT Centre ICT CBT Centre",
+"search": "ICT Centre ICT CBT Centre ICT",
 "lat": 7.517912,
 "lng": 4.529237
 },
@@ -131,6 +215,10 @@
 "search": "INTECU Intecu computer station Intercu",
 "lat": 7.517851,
 "lng": 4.529164
+},
+{
+"name": "Local Government",
+"search": "Local Government"
 },
 {
 "id": "main_conference_hall",
@@ -163,9 +251,17 @@
 {
 "id": "motion_ground",
 "name": "Motion Ground",
-"search": "Motion Ground Motion ground",
+"search": "Motion Ground Motion ground Motion ground",
 "lat": 7.518048,
 "lng": 4.522748
+},
+{
+"name": "Mozambique",
+"search": "Mozambique"
+},
+{
+"name": "Music",
+"search": "Music"
 },
 {
 "id": "nacoss_library",
@@ -173,6 +269,14 @@
 "search": "NACOSS Library NACOSS",
 "lat": 7.517909,
 "lng": 4.528593
+},
+{
+"name": "New buka",
+"search": "New buka"
+},
+{
+"name": "New market",
+"search": "New market"
 },
 {
 "id": "oak_park_researcher_s_lodge",
@@ -203,11 +307,19 @@
 "lng": 4.515514
 },
 {
+"name": "ODDM",
+"search": "ODDM"
+},
+{
 "id": "oduduwa_hall",
 "name": "Oduduwa Hall",
-"search": "Oduduwa Hall Oduduwa",
+"search": "Oduduwa Hall Oduduwa Oduduwa",
 "lat": 7.518502,
 "lng": 4.522012
+},
+{
+"name": "Ojaja",
+"search": "Ojaja"
 },
 {
 "id": "part_advisor_office",
@@ -219,9 +331,13 @@
 {
 "id": "postgraduate_college",
 "name": "Postgraduate College",
-"search": "Postgraduate College postgraduate",
+"search": "Postgraduate College postgraduate PG",
 "lat": 7.517337,
 "lng": 4.528997
+},
+{
+"name": "Religious ground",
+"search": "Religious ground"
 },
 {
 "id": "oau_second_bus_stop",
@@ -238,6 +354,10 @@
 "lng": 4.529171
 },
 {
+"name": "Senate building",
+"search": "Senate building"
+},
+{
 "id": "shop",
 "name": "Shop",
 "search": "Shop Shop",
@@ -245,16 +365,24 @@
 "lng": 4.528532
 },
 {
+"name": "Spider",
+"search": "Spider"
+},
+{
+"name": "Sport",
+"search": "Sport"
+},
+{
 "id": "sport_complex",
 "name": "Sports Complex",
-"search": "Sports Complex Sport Complex",
+"search": "Sports Complex Sport Complex Sport complex",
 "lat": 7.517702,
 "lng": 4.5217
 },
 {
 "id": "student_union_building",
 "name": "Student Union Building",
-"search": "Student Union Building SUB Captain Cook",
+"search": "Student Union Building SUB Captain Cook Sub",
 "lat": 7.517948,
 "lng": 4.521377
 },
@@ -264,5 +392,9 @@
 "search": "University Bookshop (University Hall) University Hall Bookshop",
 "lat": 7.518245,
 "lng": 4.523515
+},
+{
+"name": "Yellow house",
+"search": "Yellow house"
 }
 ]

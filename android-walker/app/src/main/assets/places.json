@@ -1,0 +1,268 @@
+[
+{
+"id": "1000lt",
+"name": "1000LT",
+"search": "1000LT 1000 Sitters",
+"lat": 7.521123,
+"lng": 4.519769
+},
+{
+"id": "banking_area",
+"name": "Banking area",
+"search": "Banking area Bank",
+"lat": 7.514278,
+"lng": 4.522462
+},
+{
+"id": "colllege_of_health_sciences",
+"name": "College of Health Sciences",
+"search": "College of Health Sciences College College of heath sciences",
+"lat": 7.517729,
+"lng": 4.524566
+},
+{
+"id": "dean_office_of_the_faculty_of_computing_science_and_engineering",
+"name": "Dean Office of the Faculty of Computing Science and Engineering",
+"search": "Dean Office of the Faculty of Computing Science and Engineering Dean office for the Faculty of Computing Science and Engineering",
+"lat": 7.517938,
+"lng": 4.530737
+},
+{
+"id": "department_of_kinesiology_health_education_and_recreation",
+"name": "Department of Kinesiology, Health Education and Recreation",
+"search": "Department of Kinesiology, Health Education and Recreation PHE",
+"lat": 7.517736,
+"lng": 4.521457
+},
+{
+"id": "faculty_of_administration",
+"name": "Faculty of Administration",
+"search": "Faculty of Administration Admin Faculty",
+"lat": 7.5203,
+"lng": 4.522019
+},
+{
+"id": "faculty_of_computing_science_and_engineering",
+"name": "Faculty of Computing Science and Engineering",
+"search": "Faculty of Computing Science and Engineering Faculty of Computing Science",
+"lat": 7.518072,
+"lng": 4.528611
+},
+{
+"id": "faculty_of_pharmacy",
+"name": "Faculty of Pharmacy",
+"search": "Faculty of Pharmacy Pharmacy",
+"lat": 7.517342,
+"lng": 4.527196
+},
+{
+"id": "faculty_of_science",
+"name": "Faculty of Science",
+"search": "Faculty of Science White House",
+"lat": 7.519588,
+"lng": 4.521535
+},
+{
+"id": "faculty_of_technology",
+"name": "Faculty of Technology",
+"search": "Faculty of Technology Faculty of Tech",
+"lat": 7.517552,
+"lng": 4.527945
+},
+{
+"id": "faculty_of_technology_lecture_theatre",
+"name": "Faculty of Technology Lecture Theatre",
+"search": "Faculty of Technology Lecture Theatre Chemengine Chem Engine Chemical Engineering Lecture Theatre",
+"lat": 7.517975,
+"lng": 4.528123
+},
+{
+"id": "first_bus_stop",
+"name": "First Bus Stop",
+"search": "First Bus Stop First bus stop",
+"lat": 7.518357,
+"lng": 4.523455
+},
+{
+"id": "health_centre",
+"name": "Health Centre",
+"search": "Health Centre Health Centre",
+"lat": 7.520931,
+"lng": 4.516764
+},
+{
+"id": "health_sciences_lecture_theatre",
+"name": "Health Sciences Lecture Theatre",
+"search": "Health Sciences Lecture Theatre HSLT",
+"lat": 7.516792,
+"lng": 4.524967
+},
+{
+"id": "hezekiah_oluwasanmi_library",
+"name": "Hezekiah Oluwasanmi Library",
+"search": "Hezekiah Oluwasanmi Library School library",
+"lat": 7.518682,
+"lng": 4.522841
+},
+{
+"id": "hod_of_computer_engineering",
+"name": "HOD Office, Computer Engineering",
+"search": "HOD Office, Computer Engineering HOD office for Computer Engineering",
+"lat": 7.517835,
+"lng": 4.530279
+},
+{
+"id": "ict",
+"name": "ICT Centre",
+"search": "ICT Centre ICT CBT Centre",
+"lat": 7.517912,
+"lng": 4.529237
+},
+{
+"id": "ict_postgraduate_research_laboratory",
+"name": "ICT Postgraduate Research Laboratory",
+"search": "ICT Postgraduate Research Laboratory ICT environs",
+"lat": 7.518071,
+"lng": 4.530063
+},
+{
+"id": "intecu",
+"name": "INTECU",
+"search": "INTECU Intecu computer station Intercu",
+"lat": 7.517851,
+"lng": 4.529164
+},
+{
+"id": "main_conference_hall",
+"name": "Main Conference Hall",
+"search": "Main Conference Hall Conference Hall",
+"lat": 7.51804,
+"lng": 4.530076
+},
+{
+"id": "main_gate",
+"name": "Main Gate",
+"search": "Main Gate Campus gate",
+"lat": 7.496787,
+"lng": 4.522285
+},
+{
+"id": "bustop",
+"name": "Main Gate Bus Stop",
+"search": "Main Gate Bus Stop Bus Stop",
+"lat": 7.49791,
+"lng": 4.523033
+},
+{
+"id": "moremi_hall",
+"name": "Moremi Hall",
+"search": "Moremi Hall Moremi",
+"lat": 7.52032,
+"lng": 4.51865
+},
+{
+"id": "motion_ground",
+"name": "Motion Ground",
+"search": "Motion Ground Motion ground",
+"lat": 7.518048,
+"lng": 4.522748
+},
+{
+"id": "nacoss_library",
+"name": "NACOSS Library",
+"search": "NACOSS Library NACOSS",
+"lat": 7.517909,
+"lng": 4.528593
+},
+{
+"id": "oak_park_researcher_s_lodge",
+"name": "OAK Park Researcher's Lodge",
+"search": "OAK Park Researcher's Lodge ICT side",
+"lat": 7.518107,
+"lng": 4.530547
+},
+{
+"id": "oau_admissions_office",
+"name": "OAU Admissions Office",
+"search": "OAU Admissions Office Admissions Office",
+"lat": 7.518158,
+"lng": 4.523603
+},
+{
+"id": "oau_ict_driven_knowledge_park_incubation_centre",
+"name": "OAU ICT-Driven Knowledge Park Incubation Centre",
+"search": "OAU ICT-Driven Knowledge Park Incubation Centre Incubation Centre",
+"lat": 7.518151,
+"lng": 4.53058
+},
+{
+"id": "obafemi_awolowo_hall_of_residence",
+"name": "Obafemi Awolowo Hall of Residence",
+"search": "Obafemi Awolowo Hall of Residence AWO Hall",
+"lat": 7.521288,
+"lng": 4.515514
+},
+{
+"id": "oduduwa_hall",
+"name": "Oduduwa Hall",
+"search": "Oduduwa Hall Oduduwa",
+"lat": 7.518502,
+"lng": 4.522012
+},
+{
+"id": "part_advisor_office",
+"name": "Part Adviser's Office",
+"search": "Part Adviser's Office Part Advisor Office",
+"lat": 7.51797,
+"lng": 4.530682
+},
+{
+"id": "postgraduate_college",
+"name": "Postgraduate College",
+"search": "Postgraduate College postgraduate",
+"lat": 7.517337,
+"lng": 4.528997
+},
+{
+"id": "oau_second_bus_stop",
+"name": "Second Bus Stop",
+"search": "Second Bus Stop",
+"lat": 7.517644,
+"lng": 4.521907
+},
+{
+"id": "seminar_room_a_and_b",
+"name": "Seminar Room A and B",
+"search": "Seminar Room A and B Step A and Step B",
+"lat": 7.51791,
+"lng": 4.529171
+},
+{
+"id": "shop",
+"name": "Shop",
+"search": "Shop Shop",
+"lat": 7.517923,
+"lng": 4.528532
+},
+{
+"id": "sport_complex",
+"name": "Sports Complex",
+"search": "Sports Complex Sport Complex",
+"lat": 7.517702,
+"lng": 4.5217
+},
+{
+"id": "student_union_building",
+"name": "Student Union Building",
+"search": "Student Union Building SUB Captain Cook",
+"lat": 7.517948,
+"lng": 4.521377
+},
+{
+"id": "university_hall",
+"name": "University Bookshop (University Hall)",
+"search": "University Bookshop (University Hall) University Hall Bookshop",
+"lat": 7.518245,
+"lng": 4.523515
+}
+]

@@ -1,0 +1,35 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "ng.oau.walker"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "ng.oau.walker"
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName "0.1"
+    }
+
+    // A fixed test key, so a new test build installs over the old one and keeps the walks already saved.
+    // It is only for this test app; a real release needs its own private key.
+    signingConfigs {
+        test {
+            storeFile file("walker-test.keystore")
+            storeType "pkcs12"
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.test
+        }
+    }
+}

@@ -5,3 +5,9 @@ Thumbs.db
 __pycache__/
 # Raw files from the Field Collector (they hold names and phone codes). Only the converted data/ and images/ are published.
 field-files/
+# Walk files from the OAU Walk app (routes people walked). Never publish them.
+field-walks/
+# Android build output
+android-walker/.gradle/
+android-walker/build/
+android-walker/app/build/

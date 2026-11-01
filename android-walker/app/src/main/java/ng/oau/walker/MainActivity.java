@@ -156,6 +156,8 @@ public class MainActivity extends Activity {
         page.addView(detail);
         page.addView(gap(16));
 
+        page.addView(text("Optional, only if you have time:", 15, MUTED, true));
+        page.addView(gap(6));
         mark = button("I am at a place", GOLD, 0xFF1A1300);
         mark.setOnClickListener(v -> {
             if (allowedHere()) pickPlace(false, this::saveMark);
@@ -234,7 +236,7 @@ public class MainActivity extends Activity {
         send.setText(waiting > 0 ? "Send my walks (" + waiting + ")" : "Send my walks");
         if (!on) {
             status.setText("Not recording");
-            detail.setText(waiting > 0 ? "You have walks to send when you have data." : "Tap Start, then put your phone in your pocket.");
+            detail.setText(waiting > 0 ? "You have walks to send when you have data." : "Tap Start and walk. That is all you need to do.");
             return;
         }
         long sinceFix = WalkService.lastFixAt == 0 ? -1 : SystemClock.elapsedRealtime() - WalkService.lastFixAt;
@@ -378,7 +380,8 @@ public class MainActivity extends Activity {
             String q = find.getText().toString().trim().toLowerCase(Locale.US);
             shown.clear();
             rows.clear();
-            rows.add("Not on the list: type the name");
+            String typed = find.getText().toString().trim();
+            rows.add(typed.isEmpty() ? "Not on the list: add a new place" : "Add \"" + typed + "\" as a new place");
             for (Place p : sorted) {
                 if (!q.isEmpty() && !p.search.contains(q)) continue;
                 shown.add(p);

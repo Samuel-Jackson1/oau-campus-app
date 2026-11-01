@@ -126,6 +126,22 @@ final class WalkStore {
         }
     }
 
+    /** What the camera app answered, kept only so a failed photo or video can be traced from the walk file. */
+    static void addCameraNote(File f, String kind, int result, long bytes, boolean returned, long now) {
+        try {
+            JSONObject o = new JSONObject();
+            o.put("event", "camera");
+            o.put("kind", kind);
+            o.put("result", result);
+            o.put("bytes", bytes);
+            o.put("returnedFile", returned);
+            o.put("t", now);
+            append(f, o.toString());
+        } catch (JSONException ignored) {
+            // Only a note.
+        }
+    }
+
     static File mediaDir(Context c) {
         File d = new File(c.getFilesDir(), "media");
         if (!d.exists()) d.mkdirs();
@@ -252,7 +268,7 @@ final class WalkStore {
 
     private static JSONObject readWalk(File f) throws IOException, JSONException {
         List<JSONArray> points = new ArrayList<>();
-        JSONArray marks = new JSONArray();
+        JSONArray marks = new JSONArray(), events = new JSONArray();
         boolean test = false;
         try (BufferedReader r = new BufferedReader(new FileReader(f))) {
             String line;
@@ -263,6 +279,7 @@ final class WalkStore {
                     else {
                         JSONObject o = new JSONObject(line);
                         if (o.optBoolean("test")) test = true;
+                        else if (o.has("event")) events.put(o);
                         else marks.put(o);
                     }
                 } catch (JSONException cutOff) {
@@ -282,6 +299,7 @@ final class WalkStore {
         if (test) walk.put("test", true);
         walk.put("points", kept);
         walk.put("marks", marks);
+        if (events.length() > 0) walk.put("events", events);
         return walk;
     }
 

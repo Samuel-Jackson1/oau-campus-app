@@ -445,10 +445,13 @@ public class MainActivity extends Activity {
         e.apply();
         Uri uri = ShareProvider.mediaUri(f);
         Intent i = new Intent(isPhoto ? MediaStore.ACTION_IMAGE_CAPTURE : MediaStore.ACTION_VIDEO_CAPTURE);
-        i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        i.setClipData(ClipData.newRawUri("", uri));
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        if (!isPhoto) {
+        // Photos need a place to be saved, or the camera returns only a thumbnail. For videos, the camera app's own
+        // saving is the most reliable across phones: it hands the video back and we keep a copy.
+        if (isPhoto) {
+            i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            i.setClipData(ClipData.newRawUri("", uri));
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
             i.putExtra(MediaStore.EXTRA_DURATION_LIMIT, VIDEO_SECONDS);
             i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);   // small files: videos are sent over mobile data
             i.putExtra(MediaStore.EXTRA_SIZE_LIMIT, VIDEO_MAX_BYTES);
@@ -468,26 +471,43 @@ public class MainActivity extends Activity {
         String path = p.getString("pendingFile", null);
         p.edit().remove("pendingFile").apply();
         if (path == null) return;
+        final boolean isPhoto = code == TAKE_PHOTO;
         final File f = new File(path);
-        if (result != RESULT_OK) {
-            f.delete();
-            return;
-        }
-        // Some camera apps ignore where we asked them to save, and hand the file back instead.
-        if (f.length() == 0 && data != null && data.getData() != null) copyFrom(data.getData(), f);
-        if (f.length() == 0) {
-            f.delete();
-            Toast.makeText(this, "The camera did not give us the file. Please try again.", Toast.LENGTH_LONG).show();
-            return;
-        }
+        final Uri returned = data != null ? data.getData() : null;
         final Location fix = pendingFix(p);
         final long at = p.getLong("pendingAt", System.currentTimeMillis());
-        if (code == TAKE_PHOTO) shrinkPhoto(f, fix);
+        // Copying a video can take a moment, so it does not hold up the screen.
+        new Thread(() -> {
+            if (f.length() == 0 && returned != null) copyFrom(returned, f);
+            if (isPhoto && f.length() > 0) shrinkPhoto(f, fix);
+            runOnUiThread(() -> afterCamera(isPhoto, f, result, returned != null, fix, at));
+        }).start();
+    }
+
+    /** Always tells the volunteer what happened, and notes it in the walk so a failed camera can be traced. */
+    private void afterCamera(boolean isPhoto, File f, int result, boolean returned, Location fix, long at) {
+        String what = isPhoto ? "photo" : "video", label = isPhoto ? "Photo" : "Video";
+        File walk = walkForMedia(at);
+        WalkStore.addCameraNote(walk, what, result, f.length(), returned, at);
+        if (f.length() == 0) {
+            f.delete();
+            Toast.makeText(this, label + (result == RESULT_OK ? " not saved: the camera did not give us the file. Please try again."
+                    : " not saved: the camera closed without saving it."), Toast.LENGTH_LONG).show();
+            return;
+        }
         pickPlace(true, (id, name) -> {
-            File walk = WalkService.current;
-            if (walk != null) WalkStore.addMedia(walk, code == TAKE_PHOTO ? "photo" : "video", f.getName(), id, name, fix, at);
-            Toast.makeText(this, (fix != null ? "Saved with its location." : "Saved. We will find the spot from your walk."), Toast.LENGTH_LONG).show();
+            WalkStore.addMedia(walkForMedia(at), what, f.getName(), id, name, fix, at);
+            Toast.makeText(this, label + (fix != null ? " saved with its location." : " saved. We will find the spot from your walk."), Toast.LENGTH_LONG).show();
         });
+    }
+
+    /** The walk in progress; if it has ended, a small record of its own so the photo or video is never lost. */
+    private File walkForMedia(long at) {
+        File walk = WalkService.current;
+        if (walk != null) return walk;
+        File f = WalkStore.newWalk(this, at);
+        if (!f.exists() && WalkStore.prefs(this).getBoolean("testMode", false)) WalkStore.append(f, "{\"test\":true}");
+        return f;
     }
 
     private static Location pendingFix(android.content.SharedPreferences p) {

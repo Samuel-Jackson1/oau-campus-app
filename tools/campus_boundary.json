@@ -1,5 +1,5 @@
 {
-"_source": "OpenStreetMap way 1552256471 (Obafemi Awolowo University). (c) OpenStreetMap contributors, ODbL.",
+"_source": "OpenStreetMap way 1552256471 (Obafemi Awolowo University). (c) OpenStreetMap contributors, ODbL. One point added by the team on 1 Nov 2026: the saved Main Gate is OAU (they walked to it).",
 "_help": "Everything farther than margin metres outside this ring is treated as not OAU. The team can edit the ring if the map is wrong, then run tools/make_walker_places.py.",
 "margin": 60,
 "ring": [
@@ -114,6 +114,10 @@
 [
 7.4963301,
 4.5247811
+],
+[
+7.4967677,
+4.5221965
 ],
 [
 7.4975806,

@@ -71,6 +71,8 @@ class WalksTest(unittest.TestCase):
             places = [p for p in json.load(f) if p.get("verified") and not p.get("hidden")]
         missing = [p["name"] for p in places if not wr.on_campus(p["lat"], p["lng"], BOUNDARY)]
         self.assertEqual(missing, [])   # every saved place, including the Main Gate, counts as OAU
+        strict = dict(BOUNDARY, margin=0)
+        self.assertEqual([p["name"] for p in places if not wr.on_campus(p["lat"], p["lng"], strict)], [])   # even with no margin
         self.assertFalse(wr.on_campus(7.495746, 4.521477, BOUNDARY))   # the first real test walk, by the overhead bridge
         self.assertFalse(wr.on_campus(7.47, 4.56, BOUNDARY))           # Ile-Ife town
 

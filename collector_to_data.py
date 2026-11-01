@@ -76,6 +76,7 @@ if os.path.exists(fixes_path):
             if key in ch: it[key] = ch[key]
         if "aliases" in ch: it["aliases"] = ", ".join(ch["aliases"])
         if "verified" in ch: it["unsure"] = not ch["verified"]
+        if "radius" in ch: it["radius"] = ch["radius"]   # a wide place (metres): anywhere this close counts as being there
         if "waypoint" in ch: it["waypoint"] = bool(ch["waypoint"])   # named junction/walkway: used in directions, not listed
         done += 1
     print(f"Applied {done} fix(es) from field-fixes.json")
@@ -108,6 +109,7 @@ for pid, it in items.items():
         if it.get("category") not in CATS: problems.append(f"{it['name']}: category '{it.get('category')}' is not on the list")
         p.update(category=it.get("category", ""), aliases=[a.strip() for a in it.get("aliases", "").split(",") if a.strip()], landmark=it.get("landmark", ""), description=it.get("description", ""))
         if it.get("waypoint"): p["waypoint"] = True
+        if it.get("radius"): p["radius"] = it["radius"]
         if it["kind"] == "Landmark": p["kind"] = "landmark"
         if it.get("unsure"): problems.append(f"{it['name']}: marked 'not sure'. It stays hidden in the app until someone re-checks it and saves it again")
         ph = it.get("photo", "")

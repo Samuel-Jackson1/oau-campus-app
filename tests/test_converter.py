@@ -258,6 +258,11 @@ class ConverterTest(unittest.TestCase):
         self.assertLessEqual(size, 60000)
         self.assertGreater(len(buf.getvalue()), 500000)  # the original was far bigger
 
+    def test_a_wide_place_gets_its_size_from_the_fixes(self):
+        phones = [("a1", "2026-10-25T10:00:00Z", [place("ground", "Ground", 7.5, 4.5, cat="Sports")], [])]
+        places, _, _ = self.run_converter(phones, fixes={"change": {"ground": {"radius": 120}}})
+        self.assertEqual(places["ground"]["radius"], 120)
+
     def test_bad_category_and_missing_photo_are_listed(self):
         items = [place("main_gate", "Main Gate", 7.512, 4.520, photo=""), place("bank", "Bank", 7.513, 4.521, "main_gate", "Banks")]
         _, _, out = self.run_converter([("aaaa", "2026-10-22T09:00:00Z", items, [["main_gate", "bank"]])])

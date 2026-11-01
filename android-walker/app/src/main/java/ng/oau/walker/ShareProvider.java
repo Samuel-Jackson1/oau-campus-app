@@ -19,17 +19,37 @@ public class ShareProvider extends ContentProvider {
         return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath(f.getName()).build();
     }
 
+    /** Where the camera app saves a new photo or video. */
+    static Uri mediaUri(File f) {
+        return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
+    }
+
+    /** Where the camera app saves a new photo or video. */
+    static Uri mediaUri(File f) {
+        return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
+    }
+
+    /** Where the camera app saves a new photo or video. */
+    static Uri mediaUri(File f) {
+        return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
+    }
+
     private File fileFor(Uri uri) throws FileNotFoundException {
         String name = uri.getLastPathSegment();
         if (name == null || name.contains("/") || name.contains("..")) throw new FileNotFoundException();
-        File f = new File(getContext().getCacheDir(), name);
-        if (!f.exists()) throw new FileNotFoundException();
+        boolean media = uri.getPathSegments().size() == 2 && "media".equals(uri.getPathSegments().get(0));
+        File f = new File(media ? WalkStore.mediaDir(getContext()) : getContext().getCacheDir(), name);
+        if (!media && !f.exists()) throw new FileNotFoundException();
         return f;
     }
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        return ParcelFileDescriptor.open(fileFor(uri), ParcelFileDescriptor.MODE_READ_ONLY);
+        boolean write = mode != null && mode.contains("w");
+        if (write && !(uri.getPathSegments().size() == 2)) throw new FileNotFoundException();
+        return ParcelFileDescriptor.open(fileFor(uri), write
+                ? ParcelFileDescriptor.MODE_READ_WRITE | ParcelFileDescriptor.MODE_CREATE | ParcelFileDescriptor.MODE_TRUNCATE
+                : ParcelFileDescriptor.MODE_READ_ONLY);
     }
 
     @Override
@@ -46,7 +66,8 @@ public class ShareProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return "text/plain";
+        String n = uri.getLastPathSegment() == null ? "" : uri.getLastPathSegment();
+        return n.endsWith(".zip") ? "application/zip" : n.endsWith(".jpg") ? "image/jpeg" : n.endsWith(".mp4") ? "video/mp4" : "text/plain";
     }
 
     @Override

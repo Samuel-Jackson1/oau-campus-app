@@ -1,6 +1,6 @@
 """Turns the walk files from the OAU Walk app into a review map for the team.
 
-Put the files volunteers send (oau-walk-*.txt) in field-walks/, then run:
+Put the files volunteers send (oau-walk-*.txt and oau-media-*.zip) in field-walks/, then run:
 
     python tools/walks_report.py
 
@@ -12,8 +12,11 @@ What it works out:
   - stops: where people stayed a few minutes, which often means a place.
   - GPS gaps: where the signal dropped and came back nearby, which often means someone went into a building.
   - places: every "I am at a place" pick gives the centre of that place and, for wide places, how big it is.
+  - photos and videos: each one on the map where it was taken.
+
+Left out on purpose: walks made in the app's test mode, and anything outside the OAU boundary (tools/campus_boundary.json).
 """
-import glob, json, math, os, statistics, sys
+import glob, json, math, os, statistics, sys, zipfile
 
 MAX_ACC = 30          # metres: weaker readings are left out of the analysis
 MAX_SPEED = 7.0       # metres a second: faster than this is a bus or a motorcycle, not a walkway
@@ -36,6 +39,49 @@ def metres(a, b):
 
 def cell_of(p):
     return (round(p[0] * 110540 / CELL), round(p[1] * 111320 * math.cos(math.radians(p[0])) / CELL))
+
+
+def load_boundary(path):
+    with open(path, encoding="utf-8") as f:
+        b = json.load(f)
+    return {"ring": b["ring"], "margin": b["margin"]}
+
+
+def on_campus(lat, lng, boundary):
+    """Inside the OAU boundary, or within its small margin (maps and GPS are not exact)."""
+    if boundary is None:
+        return True
+    ring, inside, best = boundary["ring"], False, float("inf")
+    kx, ky = math.cos(math.radians(lat)) * 111320, 110540
+    for a, b in zip(ring, ring[1:] + ring[:1]):
+        if (a[0] > lat) != (b[0] > lat) and lng < (b[1] - a[1]) * (lat - a[0]) / (b[0] - a[0]) + a[1]:
+            inside = not inside
+        ax, ay, dx, dy = (a[1] - lng) * kx, (a[0] - lat) * ky, (b[1] - a[1]) * kx, (b[0] - a[0]) * ky
+        l2 = dx * dx + dy * dy
+        u = max(0.0, min(1.0, -(ax * dx + ay * dy) / l2)) if l2 else 0.0
+        best = min(best, math.hypot(ax + u * dx, ay + u * dy))
+    return inside or best <= boundary["margin"]
+
+
+def unpack_media(folder):
+    """Opens the photo and video zips into field-walks/media/, and returns what each file is."""
+    info, media = [], os.path.join(folder, "media")
+    for path in sorted(glob.glob(os.path.join(folder, "*.zip"))):
+        with zipfile.ZipFile(path) as z:
+            names = z.namelist()
+            if "media.json" not in names:
+                continue
+            head = json.loads(z.read("media.json").decode("utf-8"))
+            if head.get("kind") != "oau-media":
+                continue
+            os.makedirs(media, exist_ok=True)
+            for n in names:
+                safe = os.path.basename(n)
+                if n != "media.json" and safe == n:
+                    with open(os.path.join(media, safe), "wb") as f:
+                        f.write(z.read(n))
+            info += [dict(m, device=head.get("device", "?")) for m in head.get("media", [])]
+    return info
 
 
 def load(folder):
@@ -132,12 +178,35 @@ def nearest_place(lat, lng, known, within):
     return best["name"] if best else None
 
 
-def analyse(walks, known):
+def analyse(walks, known, boundary=None, zipped_media=()):
     cells, stops, gaps, marks, lines, phones = {}, [], [], {}, [], set()
     used = 0
+    tests = [w for w in walks if w.get("test")]
+    walks = [w for w in walks if not w.get("test")]
+    left = {"test_walks": len(tests), "outside_points": 0, "outside_marks": 0, "outside_media": 0}
+    media, seen_media = [], set()
+
+    def add_media(m, dev, pts):
+        if m.get("file") in seen_media:
+            return
+        seen_media.add(m.get("file"))
+        at = locate_mark(m, pts)
+        if at and not on_campus(at[0], at[1], boundary):
+            left["outside_media"] += 1
+            return
+        row = {"kind": m.get("media"), "file": m.get("file"), "name": m.get("name") or "", "device": dev, "t": m.get("t")}
+        if at:
+            row.update(lat=round(at[0], 6), lng=round(at[1], 6))
+        media.append(row)
+
     for w in walks:
-        pts = clean(w.get("points", []))
+        raw = w.get("points", [])
+        kept = [p for p in raw if on_campus(p[0], p[1], boundary)]
+        left["outside_points"] += len(raw) - len(kept)
+        pts = clean(kept)
         dev = w["device"]
+        if not pts and not w.get("marks"):
+            continue
         phones.add(dev)
         used += len(pts)
         for p in pts:
@@ -145,7 +214,14 @@ def analyse(walks, known):
         stops += [dict(s, device=dev) for s in find_stops(pts)]
         gaps += [dict(g, device=dev) for g in find_gaps(pts)]
         for m in w.get("marks", []):
+            if m.get("media"):
+                add_media(m, dev, pts)
+                if not m.get("name"):
+                    continue
             at = locate_mark(m, pts)
+            if at and not on_campus(at[0], at[1], boundary):
+                left["outside_marks"] += 1
+                continue
             key = m.get("place") or m["name"].strip().lower()
             e = marks.setdefault(key, {"id": m.get("place"), "name": m["name"], "points": [], "phones": set(), "unlocated": 0})
             if at:
@@ -162,6 +238,8 @@ def analyse(walks, known):
                 continue   # a gap in the recording is not a straight path
             n = min(len(cells[cell_of(a)]), len(cells[cell_of(b)]))
             paths.setdefault(n, []).append([[round(a[0], 6), round(a[1], 6)], [round(b[0], 6), round(b[1], 6)]])
+    for m in zipped_media:   # a zip whose walk file never arrived
+        add_media(m, m.get("device", "?"), [])
     by_id = {p["id"]: p for p in known}
     places = []
     for key, e in marks.items():
@@ -185,7 +263,7 @@ def analyse(walks, known):
     holes = group(gaps, GAP_NEAR)
     for s in holes:
         s["near"] = nearest_place(s["lat"], s["lng"], known, 40)
-    return {"walks": len(walks), "phones": len(phones), "points": used, "paths": {str(k): v for k, v in paths.items()},
+    return {"walks": len(lines), "phones": len(phones), "points": used, "left_out": left, "media": media, "paths": {str(k): v for k, v in paths.items()},
             "stops": spots, "gaps": holes, "places": places, "known": [{"lat": p["lat"], "lng": p["lng"], "name": p["name"]} for p in known]}
 
 
@@ -198,23 +276,27 @@ table{border-collapse:collapse;width:100%;font-size:12.5px}td,th{border-bottom:1
 @media(max-width:800px){body{flex-direction:column}#side{width:auto;height:45vh}}</style></head><body>
 <div id="side"><h1>OAU walks: review map</h1><p id="sum"></p>
 <p><span class="k" style="background:#0a8f4d"></span>Confirmed: 3 or more phones<br><span class="k" style="background:#e08a00"></span>2 phones<br><span class="k" style="background:#9aa0b5"></span>1 phone only<br>
-&#9679; <b style="color:#7c3aed">stop</b> (stayed a few minutes) &nbsp; &#9679; <b style="color:#d32f2f">GPS gap</b> (maybe a building) &nbsp; &#9679; <b style="color:#0d1b8e">place picked</b></p>
-<h2>Places people picked</h2><table id="pl"></table><h2>Stops to look at</h2><table id="st"></table><h2>GPS gaps to look at</h2><table id="gp"></table>
+&#9679; <b style="color:#7c3aed">stop</b> (stayed a few minutes) &nbsp; &#9679; <b style="color:#d32f2f">GPS gap</b> (maybe a building) &nbsp; &#9679; <b style="color:#0d1b8e">place picked</b> &nbsp; &#9679; <b style="color:#d97706">photo or video</b></p>
+<p id="left"></p><h2>Places people picked</h2><table id="pl"></table><h2>Photos and videos</h2><table id="md"></table><h2>Stops to look at</h2><table id="st"></table><h2>GPS gaps to look at</h2><table id="gp"></table>
 <p>Nothing here is in the live app until the team checks it and adds it.</p></div><div id="map"></div>
 <script src="../vendor/leaflet.js"></script><script>
 const D = __DATA__;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const m = L.map("map"); L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom: 19, attribution: "&copy; OpenStreetMap contributors"}).addTo(m);
 const all = [];
 for (const [n, segs] of Object.entries(D.paths)) { const c = +n >= 3 ? "#0a8f4d" : +n === 2 ? "#e08a00" : "#9aa0b5";
   L.polyline(segs, {color: c, weight: +n >= 3 ? 5 : 3, opacity: .85}).addTo(m); segs.forEach(s => all.push(s[0], s[1])); }
 const dot = (s, c, t) => { L.circleMarker([s.lat, s.lng], {radius: 7, color: "#fff", weight: 2, fillColor: c, fillOpacity: 1}).addTo(m).bindPopup(t); all.push([s.lat, s.lng]); };
-const nm = s => s.near ? "near " + s.near : "no saved place near";
+const nm = s => s.near ? "near " + esc(s.near) : "no saved place near";
+const mediaTag = x => x.kind === "video" ? '<video src="media/' + esc(x.file) + '" controls width="260"></video>' : '<img src="media/' + esc(x.file) + '" width="260" alt="">';
+D.media.filter(x => x.lat).forEach(x => dot(x, "#d97706", (x.name ? "<b>" + esc(x.name) + "</b><br>" : "") + mediaTag(x)));
 D.stops.forEach(s => dot(s, "#7c3aed", "Stop: " + s.phones + " phone(s), up to " + s.minutes + " min, " + nm(s)));
 D.gaps.forEach(s => dot(s, "#d32f2f", "GPS gap: " + s.phones + " phone(s), up to " + s.minutes + " min, " + nm(s)));
-D.places.filter(p => p.lat).forEach(p => { dot(p, "#0d1b8e", p.name + ": " + p.picks + " pick(s), " + p.phones + " phone(s)"); if (p.spread) L.circle([p.lat, p.lng], {radius: p.spread, color: "#0d1b8e", weight: 1, fillOpacity: .06}).addTo(m); });
+D.places.filter(p => p.lat).forEach(p => { dot(p, "#0d1b8e", esc(p.name) + ": " + p.picks + " pick(s), " + p.phones + " phone(s)"); if (p.spread) L.circle([p.lat, p.lng], {radius: p.spread, color: "#0d1b8e", weight: 1, fillOpacity: .06}).addTo(m); });
 if (all.length) m.fitBounds(all, {padding: [30, 30]}); else m.setView([7.518, 4.522], 15);
 document.getElementById("sum").textContent = D.walks + " walks from " + D.phones + " phones, " + D.points + " good GPS points.";
-const esc = s => String(s).replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c]));
+document.getElementById("left").textContent = "Left out: " + D.left_out.test_walks + " test walks, " + D.left_out.outside_points + " points, " + D.left_out.outside_marks + " marks and " + D.left_out.outside_media + " photos or videos outside OAU.";
+document.getElementById("md").innerHTML = "<tr><th>Type</th><th>Place</th><th>File</th></tr>" + D.media.map(x => "<tr><td>" + esc(x.kind) + "</td><td>" + esc(x.name || "-") + '</td><td><a href="media/' + esc(x.file) + '" target="_blank">open</a></td></tr>').join("");
 document.getElementById("pl").innerHTML = "<tr><th>Place</th><th>Picks</th><th>Phones</th><th>Spread</th><th>Size to set</th></tr>" + D.places.map(p => '<tr class="' + (p.new ? "new" : "") + '"><td>' + esc(p.name) + (p.new ? " (new)" : "") + "</td><td>" + p.picks + "</td><td>" + p.phones + "</td><td>" + (p.spread != null ? p.spread + " m" : "-") + "</td><td>" + (p.suggest_radius ? p.suggest_radius + " m" : "-") + "</td></tr>").join("");
 const rows = a => "<tr><th>Phones</th><th>Longest</th><th>What is there</th></tr>" + a.map(s => "<tr><td>" + s.phones + "</td><td>" + s.minutes + " min</td><td>" + esc(nm(s)) + "</td></tr>").join("");
 document.getElementById("st").innerHTML = rows(D.stops); document.getElementById("gp").innerHTML = rows(D.gaps);
@@ -225,11 +307,14 @@ def main(folder, data_file):
     with open(data_file, encoding="utf-8") as f:
         all_places = json.load(f)
     known = [p for p in all_places if p.get("verified") and not p.get("hidden") and not p.get("waypoint")]
+    here = os.path.dirname(os.path.abspath(__file__))
+    boundary = load_boundary(os.path.join(here, "campus_boundary.json"))
+    zipped = unpack_media(folder)
     walks = load(folder)
-    if not walks:
+    if not walks and not zipped:
         print("No walk files found in", folder)
         return None
-    r = analyse(walks, known)
+    r = analyse(walks, known, boundary, zipped)
     with open(os.path.join(folder, "review.json"), "w", encoding="utf-8") as f:
         json.dump(r, f, ensure_ascii=False, indent=1)
     page = PAGE.replace("__DATA__", json.dumps(r, ensure_ascii=False).replace("</", "<\\/"))
@@ -237,7 +322,8 @@ def main(folder, data_file):
         f.write(page)
     confirmed = sum(len(v) for k, v in r["paths"].items() if int(k) >= CONFIRMED)
     print(f"{r['walks']} walks, {r['phones']} phones, {r['points']} good points; {confirmed} stretches confirmed by {CONFIRMED}+ phones.")
-    print(f"{len(r['stops'])} stops, {len(r['gaps'])} GPS gaps, {len(r['places'])} places picked. Open field-walks/review-map.html")
+    print(f"{len(r['stops'])} stops, {len(r['gaps'])} GPS gaps, {len(r['places'])} places picked, {len(r['media'])} photos and videos. Open field-walks/review-map.html")
+    print("Left out:", r["left_out"])
     for p in r["places"]:
         if p.get("suggest_radius"):
             print(f'  {p["name"]}: wide place. To use it, add to "change" in field-fixes.json: "{p["id"]}": {{"radius": {p["suggest_radius"]}}}')

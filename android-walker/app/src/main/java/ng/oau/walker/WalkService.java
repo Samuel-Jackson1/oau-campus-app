@@ -28,8 +28,6 @@ public class WalkService extends Service implements LocationListener {
     static final String ACTION_STOP = "ng.oau.walker.STOP";
     private static final String CHANNEL = "walk";
 
-    // The OAU road network from data/places.json. Positions outside it are never saved.
-    private static final double LAT_MIN = 7.4838, LAT_MAX = 7.5500, LNG_MIN = 4.4531, LNG_MAX = 4.5458;
     private static final float MAX_ACCURACY = 40f;   // weaker readings are not worth keeping
     private static final float MIN_MOVE = 8f;        // metres between saved points
     private static final long HEARTBEAT = 60000L;    // also save while standing still: long stops show where places are
@@ -42,16 +40,15 @@ public class WalkService extends Service implements LocationListener {
     static volatile long lastFixAt = 0;      // SystemClock time of the last GPS reading of any quality
     static volatile long startedAt = 0;      // SystemClock time
     static volatile boolean outside = false;
+    static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
+    static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
+    static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
     static volatile Location lastGood = null;
     static volatile File current = null;
 
     private LocationManager manager;
     private PowerManager.WakeLock wake;
     private Location lastSaved;
-
-    static boolean inCampus(double lat, double lng) {
-        return lat >= LAT_MIN && lat <= LAT_MAX && lng >= LNG_MIN && lng <= LNG_MAX;
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -66,12 +63,21 @@ public class WalkService extends Service implements LocationListener {
 
     private void begin() {
         if (running) return;
+        Campus.load(this);
+        testMode = WalkStore.prefs(this).getBoolean("testMode", false);
+        Campus.load(this);
+        testMode = WalkStore.prefs(this).getBoolean("testMode", false);
+        Campus.load(this);
+        testMode = WalkStore.prefs(this).getBoolean("testMode", false);
         // If Android stopped the service in the middle of a walk, carry on in the same file.
         String path = WalkStore.prefs(this).getString("current", null);
         File f = path != null ? new File(path) : null;
         if (f == null || !f.exists()) {
             f = WalkStore.newWalk(this, System.currentTimeMillis());
             WalkStore.prefs(this).edit().putString("current", f.getPath()).apply();
+            if (testMode) WalkStore.append(f, "{\"test\":true}");
+            if (testMode) WalkStore.append(f, "{\"test\":true}");
+            if (testMode) WalkStore.append(f, "{\"test\":true}");
             saved = 0;
             metres = 0;
         }
@@ -123,8 +129,8 @@ public class WalkService extends Service implements LocationListener {
     public void onLocationChanged(Location l) {
         lastFixAt = SystemClock.elapsedRealtime();
         accuracy = l.getAccuracy();
-        outside = !inCampus(l.getLatitude(), l.getLongitude());
-        if (outside || l.getAccuracy() > MAX_ACCURACY) return;
+        outside = !Campus.contains(l.getLatitude(), l.getLongitude());
+        if ((outside && !testMode) || l.getAccuracy() > MAX_ACCURACY) return;
         lastGood = l;
         File f = current;
         if (f == null) return;

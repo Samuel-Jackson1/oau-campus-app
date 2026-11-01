@@ -4,13 +4,18 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
+import android.graphics.Matrix;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +23,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
@@ -27,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,7 +46,10 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,12 +59,20 @@ import java.util.Locale;
 /** One big button. Everything a volunteer needs is on one screen. */
 public class MainActivity extends Activity {
     private static final int NAVY = 0xFF0D1B8E, GOLD = 0xFFF8C843, RED = 0xFFC62828, INK = 0xFF16182B, MUTED = 0xFF44475A, PAPER = 0xFFF6F6FB;
-    private static final int ASK_LOCATION = 1;
+    private static final int ASK_LOCATION = 1, TAKE_PHOTO = 2, TAKE_VIDEO = 3;
+    private static final int VIDEO_SECONDS = 20;
+    private static final long VIDEO_MAX_BYTES = 15L * 1024 * 1024;
     private static final long GOOD_FIX_AGE = 60000L;   // a mark uses the last good position only if it is this recent
 
     private final Handler ticker = new Handler(Looper.getMainLooper());
     private TextView status, detail;
-    private Button big, mark, send;
+    private Button big, mark, photo, video, send, sendMedia;
+    private CheckBox test;
+
+    /** What happens after the volunteer picks a place (name and id are null if they skipped). */
+    private interface Picked {
+        void done(String id, String name);
+    }
     private final List<Place> places = new ArrayList<>();
 
     private static final class Place {
@@ -100,7 +118,8 @@ public class MainActivity extends Activity {
         page.addView(text("• It records only after you tap Start, and you can tap Stop at any time.\n"
                 + "• A notification shows the whole time it is recording.\n"
                 + "• It uses GPS, not your data, and it cannot send anything by itself. You choose when to send your walk.\n"
-                + "• It does not ask for your name. Places outside OAU are not saved, and the first and last 100 m of each walk are removed before sending.", 17, MUTED, false));
+                + "• It does not ask for your name. Places outside OAU are not saved, and the first and last 100 m of each walk are removed before sending.\n"
+                + "• Photos and short videos are only taken when you choose. Please film buildings and places, not people.", 17, MUTED, false));
         page.addView(gap(24));
         Button agree = button("I agree", NAVY, Color.WHITE);
         agree.setOnClickListener(v -> {
@@ -138,19 +157,46 @@ public class MainActivity extends Activity {
         page.addView(gap(16));
 
         mark = button("I am at a place", GOLD, 0xFF1A1300);
-        mark.setOnClickListener(v -> pickPlace());
+        mark.setOnClickListener(v -> {
+            if (allowedHere()) pickPlace(false, this::saveMark);
+        });
         page.addView(mark, wide());
+        page.addView(gap(10));
+
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        photo = button("Take a photo", PAPER, NAVY);
+        photo.setOnClickListener(v -> capture(TAKE_PHOTO));
+        video = button("Short video", PAPER, NAVY);
+        video.setOnClickListener(v -> capture(TAKE_VIDEO));
+        LinearLayout.LayoutParams half = new LinearLayout.LayoutParams(0, dp(60), 1f);
+        row.addView(photo, half);
+        View between = new View(this);
+        row.addView(between, new LinearLayout.LayoutParams(dp(10), 1));
+        row.addView(video, new LinearLayout.LayoutParams(0, dp(60), 1f));
+        page.addView(row);
         page.addView(gap(10));
 
         send = button("Send my walks", PAPER, NAVY);
         send.setOnClickListener(v -> sendWalks(false));
         page.addView(send, wide());
+        page.addView(gap(10));
+        sendMedia = button("Send photos and videos", PAPER, NAVY);
+        sendMedia.setOnClickListener(v -> sendMediaFiles());
+        page.addView(sendMedia, wide());
         page.addView(gap(4));
         TextView again = text("Send all my walks again", 15, MUTED, false);
         again.setGravity(Gravity.CENTER);
         again.setPadding(0, dp(12), 0, dp(12));
         again.setOnClickListener(v -> sendWalks(true));
         page.addView(again);
+        test = new CheckBox(this);
+        test.setText("Test mode (team only): keep walks outside OAU. They are marked as tests and never used.");
+        test.setTextSize(14);
+        test.setTextColor(MUTED);
+        test.setChecked(WalkStore.prefs(this).getBoolean("testMode", false));
+        test.setOnCheckedChangeListener((b, on) -> WalkStore.prefs(this).edit().putBoolean("testMode", on).apply());
+        page.addView(test);
 
         if (isTranssion()) {
             page.addView(gap(8));
@@ -174,8 +220,16 @@ public class MainActivity extends Activity {
         boolean on = WalkService.running;
         big.setText(on ? "Stop" : "Start");
         tint(big, on ? RED : NAVY);
-        mark.setEnabled(on);
-        mark.setAlpha(on ? 1f : 0.45f);
+        for (Button b : new Button[] {mark, photo, video}) {
+            b.setEnabled(on);
+            b.setAlpha(on ? 1f : 0.45f);
+        }
+        test.setEnabled(!on);
+        List<File> media = WalkStore.unsentMedia(this);
+        long bytes = 0;
+        for (File f : media) bytes += f.length();
+        sendMedia.setVisibility(media.isEmpty() ? View.GONE : View.VISIBLE);
+        sendMedia.setText(String.format(Locale.US, "Send photos and videos (%d, %.1f MB)", media.size(), bytes / 1048576.0));
         int waiting = WalkStore.unsentCount(this, WalkService.current);
         send.setText(waiting > 0 ? "Send my walks (" + waiting + ")" : "Send my walks");
         if (!on) {
@@ -184,7 +238,8 @@ public class MainActivity extends Activity {
             return;
         }
         long sinceFix = WalkService.lastFixAt == 0 ? -1 : SystemClock.elapsedRealtime() - WalkService.lastFixAt;
-        if (WalkService.outside) status.setText("Outside OAU: not saving");
+        if (WalkService.testMode) status.setText("TEST walk: it will not be used");
+        else if (WalkService.outside) status.setText("Outside OAU: not saving");
         else if (sinceFix < 0 || sinceFix > 30000) status.setText("Looking for GPS: go outside");
         else status.setText("Recording. You can lock your phone.");
         long minutes = (SystemClock.elapsedRealtime() - WalkService.startedAt) / 60000;
@@ -280,7 +335,14 @@ public class MainActivity extends Activity {
         return l;
     }
 
-    private void pickPlace() {
+    /** Outside OAU nothing is marked or filmed, unless this is a team test. */
+    private boolean allowedHere() {
+        if (!WalkService.outside || WalkService.testMode) return true;
+        Toast.makeText(this, "You are outside OAU, so this is not saved.", Toast.LENGTH_LONG).show();
+        return false;
+    }
+
+    private void pickPlace(boolean canSkip, final Picked then) {
         final Location here = freshFix();
         final List<Place> sorted = new ArrayList<>(places);
         if (here != null) {
@@ -305,11 +367,12 @@ public class MainActivity extends Activity {
         list.setAdapter(adapter);
         box.addView(list, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(320)));
 
-        final AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Where are you now?")
-                .setView(box)
-                .setNegativeButton("Cancel", null)
-                .create();
+                .setView(box);
+        if (canSkip) builder.setCancelable(false).setNegativeButton("Skip: I don't know", (d, w) -> then.done(null, null));
+        else builder.setNegativeButton("Cancel", null);
+        final AlertDialog dialog = builder.create();
 
         final Runnable fill = () -> {
             String q = find.getText().toString().trim().toLowerCase(Locale.US);
@@ -330,14 +393,14 @@ public class MainActivity extends Activity {
         });
         list.setOnItemClickListener((parent, view, position, id) -> {
             dialog.dismiss();
-            if (position == 0) typeName(find.getText().toString().trim());
-            else saveMark(shown.get(position - 1).id, shown.get(position - 1).name);
+            if (position == 0) typeName(find.getText().toString().trim(), canSkip, then);
+            else then.done(shown.get(position - 1).id, shown.get(position - 1).name);
         });
         fill.run();
         dialog.show();
     }
 
-    private void typeName(String start) {
+    private void typeName(String start, boolean canSkip, final Picked then) {
         final EditText name = new EditText(this);
         name.setHint("Name of this place");
         name.setText(start);
@@ -345,11 +408,15 @@ public class MainActivity extends Activity {
         new AlertDialog.Builder(this)
                 .setTitle("What is this place called?")
                 .setView(name)
+                .setCancelable(!canSkip)
                 .setPositiveButton("Save", (d, w) -> {
                     String n = name.getText().toString().trim();
-                    if (!n.isEmpty()) saveMark(null, n);
+                    if (!n.isEmpty()) then.done(null, n);
+                    else if (canSkip) then.done(null, null);
                 })
-                .setNegativeButton("Cancel", null).show();
+                .setNegativeButton(canSkip ? "Skip" : "Cancel", (d, w) -> {
+                    if (canSkip) then.done(null, null);
+                }).show();
     }
 
     private void saveMark(String id, String name) {
@@ -358,6 +425,145 @@ public class MainActivity extends Activity {
         Location fix = freshFix();
         WalkStore.addMark(f, id, name, fix, System.currentTimeMillis());
         Toast.makeText(this, fix != null ? "Saved: " + name : "Saved: " + name + ". We will find the spot from your walk.", Toast.LENGTH_LONG).show();
+    }
+
+    // ---------- photos and short videos, each saved with where the phone was when it was taken ----------
+    private void capture(int kind) {
+        if (!allowedHere()) return;
+        boolean isPhoto = kind == TAKE_PHOTO;
+        File f = new File(WalkStore.mediaDir(this), (isPhoto ? "photo-" : "video-") + WalkStore.deviceCode(this) + "-" + System.currentTimeMillis() + (isPhoto ? ".jpg" : ".mp4"));
+        Location fix = freshFix();
+        android.content.SharedPreferences.Editor e = WalkStore.prefs(this).edit().putString("pendingFile", f.getPath()).putLong("pendingAt", System.currentTimeMillis());
+        if (fix != null) {
+            e.putString("pendingLat", String.valueOf(fix.getLatitude())).putString("pendingLng", String.valueOf(fix.getLongitude())).putFloat("pendingAcc", fix.getAccuracy());
+        } else {
+            e.remove("pendingLat").remove("pendingLng").remove("pendingAcc");
+        }
+        e.apply();
+        Uri uri = ShareProvider.mediaUri(f);
+        Intent i = new Intent(isPhoto ? MediaStore.ACTION_IMAGE_CAPTURE : MediaStore.ACTION_VIDEO_CAPTURE);
+        i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        i.setClipData(ClipData.newRawUri("", uri));
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (!isPhoto) {
+            i.putExtra(MediaStore.EXTRA_DURATION_LIMIT, VIDEO_SECONDS);
+            i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);   // small files: videos are sent over mobile data
+            i.putExtra(MediaStore.EXTRA_SIZE_LIMIT, VIDEO_MAX_BYTES);
+        }
+        try {
+            startActivityForResult(i, kind);
+        } catch (ActivityNotFoundException none) {
+            Toast.makeText(this, "This phone has no camera app we can open.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int code, int result, Intent data) {
+        super.onActivityResult(code, result, data);
+        if (code != TAKE_PHOTO && code != TAKE_VIDEO) return;
+        android.content.SharedPreferences p = WalkStore.prefs(this);
+        String path = p.getString("pendingFile", null);
+        p.edit().remove("pendingFile").apply();
+        if (path == null) return;
+        final File f = new File(path);
+        if (result != RESULT_OK) {
+            f.delete();
+            return;
+        }
+        // Some camera apps ignore where we asked them to save, and hand the file back instead.
+        if (f.length() == 0 && data != null && data.getData() != null) copyFrom(data.getData(), f);
+        if (f.length() == 0) {
+            f.delete();
+            Toast.makeText(this, "The camera did not give us the file. Please try again.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        final Location fix = pendingFix(p);
+        final long at = p.getLong("pendingAt", System.currentTimeMillis());
+        if (code == TAKE_PHOTO) shrinkPhoto(f, fix);
+        pickPlace(true, (id, name) -> {
+            File walk = WalkService.current;
+            if (walk != null) WalkStore.addMedia(walk, code == TAKE_PHOTO ? "photo" : "video", f.getName(), id, name, fix, at);
+            Toast.makeText(this, (fix != null ? "Saved with its location." : "Saved. We will find the spot from your walk."), Toast.LENGTH_LONG).show();
+        });
+    }
+
+    private static Location pendingFix(android.content.SharedPreferences p) {
+        String lat = p.getString("pendingLat", null), lng = p.getString("pendingLng", null);
+        Location l = lat == null || lng == null ? freshFix() : new Location("gps");
+        if (l != null && lat != null && lng != null) {
+            l.setLatitude(Double.parseDouble(lat));
+            l.setLongitude(Double.parseDouble(lng));
+            l.setAccuracy(p.getFloat("pendingAcc", 0f));
+        }
+        return l;
+    }
+
+    private void copyFrom(Uri from, File to) {
+        try (InputStream in = getContentResolver().openInputStream(from); OutputStream out = new FileOutputStream(to)) {
+            byte[] buf = new byte[65536];
+            int n;
+            while (in != null && (n = in.read(buf)) > 0) out.write(buf, 0, n);
+        } catch (Exception ignored) {
+            // The caller sees an empty file and tells the volunteer.
+        }
+    }
+
+    /** Photos go over mobile data: at most 1600 px, upright, with the position written inside the file too. */
+    private static void shrinkPhoto(File f, Location fix) {
+        try {
+            String path = f.getPath();
+            int turn = new ExifInterface(path).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int degrees = turn == ExifInterface.ORIENTATION_ROTATE_90 ? 90 : turn == ExifInterface.ORIENTATION_ROTATE_180 ? 180 : turn == ExifInterface.ORIENTATION_ROTATE_270 ? 270 : 0;
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+            int longest = Math.max(o.outWidth, o.outHeight), sample = 1;
+            while (longest / (sample * 2) >= 1600) sample *= 2;
+            o = new BitmapFactory.Options();
+            o.inSampleSize = sample;
+            Bitmap b = BitmapFactory.decodeFile(path, o);
+            if (b == null) return;
+            if (degrees != 0) {
+                Matrix m = new Matrix();
+                m.postRotate(degrees);
+                b = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, true);
+            }
+            try (FileOutputStream out = new FileOutputStream(f)) {
+                b.compress(Bitmap.CompressFormat.JPEG, 72, out);
+            }
+            if (fix != null && Build.VERSION.SDK_INT >= 24) {
+                ExifInterface x = new ExifInterface(path);
+                x.setLatLong(fix.getLatitude(), fix.getLongitude());
+                x.saveAttributes();
+            }
+        } catch (Exception keepTheOriginal) {
+            // The full-size photo is still there; it is just bigger.
+        }
+    }
+
+    private void sendMediaFiles() {
+        Toast.makeText(this, "Preparing the file...", Toast.LENGTH_SHORT).show();
+        new Thread(() -> {
+            File out = null;
+            try {
+                out = WalkStore.exportMedia(this);
+            } catch (Exception ignored) {
+                // Told below.
+            }
+            final File ready = out;
+            runOnUiThread(() -> {
+                if (ready == null) {
+                    Toast.makeText(this, "No new photos or videos to send.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("application/zip");
+                i.putExtra(Intent.EXTRA_STREAM, ShareProvider.uriFor(ready));
+                i.putExtra(Intent.EXTRA_SUBJECT, ready.getName());
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(i, "Send photos and videos (WhatsApp works)"));
+            });
+        }).start();
     }
 
     private static float distance(Location here, Place p) {

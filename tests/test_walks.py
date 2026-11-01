@@ -6,6 +6,7 @@ import walks_report as wr
 
 T0 = 1793000000000
 KNOWN = [{"id": "motion_ground", "name": "Motion Ground", "lat": 7.5180, "lng": 4.5227, "verified": True}]
+BOUNDARY = wr.load_boundary(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools", "campus_boundary.json"))
 
 
 def line(start_lat, start_lng, n, step_lat=0.0001, seconds=15, t0=T0, acc=8):
@@ -64,6 +65,37 @@ class WalksTest(unittest.TestCase):
         r = wr.analyse([walk("a", pts, [lost])], KNOWN)
         self.assertEqual(r["places"][0]["unlocated"], 1)
         self.assertTrue(r["places"][0]["new"])
+
+    def test_the_real_boundary_keeps_campus_and_drops_the_expressway(self):
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "places.json"), encoding="utf-8") as f:
+            places = [p for p in json.load(f) if p.get("verified") and not p.get("hidden")]
+        missing = [p["name"] for p in places if not wr.on_campus(p["lat"], p["lng"], BOUNDARY)]
+        self.assertEqual(missing, [])   # every saved place, including the Main Gate, counts as OAU
+        self.assertFalse(wr.on_campus(7.495746, 4.521477, BOUNDARY))   # the first real test walk, by the overhead bridge
+        self.assertFalse(wr.on_campus(7.47, 4.56, BOUNDARY))           # Ile-Ife town
+
+    def test_off_campus_and_test_walks_are_left_out(self):
+        outside = walk("a", line(7.495746, 4.521477, 5, step_lat=0.00001), [{"mark": True, "name": "Overhead bridge", "t": T0, "lat": 7.495642, "lng": 4.521627}])
+        testing = dict(walk("b", line(7.53, 4.53, 5), wid="w2"), test=True)
+        good = walk("c", line(7.53, 4.53, 5), wid="w3")
+        r = wr.analyse([outside, testing, good], KNOWN, BOUNDARY)
+        self.assertEqual(r["left_out"]["test_walks"], 1)
+        self.assertEqual(r["left_out"]["outside_points"], 5)
+        self.assertEqual(r["left_out"]["outside_marks"], 1)
+        self.assertEqual(r["places"], [])
+        self.assertEqual(r["phones"], 2)
+        self.assertEqual(r["points"], 5)
+
+    def test_photos_and_videos_keep_their_place_on_the_map(self):
+        pts = line(7.53, 4.53, 5)
+        items = [{"mark": True, "media": "photo", "file": "p1.jpg", "name": "Motion Ground", "place": "motion_ground", "t": T0, "lat": 7.5181, "lng": 4.5228},
+                 {"mark": True, "media": "video", "file": "v1.mp4", "t": T0 + 30000},
+                 {"mark": True, "media": "photo", "file": "p2.jpg", "t": T0, "lat": 7.495642, "lng": 4.521627}]
+        r = wr.analyse([walk("a", pts, items)], KNOWN, BOUNDARY)
+        self.assertEqual([m["file"] for m in r["media"]], ["p1.jpg", "v1.mp4"])
+        self.assertAlmostEqual(r["media"][1]["lat"], 7.5302, places=3)   # no GPS at that moment: placed from the walk
+        self.assertEqual(r["places"][0]["picks"], 1)                     # a named photo also counts as a pick
+        self.assertEqual(r["left_out"]["outside_media"], 1)
 
     def test_a_walk_sent_twice_counts_once_and_other_files_are_skipped(self):
         with tempfile.TemporaryDirectory() as tmp:

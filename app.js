@@ -592,7 +592,8 @@ function gRender(off, acc) {
   $("gleft").textContent = away(left);
   const s = i >= 0 ? steps[i] : null, lmk = s ? (s.near || (named(route.ids[s.from]) ? route.ids[s.from] : null)) : null;
   const turnTxt = s ? t("t" + s.turn) : "", where = lmk ? t("at") + " " + nameOf(lmk) : "";
-  const arrived = gme && ((end.radius && toEdge(gme, end) === 0) || (i < 0 && (m <= 20 || (gdone && m <= 60))));   // once arrived, small GPS wobbles do not undo it
+  // Arrived means truly close to the place itself, not just past the last point of the route.
+  const dEnd = gme ? toEdge(gme, end) : Infinity, arrived = gme && (dEnd <= (end.radius ? 0 : 25) || (gdone && dEnd <= 60));   // once arrived, small GPS wobbles do not undo it
   // Far from the route: the arrow points to the nearest point of the route instead.
   const offr = gme && off > 35 && !arrived;
   const A = graph.byId[route.ids[gk]], B = graph.byId[route.ids[Math.min(gk + 1, route.ids.length - 1)]];

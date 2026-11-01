@@ -24,16 +24,6 @@ public class ShareProvider extends ContentProvider {
         return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
     }
 
-    /** Where the camera app saves a new photo or video. */
-    static Uri mediaUri(File f) {
-        return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
-    }
-
-    /** Where the camera app saves a new photo or video. */
-    static Uri mediaUri(File f) {
-        return new Uri.Builder().scheme("content").authority(AUTHORITY).appendPath("media").appendPath(f.getName()).build();
-    }
-
     private File fileFor(Uri uri) throws FileNotFoundException {
         String name = uri.getLastPathSegment();
         if (name == null || name.contains("/") || name.contains("..")) throw new FileNotFoundException();

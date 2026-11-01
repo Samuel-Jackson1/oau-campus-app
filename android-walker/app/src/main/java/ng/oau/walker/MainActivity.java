@@ -531,14 +531,27 @@ public class MainActivity extends Activity {
             try (FileOutputStream out = new FileOutputStream(f)) {
                 b.compress(Bitmap.CompressFormat.JPEG, 72, out);
             }
-            if (fix != null && Build.VERSION.SDK_INT >= 24) {
+            if (fix != null) {
                 ExifInterface x = new ExifInterface(path);
-                x.setLatLong(fix.getLatitude(), fix.getLongitude());
+                x.setAttribute(ExifInterface.TAG_GPS_LATITUDE, dms(fix.getLatitude()));
+                x.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, fix.getLatitude() >= 0 ? "N" : "S");
+                x.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, dms(fix.getLongitude()));
+                x.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, fix.getLongitude() >= 0 ? "E" : "W");
                 x.saveAttributes();
             }
         } catch (Exception keepTheOriginal) {
             // The full-size photo is still there; it is just bigger.
         }
+    }
+
+    /** A coordinate the way photo files store it: degrees, minutes, seconds. */
+    private static String dms(double v) {
+        v = Math.abs(v);
+        int deg = (int) v;
+        double rest = (v - deg) * 60;
+        int min = (int) rest;
+        long sec = Math.round((rest - min) * 60 * 10000);
+        return deg + "/1," + min + "/1," + sec + "/10000";
     }
 
     private void sendMediaFiles() {

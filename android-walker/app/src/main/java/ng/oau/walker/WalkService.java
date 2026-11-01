@@ -41,8 +41,6 @@ public class WalkService extends Service implements LocationListener {
     static volatile long startedAt = 0;      // SystemClock time
     static volatile boolean outside = false;
     static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
-    static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
-    static volatile boolean testMode = false;   // a team test off campus: saved, but marked "test" and ignored later
     static volatile Location lastGood = null;
     static volatile File current = null;
 
@@ -65,18 +63,12 @@ public class WalkService extends Service implements LocationListener {
         if (running) return;
         Campus.load(this);
         testMode = WalkStore.prefs(this).getBoolean("testMode", false);
-        Campus.load(this);
-        testMode = WalkStore.prefs(this).getBoolean("testMode", false);
-        Campus.load(this);
-        testMode = WalkStore.prefs(this).getBoolean("testMode", false);
         // If Android stopped the service in the middle of a walk, carry on in the same file.
         String path = WalkStore.prefs(this).getString("current", null);
         File f = path != null ? new File(path) : null;
         if (f == null || !f.exists()) {
             f = WalkStore.newWalk(this, System.currentTimeMillis());
             WalkStore.prefs(this).edit().putString("current", f.getPath()).apply();
-            if (testMode) WalkStore.append(f, "{\"test\":true}");
-            if (testMode) WalkStore.append(f, "{\"test\":true}");
             if (testMode) WalkStore.append(f, "{\"test\":true}");
             saved = 0;
             metres = 0;

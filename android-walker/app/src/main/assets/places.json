@@ -50,6 +50,13 @@
 "search": "BOO A, B and C"
 },
 {
+"id": "campus_gate",
+"name": "Campus Gate",
+"search": "Campus Gate",
+"lat": 7.497621,
+"lng": 4.522445
+},
+{
 "name": "Coca cola village",
 "search": "Coca cola village"
 },

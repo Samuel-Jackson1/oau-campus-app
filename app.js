@@ -419,7 +419,7 @@ function hiStep(first) {
 // "You" on the map: a blue dot that moves with your GPS, an arrow for the way you face, and a pale circle for
 // how accurate the GPS is. It starts when you tap the button on the map (or chose "Use my location"), stops when
 // you leave the directions, and your position never leaves the phone.
-let watch = null, youM = null, accC = null, follow = false, link = null;
+let watch = null, youM = null, accC = null, follow = false, link = null, liveMe = null;
 const M_PER_UNIT = 111320 / 1e5;   // the map works in units of 1/100000 of a degree, about 1.1 m
 function startWatch() {
   if (watch !== null || !navigator.geolocation) return;
@@ -437,7 +437,7 @@ function stopWatch() {
   watch = null; if (follow) setFollow(false);
   removeEventListener("deviceorientationabsolute", onTurn); removeEventListener("deviceorientation", onTurn);
   if (youM) { youM.remove(); accC.remove(); youM = accC = null; }
-  if (link) { link.remove(); link = null; } $("mapnote").hidden = true;
+  if (link) { link.remove(); link = null; } $("mapnote").hidden = true; liveMe = null;
   rot = null;
 }
 function onPos(pos) {
@@ -452,6 +452,7 @@ function onPos(pos) {
   // dashed line joins you to the nearest point of the route. Far from it (more than 300 m, e.g. testing at home):
   // say so plainly, keep the start pin, and do not follow.
   const me = {lat: pos.coords.latitude, lng: pos.coords.longitude}, start = route && graph.byId[route.ids[0]];
+  liveMe = me;
   let d = 0, near = start;
   if (route) { d = Infinity; route.ids.forEach(i => { const q = graph.byId[i], dq = Route.haversine(me, q); if (dq < d) { d = dq; near = q; } }); }
   const far = d > 300;
@@ -461,6 +462,7 @@ function onPos(pos) {
     if (em) em.textContent = t("startpin") + ": " + start.name;   // the phone is elsewhere, so the pin only marks where the route starts
   }
   else if (startPin) { startPin.remove(); startPin = null; }
+  facingHint();
   if (link) link.remove();
   link = route && !far && d > 15 ? L.polyline([p, proj(near)], {className: "mlink", interactive: false}).addTo(lm) : null;
   if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
@@ -491,9 +493,10 @@ function facingHint() {
   const el = $("facing");
   if (!el || !route || route.ids.length < 2 || rot === null) return;
   if (!$("mapnote").hidden) { el.hidden = true; return; }   // the phone is far from the route: the hint would be wrong
-  const a = graph.byId[route.ids[0]]; let j = 1;
-  while (j < route.ids.length - 1 && Route.haversine(a, graph.byId[route.ids[j]]) < 20) j++;
-  const d = ((Route.bearing(a, graph.byId[route.ids[j]]) - ((rot % 360) + 360) % 360 + 540) % 360) - 180;
+  // With GPS on it starts from where you really stand, even if that is a little way from the saved starting place.
+  const from = liveMe || graph.byId[route.ids[0]], at = onRoute(from);
+  const to = liveMe && at.off > 35 ? at.point : aheadOf(at.k, at.f);
+  const d = ((Route.bearing(from, to) - ((rot % 360) + 360) % 360 + 540) % 360) - 180;
   const key = Math.abs(d) < 35 ? "facestraight" : Math.abs(d) > 135 ? "facearound" : d > 0 ? "faceright" : "faceleft";
   el.innerHTML = '<i style="transform:rotate(' + d.toFixed(0) + 'deg)">' + FACE + "</i><span><b>" + t(key) + "</b><small>" + t("facehint") + "</small></span>";
   el.hidden = false;
@@ -563,15 +566,20 @@ const buzz = p => { if (navigator.vibrate) navigator.vibrate(p); };
 // straight road, so the distance is measured to the line between them), never jumping back more than a few points.
 // gk is the stretch you are on and gf how far along it (0 to 1).
 const xy = (p, o) => [(p.lng - o.lng) * 111320 * Math.cos(o.lat * Math.PI / 180), (p.lat - o.lat) * 110540];   // metres east and north of o
-function gUpdate(me, acc, course) {
-  gme = me; if (course != null) gcourse = course;
-  const ids = route.ids; let k = gk, f = 0, bd = Infinity;
-  for (let i = Math.max(0, gk - 3); i < ids.length - 1; i++) {
+function onRoute(me, from = 0) {
+  const ids = route.ids; let k = from, f = 0, off = Infinity;
+  for (let i = from; i < ids.length - 1; i++) {
     const a = xy(graph.byId[ids[i]], me), b = xy(graph.byId[ids[i + 1]], me), dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy;
     const u = l2 ? Math.max(0, Math.min(1, -(a[0] * dx + a[1] * dy) / l2)) : 0, d = Math.hypot(a[0] + u * dx, a[1] + u * dy);
-    if (d < bd) { bd = d; k = i; f = u; }
+    if (d < off) { off = d; k = i; f = u; }
   }
-  gk = k; gf = f; gRender(bd, acc);
+  const A = graph.byId[ids[k]], B = graph.byId[ids[Math.min(k + 1, ids.length - 1)]];
+  return {k, f, off, point: {lat: A.lat + (B.lat - A.lat) * f, lng: A.lng + (B.lng - A.lng) * f}};
+}
+function gUpdate(me, acc, course) {
+  gme = me; if (course != null) gcourse = course;
+  const at = onRoute(me, Math.max(0, gk - 3));
+  gk = at.k; gf = at.f; gRender(at.off, acc);
 }
 const seg = j => Route.haversine(graph.byId[route.ids[j]], graph.byId[route.ids[j + 1]]);
 // The next turn after route point k, and how far away it is along the route.
@@ -581,8 +589,9 @@ function gNext(k) {
   return {i, m};
 }
 // A point about 20 m further along the route: the arrow points at it, so it always shows the way to walk next.
-function gAhead(k) {
-  let left = 20 + (k < route.ids.length - 1 ? seg(k) * gf : 0);
+const gAhead = k => aheadOf(k, gf);
+function aheadOf(k, f) {
+  let left = 20 + (k < route.ids.length - 1 ? seg(k) * f : 0);
   for (let j = k; j < route.ids.length - 1; j++) { const d = seg(j); if (d >= left) return graph.byId[route.ids[j + 1]]; left -= d; }
   return graph.byId[route.ids[route.ids.length - 1]];
 }

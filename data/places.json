@@ -56,6 +56,7 @@
 {"id":"colllege_of_health_sciences","name":"College of Health Sciences","verified":true,"lat":7.517729129407374,"lng":4.52456609802414,"category":"Faculties","aliases":["College","College of heath sciences"],"landmark":"Road 2","description":"It stands on the road that leads towards,ICT, Pharmacy a","photo":"images/places/colllege_of_health_sciences.webp"},
 {"id":"motion_ground","name":"Motion Ground","verified":true,"lat":7.518047716411202,"lng":4.522747826954721,"category":"Sports","aliases":["Motion ground"],"landmark":"University hall","description":"An open environment with seats and trees","photo":"images/places/motion_ground.webp"},
 {"id":"oduduwa_hall","name":"Oduduwa Hall","verified":true,"lat":7.5185017522068245,"lng":4.522011581848576,"category":"Administration","aliases":["Oduduwa"],"landmark":"Motion ground","description":"It is near amphitheater and motion ground.","photo":"images/places/oduduwa_hall.webp"},
+{"id":"campus_gate","name":"Campus Gate","verified":true,"lat":7.497621,"lng":4.522445,"category":"Gates","aliases":[],"landmark":"Car park beside it","description":""},
 {"id":"osm_36315799","name":"Road","hidden":true,"osm":true,"verified":true,"lat":7.499386,"lng":4.453122},
 {"id":"osm_5281349692","name":"Road","hidden":true,"osm":true,"verified":true,"lat":7.499478,"lng":4.453674},
 {"id":"osm_5281351232","name":"Road","hidden":true,"osm":true,"verified":true,"lat":7.499588,"lng":4.454182},

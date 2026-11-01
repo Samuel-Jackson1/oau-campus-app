@@ -14,13 +14,15 @@
     "Pharmacy": "faculty_of_pharmacy",
     "ICT": "ict",
     "PG": "postgraduate_college",
-    "Banking Area": "banking_area"
+    "Banking Area": "banking_area",
+    "Sport": "sport_complex",
+    "Faculty of Admin": "faculty_of_administration"
   },
   "new": [
     "Ojaja", "New market", "New buka", "ETF", "Anglomoz", "Angola", "Mozambique", "Alumni", "Archi", "Faj",
     "Yellow house", "Coca cola village", "Akintola", "Amphi", "Senate building", "Faculty of Education",
-    "Faculty of Admin, Social Sciences and Law", "Dramatic art", "Music", "ICAN", "FBLT", "Faculty of Agric",
-    "Aled duduyemi", "ODDM", "DSA", "Spider", "AGE", "BOO A, B and C", "Faculty of Nursing", "EDM",
-    "Local Government", "Sport", "Religious ground"
+    "Faculty of Social Sciences", "Faculty of Law", "Dramatic art", "Music", "ICAN", "FBLT", "Faculty of Agric",
+    "Alex Duduyemi", "ODDM", "DSA", "Spider", "AGE", "BOO A, B and C", "Faculty of Nursing", "EDM",
+    "Local Government", "Religious ground"
   ]
 }

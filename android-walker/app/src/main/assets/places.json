@@ -15,8 +15,8 @@
 "search": "Akintola"
 },
 {
-"name": "Aled duduyemi",
-"search": "Aled duduyemi"
+"name": "Alex Duduyemi",
+"search": "Alex Duduyemi"
 },
 {
 "name": "Alumni",
@@ -91,13 +91,9 @@
 "search": "ETF"
 },
 {
-"name": "Faculty of Admin, Social Sciences and Law",
-"search": "Faculty of Admin, Social Sciences and Law"
-},
-{
 "id": "faculty_of_administration",
 "name": "Faculty of Administration",
-"search": "Faculty of Administration Admin Faculty",
+"search": "Faculty of Administration Admin Faculty Faculty of Admin",
 "lat": 7.5203,
 "lng": 4.522019
 },
@@ -117,6 +113,10 @@
 "search": "Faculty of Education"
 },
 {
+"name": "Faculty of Law",
+"search": "Faculty of Law"
+},
+{
 "name": "Faculty of Nursing",
 "search": "Faculty of Nursing"
 },
@@ -133,6 +133,10 @@
 "search": "Faculty of Science White House White house",
 "lat": 7.519588,
 "lng": 4.521535
+},
+{
+"name": "Faculty of Social Sciences",
+"search": "Faculty of Social Sciences"
 },
 {
 "id": "faculty_of_technology",
@@ -369,13 +373,9 @@
 "search": "Spider"
 },
 {
-"name": "Sport",
-"search": "Sport"
-},
-{
 "id": "sport_complex",
 "name": "Sports Complex",
-"search": "Sports Complex Sport Complex Sport complex",
+"search": "Sports Complex Sport Complex Sport complex Sport",
 "lat": 7.517702,
 "lng": 4.5217
 },

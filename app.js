@@ -363,10 +363,27 @@ function setStep(i, scroll) {
 }
 // The map is drawn from our own data, so it works offline: OpenStreetMap roads in grey, footpaths the Field team
 // walked as green dashes, every place as a small dot, then the route on top with pins at both ends and at turn landmarks.
-let proj, stepLine, arrows, nearPin, startPin;
+let proj, stepLine, arrows, nearPin, startPin, lmks = [];
+// Landmarks: only the places along your route are shown (within 200 m of it, as buildings sit back from the
+// roads), so the map is not crowded. Only the ones close to you (or, before you set off, close to the step you are
+// looking at) show their names: as you walk, the places you are coming up to are named and the ones behind go quiet.
+function lmkRoute() {
+  const ends = route ? [route.ids[0], route.ids[route.ids.length - 1]] : [];
+  lmks.forEach(x => { x.on = !!route && !ends.includes(x.p.id) && onRoute(x.p).off <= 200; });
+  lmkFocus();
+}
+function lmkFocus() {
+  const s = route && steps[si], seg = s ? route.ids.slice(s.from, s.end + 1).map(i => graph.byId[i]) : [];
+  const close = p => liveMe ? Route.haversine(liveMe, p) <= 250 : seg.some(q => Route.haversine(q, p) <= 200);
+  lmks.forEach(x => {
+    const el = x.m.getElement() && x.m.getElement().querySelector(".lmk");
+    if (el) { el.classList.toggle("on", !!x.on); el.classList.toggle("nm", !!x.on && close(x.p)); }
+  });
+}
 function map(ids) {
   if (!lm) {
-    lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 4, zoomSnap: 0.25, attributionControl: false});
+    // Our own + and - buttons sit outside the turning map, so they stay upright and in reach while it follows you.
+    lm = L.map("map", {crs: L.CRS.Simple, minZoom: -3, maxZoom: 4, zoomSnap: 0.25, attributionControl: false, zoomControl: false});
     let lat0 = Infinity, lng0 = Infinity;
     places.forEach(p => { lat0 = Math.min(lat0, p.lat); lng0 = Math.min(lng0, p.lng); });
     const kx = Math.cos(lat0 * Math.PI / 180);
@@ -379,13 +396,22 @@ function map(ids) {
     // it, so you can see which places you pass and tell you are going the right way. Names show once you zoom in a
     // little, so the map is not crowded when it shows the whole walk. Other points stay as small dots.
     listed().filter(p => !p.category).forEach(p => L.circleMarker(proj(p), {radius: 3.5, className: "mdot", interactive: false}).addTo(lm));
-    listed().filter(p => p.category).forEach(p => L.marker(proj(p), {interactive: false, keyboard: false, icon: L.divIcon({className: "", iconSize: null,
-      html: '<div class="lmk k-' + slug(p.category) + '"><span>' + M(p.category) + "</span><em>" + p.name + "</em></div>"})}).addTo(lm));
-    const labels = () => $("map").classList.toggle("zl", lm.getZoom() >= 0.25);
-    lm.on("zoomend", labels); lm.whenReady(labels);
+    lmks = listed().filter(p => p.category).map(p => ({p, m: L.marker(proj(p), {interactive: false, keyboard: false, icon: L.divIcon({className: "", iconSize: null,
+      html: '<div class="lmk k-' + slug(p.category) + '"><span>' + M(p.category) + "</span><em>" + p.name + "</em></div>"})}).addTo(lm)}));
     lg = L.layerGroup().addTo(lm);
     lm.on("zoomend", () => hiStep(true));
-    $("mapwrap").addEventListener("pointerdown", e => { if (follow && !e.target.closest("#locate")) setFollow(false); });
+    // While the map follows you, zooming (the + and - buttons, two fingers, the mouse wheel) keeps following you.
+    // Only dragging the map with one finger hands it back to you, so "Following you" does not switch off by surprise.
+    const w = $("mapwrap"), ptrs = new Map(); let pinch = false;
+    w.addEventListener("pointerdown", e => { ptrs.set(e.pointerId, [e.clientX, e.clientY]); if (ptrs.size > 1) pinch = true; });
+    w.addEventListener("pointermove", e => {
+      const s = ptrs.get(e.pointerId);
+      if (!s || !follow || pinch || e.target.closest("#locate,.mzoom")) return;
+      if (Math.hypot(e.clientX - s[0], e.clientY - s[1]) > 14) setFollow(false);
+    });
+    const up = e => { ptrs.delete(e.pointerId); if (!ptrs.size) pinch = false; };
+    w.addEventListener("pointerup", up); w.addEventListener("pointercancel", up);
+    $("zin").onclick = () => lm.zoomIn(); $("zout").onclick = () => lm.zoomOut();
   }
   lg.clearLayers(); mb = null; if (!ids) return;
   const pts = ids.map(i => graph.byId[i]);
@@ -394,7 +420,7 @@ function map(ids) {
   arrows = L.layerGroup().addTo(lg); nearPin = null;
   startPin = pin(pts[0], " start", '<img src="icons/art/stand.webp" alt="" width="40" height="40">', t("herecard"));
   pin(pts[pts.length - 1], " focus", M(pts[pts.length - 1].category), pts[pts.length - 1].name);
-  mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit(); hiStep(true);
+  mb = L.latLngBounds(pts.map(proj)).pad(0.2); fit(); hiStep(true); lmkRoute();
 }
 // The step you are on is drawn on top of the route as moving dots, and the map shows that part of the walk
 // (unless the map is following your GPS).
@@ -420,6 +446,7 @@ function hiStep(first) {
   if (!s) { stepLine.setLatLngs([]); arrows.clearLayers(); return; }
   const seg = route.ids.slice(s.from, s.end + 1).map(i => proj(graph.byId[i]));
   stepLine.setLatLngs(seg); arrowsOn(seg);
+  lmkFocus();
   if (s.near) nearPin = pin(graph.byId[s.near], " on", M(graph.byId[s.near].category), graph.byId[s.near].name);   // only this step's landmark
   if (!first && !follow && $("mapbox").open && lm.getSize().x) lm.fitBounds(L.latLngBounds(seg).pad(0.4), {maxZoom: 1.5});
 }
@@ -444,7 +471,7 @@ function stopWatch() {
   watch = null; if (follow) setFollow(false);
   removeEventListener("deviceorientationabsolute", onTurn); removeEventListener("deviceorientation", onTurn);
   if (youM) { youM.remove(); accC.remove(); youM = accC = null; }
-  if (link) { link.remove(); link = null; } $("mapnote").hidden = true; liveMe = null;
+  if (link) { link.remove(); link = null; } $("mapnote").hidden = true; liveMe = null; lmkFocus();
   rot = null;
 }
 function onPos(pos) {
@@ -459,7 +486,7 @@ function onPos(pos) {
   // dashed line joins you to the nearest point of the route. Far from it (more than 300 m, e.g. testing at home):
   // say so plainly, keep the start pin, and do not follow.
   const me = {lat: pos.coords.latitude, lng: pos.coords.longitude}, start = route && graph.byId[route.ids[0]];
-  liveMe = me;
+  liveMe = me; lmkFocus();
   let d = 0, near = start;
   if (route) { d = Infinity; route.ids.forEach(i => { const q = graph.byId[i], dq = Route.haversine(me, q); if (dq < d) { d = dq; near = q; } }); }
   const far = d > 300;
@@ -546,6 +573,8 @@ function setFollow(on) {
   if (!on) { $("map").style.transform = ""; $("map").style.removeProperty("--mr"); }
   if (!lm) return;
   on ? lm.dragging.disable() : lm.dragging.enable();
+  // Following: zoom around you (the middle). Not following: zoom where your fingers or mouse are.
+  lm.options.touchZoom = lm.options.scrollWheelZoom = on ? "center" : true;
   lm.invalidateSize({pan: false});
   if (on && youM) lm.setView(youM.getLatLng(), Math.max(lm.getZoom(), 1.5), {animate: false});
   if (on && rot !== null) spin();

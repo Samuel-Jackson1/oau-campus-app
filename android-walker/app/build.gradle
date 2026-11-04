@@ -10,8 +10,8 @@ android {
         applicationId "ng.oau.walker"
         minSdk 23
         targetSdk 34
-        versionCode 8
-        versionName "0.8"
+        versionCode 9
+        versionName "0.9"
     }
 
     // A fixed test key, so a new test build installs over the old one and keeps the walks already saved.

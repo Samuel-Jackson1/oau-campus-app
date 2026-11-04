@@ -27,8 +27,11 @@
 "search": "Amphi"
 },
 {
+"id": "anglomoz",
 "name": "Anglomoz",
-"search": "Anglomoz"
+"search": "Anglomoz Anglomoz field",
+"lat": 7.521981,
+"lng": 4.515241
 },
 {
 "name": "Angola",
@@ -275,12 +278,18 @@
 "lng": 4.528593
 },
 {
-"name": "New buka",
-"search": "New buka"
+"id": "new_buka",
+"name": "New Buka",
+"search": "New Buka New Bukateria Complex New buka New buka",
+"lat": 7.517408,
+"lng": 4.514606
 },
 {
-"name": "New market",
-"search": "New market"
+"id": "new_market",
+"name": "New Market",
+"search": "New Market New market",
+"lat": 7.517031,
+"lng": 4.513385
 },
 {
 "id": "oak_park_researcher_s_lodge",

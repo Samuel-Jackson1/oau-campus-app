@@ -26,7 +26,8 @@
     ["part_advisor_office", "dean_office_of_the_faculty_of_computing_science_and_engineering"],
     ["ict", "seminar_room_a_and_b"],
     ["oau_admissions_office", "university_hall"],
-    ["first_bus_stop", "university_hall"]
+    ["first_bus_stop", "university_hall"],
+    ["obafemi_awolowo_hall_of_residence", "anglomoz"]
   ],
 
   "change": {

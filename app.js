@@ -375,7 +375,14 @@ function map(ids) {
     // Roads and walked footpaths look the same (both are just "ways"), so the map stays calm; places are small dots.
     paths.forEach(([a, b]) => { const A = graph.byId[a], B = graph.byId[b]; roads.push([proj(A), proj(B)]); });
     L.polyline(roads, {className: "mroad", interactive: false}).addTo(lm);
-    listed().forEach(p => L.circleMarker(proj(p), {radius: 3.5, className: "mdot k-" + slug(p.category || ""), interactive: false}).addTo(lm));
+    // Places with a type (faculties, halls, bus stops...) are landmarks: a small coloured sign with the name next to
+    // it, so you can see which places you pass and tell you are going the right way. Names show once you zoom in a
+    // little, so the map is not crowded when it shows the whole walk. Other points stay as small dots.
+    listed().filter(p => !p.category).forEach(p => L.circleMarker(proj(p), {radius: 3.5, className: "mdot", interactive: false}).addTo(lm));
+    listed().filter(p => p.category).forEach(p => L.marker(proj(p), {interactive: false, keyboard: false, icon: L.divIcon({className: "", iconSize: null,
+      html: '<div class="lmk k-' + slug(p.category) + '"><span>' + M(p.category) + "</span><em>" + p.name + "</em></div>"})}).addTo(lm));
+    const labels = () => $("map").classList.toggle("zl", lm.getZoom() >= 0.25);
+    lm.on("zoomend", labels); lm.whenReady(labels);
     lg = L.layerGroup().addTo(lm);
     lm.on("zoomend", () => hiStep(true));
     $("mapwrap").addEventListener("pointerdown", e => { if (follow && !e.target.closest("#locate")) setFollow(false); });
@@ -423,7 +430,7 @@ let watch = null, youM = null, accC = null, follow = false, link = null, liveMe 
 const M_PER_UNIT = 111320 / 1e5;   // the map works in units of 1/100000 of a degree, about 1.1 m
 function startWatch() {
   if (watch !== null || !navigator.geolocation) return;
-  watch = navigator.geolocation.watchPosition(onPos, e => { $("status").textContent = locErr(e); stopWatch(); }, {enableHighAccuracy: true, maximumAge: 5000, timeout: 30000});
+  watch = navigator.geolocation.watchPosition(p => { if (!gfake) onPos(p); }, e => { $("status").textContent = locErr(e); stopWatch(); }, {enableHighAccuracy: true, maximumAge: 5000, timeout: 30000});
   addEventListener("deviceorientationabsolute", onTurn); addEventListener("deviceorientation", onTurn);
 }
 const locErr = e => t(e && e.code === 1 ? "locdenied" : e && e.code === 3 ? "loctimeout" : "nolocation");
@@ -442,7 +449,7 @@ function stopWatch() {
 }
 function onPos(pos) {
   if (!lm) return;
-  const p = proj({lat: pos.coords.latitude, lng: pos.coords.longitude});
+  const p = proj({lat: pos.coords.latitude, lng: pos.coords.longitude}), first = !youM;
   if (!youM) {
     accC = L.circle(p, {radius: 1, className: "me-acc", interactive: false}).addTo(lm);
     youM = L.marker(p, {interactive: false, zIndexOffset: 1000, icon: L.divIcon({className: "", iconSize: null, html: '<div class="you"><s></s><i></i><em>' + t("herecard") + "</em></div>"})}).addTo(lm);
@@ -465,17 +472,37 @@ function onPos(pos) {
   facingHint();
   if (link) link.remove();
   link = route && !far && d > 15 ? L.polyline([p, proj(near)], {className: "mlink", interactive: false}).addTo(lm) : null;
-  if (pos.coords.heading != null && pos.coords.speed > 0.5) face(pos.coords.heading);   // walking: GPS knows the direction
+  // Walking with no compass: the GPS knows the direction you move. With a compass, the compass wins, so the two
+  // never pull the arrow different ways.
+  if (pos.coords.heading != null && pos.coords.speed > 0.5 && (gfake || Date.now() - lastCompass > 3000)) face(pos.coords.heading);
+  // In Guide me the map follows you as soon as the phone knows where you are.
+  if (first && !far && !$("guide").hidden && !follow) setFollow(true);
   if (follow) lm.panTo(p, {animate: true, duration: 0.6, easeLinearity: 1});
 }
 // The compass: Android gives "deviceorientationabsolute", iPhones give webkitCompassHeading. Both work with no data.
 // The turn of the screen (phone held sideways) is added, and the beam always turns the short way round.
-let rot = null, turnRaf = 0;
-function onTurn(e) {
-  const h = e.webkitCompassHeading != null ? e.webkitCompassHeading : (e.absolute && e.alpha != null ? 360 - e.alpha : null);
-  if (h == null) return;
+let rot = null, turnRaf = 0, lastCompass = 0;
+// Which way the phone points, in degrees from north. Held flat, that is the way its top edge points; held upright
+// (like taking a photo), the way its back camera looks; in between, a mix of the two. Using only the "alpha" angle
+// is right for a flat phone but goes wrong when the phone is upright (the reading can swing to one side).
+function compassOf(e) {
   const sa = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
-  face((h + sa) % 360);
+  if (e.webkitCompassHeading != null) return (e.webkitCompassHeading + sa + 360) % 360;
+  if (!e.absolute || e.alpha == null) return null;
+  const r = Math.PI / 180, a = e.alpha * r, b = (e.beta || 0) * r, g = (e.gamma || 0) * r;
+  const cA = Math.cos(a), sA = Math.sin(a), cB = Math.cos(b), sB = Math.sin(b), cG = Math.cos(g), sG = Math.sin(g);
+  // The phone's own directions on the ground (east, north): its top edge (Y), its right edge (X) and out of its screen (Z).
+  const Y = [-sA * cB, cA * cB], X = [cA * cG - sA * sB * sG, sA * cG + cA * sB * sG], Z = [cA * sG + sA * sB * cG, sA * sG - cA * sB * cG];
+  const cs = Math.cos(sa * r), ss = Math.sin(sa * r);   // the top of the SCREEN, when the phone is held sideways
+  const fx = cs * Y[0] + ss * X[0] - Z[0], fy = cs * Y[1] + ss * X[1] - Z[1];
+  if (Math.hypot(fx, fy) < 0.2) return null;   // pointing at the sky or the ground: no direction to give
+  return (Math.atan2(fx, fy) / r + 360) % 360;
+}
+function onTurn(e) {
+  if (gfake) return;   // the practice walk sets the direction itself
+  const h = compassOf(e);
+  if (h == null) return;
+  lastCompass = Date.now(); face(h);
 }
 // The beam (and, in follow mode, the whole map) turns smoothly: every screen frame it moves a quarter of the way
 // to the compass reading, so it never jumps and never lags behind.
@@ -527,7 +554,7 @@ function setFollow(on) {
 // turn is written in big words with how far it is, the photo shows what to look for, and the phone speaks and
 // buzzes before every turn and on arrival. It moves on by itself as you walk. "Practice walk" walks the route for
 // you (for demonstrations, or to see the way before you go).
-let gwatch = null, gsim = 0, gfake = false, gk = 0, gf = 0, gi = -2, said = {}, wake = null, ghead = null, gcourse = null, gsimHead = null, garr = 0, gtarget = null, gme = null, gdone = false;
+let gpractised = false, gwatch = null, gsim = 0, gfake = false, gk = 0, gf = 0, gi = -2, said = {}, wake = null, ghead = null, gcourse = null, gsimHead = null, garr = 0, gtarget = null, gme = null, gdone = false;
 let voice = store.get("voice") !== "off";
 const named = id => !graph.byId[id].hidden;
 const spokenM = m => (m < 1000 ? Math.max(10, Math.round(m / 10) * 10) + " " + t("metres") : (m / 1000).toFixed(1) + " km");
@@ -541,7 +568,13 @@ function openGuide() {
     p => { if (!gfake) gUpdate({lat: p.coords.latitude, lng: p.coords.longitude}, p.coords.accuracy, p.coords.speed > 0.7 ? p.coords.heading : null); },
     e => { if (!gfake) $("gnote").textContent = locErr(e); }, {enableHighAccuracy: true, maximumAge: 2000, timeout: 30000});
   if (navigator.wakeLock) navigator.wakeLock.request("screen").then(w => { wake = w; }).catch(() => {});   // keep the screen on while walking
+  // The map comes along: it keeps you in the middle, turns with you, and shows the places around you.
+  $("gmapslot").appendChild($("mapwrap")); startWatch(); mapResized();
   gButtons(); gRender();
+}
+// The map moves between the directions page and Guide me; after a move Leaflet must measure it again.
+function mapResized() {
+  requestAnimationFrame(() => { if (!lm) return; lm.invalidateSize({pan: false}); if (follow) setFollow(true); else fit(); });
 }
 function stopGuide() {
   if (gwatch !== null) navigator.geolocation.clearWatch(gwatch);
@@ -549,6 +582,10 @@ function stopGuide() {
   removeEventListener("deviceorientationabsolute", gTurn); removeEventListener("deviceorientation", gTurn);
   if (wake) { wake.release().catch(() => {}); wake = null; }
   if (window.speechSynthesis) speechSynthesis.cancel();
+  // The practice walker's dot is not you: it goes when you leave Guide me (your real GPS dot comes back by itself).
+  if (gpractised) { gpractised = false; stopWatch(); }
+  gfake = false;
+  if ($("mapwrap").parentNode !== $("mapbox")) { $("mapbox").appendChild($("mapwrap")); mapResized(); }
 }
 // The phone speaks in English or Pidgin with its own built-in voice (no data needed on most phones). Yoruba is only
 // spoken if the phone has a Yoruba voice; otherwise the words stay on the screen.
@@ -578,6 +615,8 @@ function onRoute(me, from = 0) {
 }
 function gUpdate(me, acc, course) {
   gme = me; if (course != null) gcourse = course;
+  // The practice walker shows on the map too, so you can see the map move with it.
+  if (gfake && lm) onPos({coords: {latitude: me.lat, longitude: me.lng, accuracy: 4, heading: course, speed: 2}});
   const at = onRoute(me, Math.max(0, gk - 3));
   gk = at.k; gf = at.f; gRender(at.off, acc);
 }
@@ -651,10 +690,9 @@ function gArrow(s) {
 }
 let gtRaf = 0;
 function gTurn(e) {
-  const h = e.webkitCompassHeading != null ? e.webkitCompassHeading : (e.absolute && e.alpha != null ? 360 - e.alpha : null);
+  const h = compassOf(e);
   if (h == null) return;
-  const sa = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
-  ghead = (h + sa) % 360;
+  ghead = h;
   const now = Date.now();   // at most 20 updates a second: smooth, and light on the battery
   if (now - gtRaf >= 50) { gtRaf = now; const n = gNext(gk); gArrow(n.i >= 0 ? steps[n.i] : null); }
 }
@@ -664,7 +702,7 @@ function gSim() {
   if (gsim) { clearInterval(gsim); gsim = 0; gfake = false; gButtons(); gRender(); return; }   // stopped by hand: back to the real GPS
   const ids = route.ids; let j = gk, f = 0;
   if (gdone) { j = 0; gk = 0; gf = 0; gi = -2; said = {}; gdone = false; }
-  gfake = true;   // the pretend walker replaces the GPS until it is stopped (after arriving it stays on the arrival screen)
+  gfake = true; gpractised = true;   // the pretend walker replaces the GPS until it is stopped (after arriving it stays on the arrival screen)
   gsim = setInterval(() => {
     let go = 4;
     while (go > 0 && j < ids.length - 1) { const L = Route.haversine(graph.byId[ids[j]], graph.byId[ids[j + 1]]) || 0.01, rest = L * (1 - f);

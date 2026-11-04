@@ -632,3 +632,14 @@ h1 span:first-child{font-size:clamp(.85rem,4vw,1.05rem)}h1 span:last-child{font-
 .facing b,.facing small{display:block}.facing b{font-size:1.1rem;color:#5c3d00}.facing small{font-size:.8rem;color:#7a5600}
 .gface{margin:0;padding:.4rem 1rem;border-radius:999px;background:#fff4d6;color:#5c3d00;font-weight:800;font-size:1.15rem}
 @media (prefers-reduced-motion:reduce){.facing i{transition:none}}
+/* Landmarks on the map: a small coloured sign for each place, its name once you zoom in. In follow mode the map
+   turns, so the signs turn back the other way and stay readable. */
+.lmk{display:flex;align-items:center;gap:4px;transform:translate(-11px,-50%);transform-origin:11px 50%;white-space:nowrap;pointer-events:none}
+.lmk span{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--k,#6c7088);color:#fff;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.lmk span svg{width:12px;height:12px;fill:currentColor;margin:0}
+.lmk em{display:none;max-width:10rem;overflow:hidden;text-overflow:ellipsis;font-style:normal;font-size:.68rem;font-weight:700;padding:0 5px;border-radius:5px;background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+#map.zl .lmk em{display:block}
+#mapwrap.turn .lmk{rotate:var(--mr)}
+/* Guide me carries the same map, a little shorter, under the arrow. */
+#gmapslot{align-self:stretch}
+#gmapslot #mapwrap{height:min(38vh,320px);margin-top:.4rem}

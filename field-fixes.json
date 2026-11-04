@@ -12,7 +12,8 @@
     { "keep": "oau_second_bus_stop", "merge": "second_bustop" },
     { "keep": "nacoss_library", "merge": "nacoss" },
     { "keep": "intecu", "merge": "intercu_computer_station" },
-    { "keep": "colllege_of_health_sciences", "merge": "college_of_heath_sciences" }
+    { "keep": "colllege_of_health_sciences", "merge": "college_of_heath_sciences" },
+    { "keep": "main_gate", "merge": "campus_gate" }
   ],
 
   "remove": [],
@@ -29,6 +30,7 @@
   ],
 
   "change": {
+    "main_gate": { "lat": 7.497606, "lng": 4.522479 },
     "intecu": { "name": "INTECU", "aliases": ["Intecu computer station", "Intercu"] },
     "ict_postgraduate_research_laboratory": { "name": "ICT Postgraduate Research Laboratory" },
     "faculty_of_technology_lecture_theatre": { "name": "Faculty of Technology Lecture Theatre", "category": "Lecture Theatres", "aliases": ["Chemengine", "Chem Engine", "Chemical Engineering Lecture Theatre"], "landmark": "Department of Chemical Engineering" },

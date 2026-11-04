@@ -76,6 +76,7 @@ if os.path.exists(fixes_path):
             if key in ch: it[key] = ch[key]
         if "aliases" in ch: it["aliases"] = ", ".join(ch["aliases"])
         if "verified" in ch: it["unsure"] = not ch["verified"]
+        if "lat" in ch and "lng" in ch: it["lat"], it["lng"] = ch["lat"], ch["lng"]   # moved to where the walks found it
         if "radius" in ch: it["radius"] = ch["radius"]   # a wide place (metres): anywhere this close counts as being there
         if "waypoint" in ch: it["waypoint"] = bool(ch["waypoint"])   # named junction/walkway: used in directions, not listed
         done += 1

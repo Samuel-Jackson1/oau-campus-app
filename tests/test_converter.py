@@ -258,6 +258,14 @@ class ConverterTest(unittest.TestCase):
         self.assertLessEqual(size, 60000)
         self.assertGreater(len(buf.getvalue()), 500000)  # the original was far bigger
 
+    def test_a_place_can_be_moved_and_a_duplicate_merged_into_it(self):
+        phones = [("a1", "2026-10-25T10:00:00Z", [place("gate", "Main Gate", 7.5, 4.5), place("gate2", "Campus Gate", 7.5009, 4.5)], [])]
+        places, _, _ = self.run_converter(phones, fixes={"same_place": [{"keep": "gate", "merge": "gate2"}],
+                                                         "change": {"gate": {"lat": 7.5009, "lng": 4.5001}}})
+        self.assertNotIn("gate2", places)
+        self.assertEqual((places["gate"]["lat"], places["gate"]["lng"]), (7.5009, 4.5001))
+        self.assertIn("Campus Gate", places["gate"]["aliases"])
+
     def test_a_wide_place_gets_its_size_from_the_fixes(self):
         phones = [("a1", "2026-10-25T10:00:00Z", [place("ground", "Ground", 7.5, 4.5, cat="Sports")], [])]
         places, _, _ = self.run_converter(phones, fixes={"change": {"ground": {"radius": 120}}})
